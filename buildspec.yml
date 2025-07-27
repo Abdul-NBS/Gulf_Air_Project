@@ -9,57 +9,39 @@ phases:
       - echo "AWS_ACCOUNT_ID = $env:AWS_ACCOUNT_ID"
       - echo "IMAGE_REPO_NAME = $env:IMAGE_REPO_NAME"
       - echo "================================"
-      
       - echo "Checking Docker service status..."
       - Get-Service docker
-      
       - echo "Starting Docker service..."
       - Start-Service docker
-      
       - echo "Waiting for Docker to be ready..."
       - Start-Sleep -Seconds 10
-      
       - echo "Checking Docker status after start..."
       - Get-Service docker
-      
       - echo "Testing Docker command..."
       - docker version
-      
       - echo "Logging in to Amazon ECR in me-south-1..."
       - aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin "529966364587.dkr.ecr.me-south-1.amazonaws.com"
-      
-      - $IMAGE_TAG = $env:CODEBUILD_RESOLVED_SOURCE_VERSION.Substring(0,8)
-      - $IMAGE_URI = "529966364587.dkr.ecr.me-south-1.amazonaws.com/$env:IMAGE_REPO_NAME:$IMAGE_TAG"
-      - echo "Image URI will be: $IMAGE_URI"
+      - $env:IMAGE_TAG = $env:CODEBUILD_RESOLVED_SOURCE_VERSION.Substring(0,8)
+      - $env:IMAGE_URI = "529966364587.dkr.ecr.me-south-1.amazonaws.com/$env:IMAGE_REPO_NAME:$env:IMAGE_TAG"
+      - echo "Image URI will be $env:IMAGE_URI"
       
   build:
     commands:
       - echo "Build started on $(Get-Date)"
       - echo "Building the .NET Framework application..."
-      
-      # Create publish directory
       - mkdir publish
-      
-      # Restore NuGet packages
       - nuget restore CCMS-app/eBriefingNew.sln
-      
-      # Build the application
       - '& "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" "CCMS-app/eBriefingWebApp/eBriefingWebApp.csproj" /p:Configuration=Release /p:OutputPath="..\..\publish\"'
-      
-      # Copy Dockerfile to publish directory
       - copy "CCMS-app\eBriefingWebApp\Dockerfile" "publish\Dockerfile"
-      
-      # Build Docker image
       - echo "Building Docker image..."
-      - docker build -t "$env:IMAGE_REPO_NAME:$IMAGE_TAG" publish/
-      - docker tag "$env:IMAGE_REPO_NAME:$IMAGE_TAG" $IMAGE_URI
+      - docker build -t "$env:IMAGE_REPO_NAME:$env:IMAGE_TAG" publish/
+      - docker tag "$env:IMAGE_REPO_NAME:$env:IMAGE_TAG" $env:IMAGE_URI
       
   post_build:
     commands:
       - echo "Build completed on $(Get-Date)"
       - echo "Pushing the Docker image..."
-      - docker push $IMAGE_URI
-      
+      - docker push $env:IMAGE_URI
       - echo "Deployment completed successfully!"
 
 artifacts:
