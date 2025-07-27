@@ -1,0 +1,17 @@
+﻿@model eBriefingWebApp.Models.SingleFileModel
+@{
+    ViewBag.Title = "Crew Effective Seniority File Upload";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<p>@ViewBag.Status</p>
+
+@using (Html.BeginForm("UploadExcel", "CrewSeniority", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+{
+    <input type="file" name="fileToUpload" />
+    <input type="submit" value="Upload" />
+}
+
+
+
+

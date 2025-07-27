@@ -1,0 +1,121 @@
+﻿@model eBriefingWebApp.OCB_Blocks
+@{
+    ViewBag.Title = "Block Detail";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Block Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="fw-bold">Block Number</th>
+                            <td class="text-start">@Model.Block_No</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Block Date</th>
+                            <td class="text-start">@Model.Block_Date.Value.ToString("dd-MMM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Length</th>
+                            <td class="text-start">@Model.Days_No</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">End Date</th>
+                            <td class="text-start">@Model.End_Date.Value.ToString("dd-MMM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">End Time</th>
+                            <td class="text-start">@Model.End_Time.Value.ToString("HH:mm")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-dark" onclick="history.back()">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Flights List</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Flight #</th>
+                            <th class="text-center fw-bold">Flight Date</th>
+                            <th class="text-center fw-bold">Orig/Dest</th>
+                            <th class="text-center fw-bold">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OCB_Flights)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Flt_No</td>
+                                <td class="text-center">@item.Flight_Date.Value.ToString("dd-MMM-yyyy")</td>
+                                <td class="text-center">@item.Orig / @item.Dest</td>
+                                <td class="text-center"><a href="@Url.Action("FlightDetail", "eBriefing", new { Id = item.Id})">Details</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Block Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Staff Number</th>
+                            <th class="text-center fw-bold">Full Name</th>
+                            <th class="text-center fw-bold">Category</th>
+                            <th class="text-center fw-bold">Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OCB_CrewPos.Where(a => a.is_deleted == false))
+                        {
+                            <tr>
+                                <td class="text-center">@item.StaffNumber</td>
+                                <td class="text-left">@item.CrewDetail.FullName</td>
+                                <td class="text-center">@item.Category</td>
+                                <td class="text-center">
+                                    @if (item.OCB_AC_Pos != null)
+                                    {
+                                        @item.OCB_AC_Pos.PosCode
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pos. Not Set</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+
+</div>

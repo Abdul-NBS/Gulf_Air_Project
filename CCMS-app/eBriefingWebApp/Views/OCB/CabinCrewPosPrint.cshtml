@@ -1,0 +1,145 @@
+﻿@model eBriefingWebApp.OCB_Blocks
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+            page[size="A4"] {
+                width: 21cm;
+                height: 29.7cm;
+            }
+
+        @@media print {
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <page size="A4">
+        <div style="width:100%; text-align:center; padding-top:20PX;">
+            <h4>GULF AIR</h4>
+            <h4>ALLOCATION REPORT / TRANSPORT SHEET</h4>
+        </div>
+
+        <table style="width:80%; margin-left:auto; margin-right:auto; margin-top:30px;"
+               class="table table-bordered">
+            <tr>
+                <th>Block No</th>
+                <td>@Model.Block_No</td>
+                <th>Length</th>
+                <td>@Model.Days_No</td>
+                <th>Start On</th>
+                <td>@Model.Block_Date.Value.ToString("dd-MMM-yyyy")</td>
+            </tr>
+            <tr>
+                <th>End On</th>
+                <td>@Model.End_Date.Value.ToString("dd-MMM-yyyy")</td>
+                <th>End At</th>
+                <td>@Model.End_Date.Value.ToString("HH:mm")</td>
+                <th></th>
+                <td></td>
+            </tr>
+        </table>
+
+        <table style="width:80%; margin-left:auto; margin-right:auto; margin-top:30px;"
+               class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Flight No</th>
+                    <th class="text-center">From</th>
+                    <th class="text-center">To</th>
+                    <th class="text-center">Req Potable Water</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OCB_Flights)
+                {
+                <tr>
+                    <td class="text-center">@item.Flt_No</td>
+                    <td class="text-center">@item.Orig</td>
+                    <td class="text-center">@item.Dest</td>
+                    <td class="text-center"></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        <table style="width:90%; margin-left:auto; margin-right:auto; margin-top:30px;"
+               class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Staff#</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Nat</th>
+                    <th class="text-center">Cat</th>
+                    <th class="text-center">Lang</th>
+                    <th class="text-center">Gender</th>
+                    <th class="text-center">Pos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OCB_CrewPos.Where(a => a.is_deleted == false))
+                {
+                    var getHistory = (ViewBag.PosHistory as ICollection<eBriefingWebApp.OCB_Crew_Pos_History>).Where(a => a.CrewPosId == item.Id).ToList();
+                    string bgClass = "";
+
+                    if (getHistory.Count > 0)
+                    {
+                        DateTime blobkDate = getHistory.OrderByDescending(a => a.OCB_CrewPos.OCB_Blocks.Block_Date).FirstOrDefault().OCB_CrewPos.OCB_Blocks.Block_Date.Value;
+                        DateTime LastDate = getHistory.OrderByDescending(a => a.OCB_CrewPos.OCB_Blocks.Block_Date).FirstOrDefault().OCB_CrewPos.OCB_Blocks.Block_Date.Value.AddMonths(3);
+
+                        if (item.OCB_AC_Pos.Door == "Y")
+                        {
+
+                            if (blobkDate >= LastDate)
+                            {
+                                bgClass = "bg-danger bg-opacity-25";
+                            }
+                            else
+                            {
+                                bgClass = "";
+                            }
+                        }
+
+                        <tr class="@bgClass">
+                            <td class="text-center">@item.StaffNumber</td>
+                            <td class="text-center">@item.CrewDetail.FullName</td>
+                            <td class="text-center">@item.CrewDetail.Nation</td>
+                            <td class="text-center">@item.Category</td>
+                            <td class="text-center">@item.CrewDetail.Lang1</td>
+                            <td class="text-center">@item.CrewDetail.Sex</td>
+                            @if (@item.OCB_AC_Pos != null)
+                            {
+                                <td class="text-center">@item.OCB_AC_Pos.PosCode</td>
+                            }
+                            else
+                            {
+                                <td class="text-center"></td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <br /><br />
+
+    </page>
+</body>
+</html>
+

@@ -1,0 +1,172 @@
+﻿@model eBriefingWebApp.Models.CrewFltForm
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+            page[size="A4"] {
+                width: 21cm;
+                height: 29.7cm;
+            }
+
+        @@media print {
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <page size="A3">
+        <div id="pdfForm">
+            <div style="width:100%; text-align:center; padding-top:10PX;">
+
+                <h4>OSS OBSERVATION CHECKLIST</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">OSS OBSERVATION CHECKLIST</h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                @{
+                                    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                                    var fltdetail = db.OCB_Flights.Where(a => a.Id == Model.crewFlt.Flight_Id).FirstOrDefault();
+                                    //   var crewStaff = db.OCB_CrewPos.Where(a => a.Id == Model.crewFlt.Crew_Pos_Id).FirstOrDefault();
+                                    var StaffInfo = db.CrewDetails.Where(a => a.StaffNumber == Model.crewFlt.StaffNumber).FirstOrDefault();
+                                    var OverAllComnetsSection = db.FlightFormSections.Where(a => a.SectionTitle == "Overall Comments").FirstOrDefault();
+                                }
+                                <tr>
+
+
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flt no: :   @(fltdetail.Flt_No)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Orgin :  @(fltdetail.Orig)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Destination :   @(fltdetail.Dest)</td>
+
+
+                                </tr>
+
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Name :  @(StaffInfo.FullName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Staff number :   @(StaffInfo.StaffNumber)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Date :   @(Model.crewFlt.Submit_Date_and_Time.ToString("dd MMM yyyy"))</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0; height : 30px">OBSERVATION CHECKLIST</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <table style="width:100%">
+                            <tbody>
+                                @{
+                                    foreach (var item in @Model.sections)
+                                    {
+                                        if (item.SectionId != OverAllComnetsSection.Id)
+                                        {
+                                            int i = 1;
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; text-align: left; height: 30px; font-weight: bold; ">
+                                                Phase : 
+                                                @item.SectionName
+                                            </td>
+                                        </tr>
+
+                                            foreach (var item1 in item.qnalist)
+                                            {
+
+                                            <tr>
+                                                <td style="border: 1px solid #c6c1c0;text-align: center; width :5%">
+                                                    @i
+                                                </td>
+                                                <td style="border: 1px solid #c6c1c0;text-align: left; width :60%">
+                                                    @item1.Question
+                                                </td>
+
+                                                <td style="border: 1px solid #c6c1c0; text-align: center; width : 35%">
+                                                    @item1.Answer
+                                                </td>
+                                            </tr>
+                                                i++;
+
+                                            }
+
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; text-align: left;height: 40px">
+                                                <strong> Comments: </strong> @item.secComment
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height : 20px">
+                                            </td>
+                                        </tr>
+
+                                            }
+                                        }
+                                    }
+                            </tbody>
+                        </table>
+
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0;">Overall comments</td>
+                                </tr>
+                                @{
+                                    var overCommnets = db.CrewFlightFormSectionComments.Where(a => a.Crew_Flight_Form_Id == @Model.crewFlt.Id && a.Flight_Form_Section_Id == OverAllComnetsSection.Id).FirstOrDefault();
+                                    var overallcomment = "No Comment";
+
+                                    if (overCommnets != null)
+                                    {
+                                        overallcomment = overCommnets.Comments;
+                                    }
+                                }
+                                <tr>
+                                    <td colspan="3" style="border: 1px solid #c6c1c0;">@overallcomment</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+</body>
+</html>

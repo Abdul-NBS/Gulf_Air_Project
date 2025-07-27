@@ -1,0 +1,555 @@
+﻿@model eBriefingWebApp.Models.CrewDataPojo
+@{
+    ViewBag.Title = "Consolidated Crew Data";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("CrewFlightFormInfo", "CrewFlightForm", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                      <div class="row">
+                          <!--<div class="col-md-8">
+        <h4 class="card-title mb-0">Crew Consolidated Data</h4>
+    </div>
+    <div class="col-md-4 justify-content-end" style="text-align:end;">
+
+        @if (!string.IsNullOrEmpty(Model.imagepath))
+        {
+            <img src="@Model.imagepath" alt="Crew Photo" style="max-width: 150px; max-height: 150px;" />
+        }
+        else
+        {
+            <img src="~/Content/img/default_male_img.jpg" alt="Default Profile" style="max-width: 150px; max-height: 150px; opacity: 0.5;" />
+
+        }
+
+    </div>-->
+                      </div>
+                      </div>
+                        <div class="card-body">
+                            <table style="width: 100%;">
+                                <tbody>
+                                    @{
+
+                                    }
+                                    <tr>
+                                        <td style="width:50%">
+                                            <table>
+                                                <tr>
+                                                    <td class="text-left fw-bold">Staff No :   @(Model.StaffNumber)</td>
+                                                </tr>
+                                                <tr> <td class="text-left fw-bold">Staff Name :  @(Model.FullName)</td></tr>
+
+                                                <tr>
+                                                    <td class="text-left fw-bold">Category :   @(Model.Designation)</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left fw-bold">Gender :   @(Model.gender)</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left fw-bold">Nationality :   @(Model.nation)</td>
+
+                                                </tr>
+                                               
+                                            </table>
+                                        </td>
+                                        
+
+                                       
+                                        <td class="text-right fw-bold" style="width:50%">
+                                            @if (!string.IsNullOrEmpty(Model.imagepath))
+                                            {
+                                                <img src="@Model.imagepath" alt="Crew Photo" style="max-width: 150px; max-height: 150px;" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Content/img/default_male_img.jpg" alt="Default Profile" style="max-width: 150px; max-height: 150px; opacity: 0.5;" />
+
+                                            } </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            <br />
+
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left; background-color: #f0f0f0;">Grooming Checkilts</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            @if (Model.Grooming != null)
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        @{
+
+                                            var haircolorcd = Model.Grooming.Hair_Color_Cd;
+                                            var weightStat = Model.WeightDetailList.Weight_Status_Id;
+                                            var eyeColorcd = Model.Grooming.Eye_Color_Cd;
+                                            var haircolor = db.Crew_Grooming_HairColor.Where(a => a.ID == haircolorcd).FirstOrDefault();
+                                            var weightcondition = db.Crew_Grooming_WeightStatus.Where(a => a.ID == weightStat).FirstOrDefault();
+                                            var eyecolor = db.Crew_Grooming_EyeColor.Where(a => a.ID == eyeColorcd).FirstOrDefault();
+                                        }
+                                        <tr>
+
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Height :   @(Model.Grooming.Height)</td>
+
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Weight :  @(Model.WeightDetailList.Weight)</td>
+
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Remarks : @Model.WeightDetailList.Remarks</td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Eye Color :   @(eyecolor.Eye_Clr)</td>
+
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Hair Color :  @(haircolor.Hair_Clr)</td>
+
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Weight Status : @weightcondition.Weight_Status</td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">No Grooming Data</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br />
+                            }
+                            <br />
+
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left; background-color: #f0f0f0;">Crew OBA List</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            @if (Model.crewAppraisalDataPojos != null && Model.crewAppraisalDataPojos.Count > 0)
+                            {
+                                <table id="TableData" class="table table-striped table-hover my-0">
+
+                                    <thead>
+
+
+
+                                        <tr style="height: 10px;">
+                                            <th class="text-center fw-bold">Block Number</th>
+                                            <th class="text-center fw-bold">Appraiser Name</th>
+                                            <th class="text-center fw-bold">Appraisee Name</th>
+                                            <th class="text-center fw-bold">Total Score %</th>
+                                            <th class="text-center fw-bold">Appraisal Date</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        @foreach (var appdata in Model.crewAppraisalDataPojos)
+                                        {
+
+                                            <tr>
+                                                <td class="text-center">@appdata.BlockName</td>
+                                                <td class="text-center">@appdata.appraiserName</td>
+                                                <td class="text-center">@appdata.crewStaffName</td>
+                                                <td class="text-center">@appdata.TotalScore</td>
+                                                <td class="text-center">@appdata.submittedDate.Value.ToString("dd MMM yyyy")</td>
+
+
+                                            </tr>
+                                        }
+
+
+
+
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">No Crew OBA List</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                            <br />
+
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left; background-color: #f0f0f0;">Crew Appreciation Letter</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            @if (Model.crewAppreciation != null && Model.crewAppreciation.Count > 0)
+                            {
+                                <table id="TableData" class="table table-striped table-hover my-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center fw-bold">Staff Number</th>
+                                            <th class="text-center fw-bold">Staff Name</th>
+                                            <th class="text-center fw-bold">Date</th>
+                                            <th class="text-center fw-bold">Subject</th>
+                                            <th class="text-center fw-bold">Updated By</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.crewAppreciation)
+                                        {
+
+
+                                            <tr>
+
+                                                <td class="text-center">@item.StaffNumber</td>
+                                                <td class="text-center">@item.StaffName</td>
+                                                <td class="text-center">@item.AppEntryDate.Value.ToString("dd MMM yyyy")</td>
+                                                <td class="text-center">@item.AppEntrySubject</td>
+                                                <td class="text-center">@item.Updated_By</td>
+
+
+                                            </tr>
+
+                                        }
+
+
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">No Crew Appreciation Letter</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            }
+                            <br />
+
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left; background-color: #f0f0f0;">Crew Commendation Letters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            @if (Model.crew_Commendations != null && Model.crew_Commendations.Count > 0)
+                            {
+                                <table id="TableData" class="table table-striped table-hover my-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center fw-bold">Staff Number</th>
+                                            <th class="text-center fw-bold">Staff Name</th>
+                                            <th class="text-center fw-bold">Date</th>
+                                            <th class="text-center fw-bold">Subject</th>
+                                            <th class="text-center fw-bold">Updated By</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.crew_Commendations)
+                                        {
+
+
+                                            <tr>
+
+                                                <td class="text-center">@item.StaffNumber</td>
+                                                <td class="text-center">@item.StaffName</td>
+                                                <td class="text-center">@item.CommEntryDate.Value.ToString("dd MMM yyyy")</td>
+                                                <td class="text-center">@item.CommEntrySubject</td>
+                                                <td class="text-center">@item.Updated_By</td>
+
+
+                                            </tr>
+
+                                        }
+
+
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">No Crew Commendation Letters</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                            <br />
+
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left; background-color: #f0f0f0;">Crew Warning Letters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            @if (Model.WarningsList != null && Model.WarningsList.Count > 0)
+                            {
+                                <table id="TableData" class="table table-striped table-hover my-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center fw-bold">Staff Number</th>
+                                            <th class="text-center fw-bold">Staff Name</th>
+                                            <th class="text-center fw-bold">Date</th>
+                                            <th class="text-center fw-bold">Subject</th>
+                                            <th class="text-center fw-bold">Updated By</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.WarningsList)
+                                        {
+
+
+                                            <tr>
+
+                                                <td class="text-center">@item.StaffNumber</td>
+                                                <td class="text-center">@item.StaffName</td>
+                                                <td class="text-center">@item.WarnEntryDate.Value.ToString("dd MMM yyyy")</td>
+                                                <td class="text-center">@item.WarnEntrySubject</td>
+                                                <td class="text-center">@item.Reported_By</td>
+
+
+                                            </tr>
+
+                                        }
+
+
+
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">No Crew Warning Letters</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                            <br />
+
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left; background-color: #f0f0f0;">Pre Flight  Test Results</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            @if (Model.preFlight_CrewTest != null && Model.preFlight_CrewTest.Count > 0)
+                            {
+                                <table id="TableData" class="table table-striped table-hover my-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center fw-bold">#</th>
+                                            <th class="text-center fw-bold">Flight Number</th>
+                                            <th class="text-center fw-bold">Date</th>
+                                            <th class="text-center fw-bold">Orig/Dest</th>
+                                            <th class="text-center fw-bold">Correct Answers</th>
+                                            <th class="text-center fw-bold">Wrong Answers</th>
+                                            <th class="text-center fw-bold">Attempt wise Correct Answer Count</th>
+                                            <th class="text-center fw-bold">Pass / Fail</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ int i = 1;
+                                            foreach (var item in Model.preFlight_CrewTest)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@i</td>
+                                                    <td class="text-center">@item.OCB_Flights.Flt_No</td>
+                                                    <td class="text-center">@item.OCB_Flights.Flight_Date.Value.ToString("dd MMM yyyy")</td>
+                                                    <td class="text-center">@item.OCB_Flights.Orig / @item.OCB_Flights.Dest</td>
+                                                    <td class="text-center">@item.PreFlight_TestLog.Where(a => a.CrewTestId == item.Id && a.PreFlight_Answers.Answer == true).Count()</td>
+                                                    <td class="text-center">@item.PreFlight_TestLog.Where(a => a.CrewTestId == item.Id && a.PreFlight_Answers.Answer == false).Count()</td>
+                                                    @{
+                                                        int noOfQtns = item.PreFlight_TestLog.Count;
+
+                                                        int noOFattempts = noOfQtns / 3;
+                                                        String correctAnswerCount = "";
+                                                        for (int k = 0; k < noOFattempts; k++)
+                                                        {
+                                                            // Calculate the starting index for each set of 3 questions
+                                                            int startIndex = k * 3;
+
+                                                            // Extract the set of 3 questions
+                                                            var answersetSet = item.PreFlight_TestLog.Skip(startIndex).Take(3).ToList();
+                                                            int count = k + 1;
+                                                            var correctAnswer = answersetSet.Where(a => a.PreFlight_Answers.Answer == true).ToList().Count();
+                                                            String answerDetail = correctAnswer + "/";
+                                                            // correctAnswerCount += answerDetail;
+
+                                                            if (k == noOFattempts - 1) // Check if it's the last iteration
+                                                            {
+                                                                correctAnswerCount += correctAnswer.ToString(); // Append without "/"
+                                                            }
+                                                            else
+                                                            {
+                                                                correctAnswerCount += answerDetail; // Append with "/"
+                                                            }
+                                                        }
+
+
+
+                                                        var answerCount = item.PreFlight_TestLog.Count();
+                                                        int totalCorrect = 0;
+                                                        int totalWrong = 0;
+                                                        if (answerCount == 3)
+                                                        {
+
+                                                            totalCorrect = item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == true).Count();
+                                                            totalWrong = item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == false).Count();
+                                                        }
+                                                        else if (answerCount == 6 || answerCount == 9)
+                                                        {
+                                                            var getAnswerListSecondChance = db.PreFlight_TestLog.Where(a => a.CrewTestId == item.Id).OrderByDescending(record => record.id).Take(3).ToList();
+                                                            int trueCount = getAnswerListSecondChance.Where(record => record.PreFlight_Answers != null && record.PreFlight_Answers.Answer == true).Count();
+
+                                                            int falseCount = getAnswerListSecondChance.Where(record => record.PreFlight_Answers != null && record.PreFlight_Answers.Answer == false).Count();
+                                                            totalCorrect = trueCount;
+                                                            totalWrong = falseCount;
+                                                        }
+                                                        string Status = "";
+                                                        if (totalCorrect > totalWrong)
+                                                        {
+                                                            Status = "Passed";
+                                                        }
+                                                        else
+                                                        {
+                                                            Status = "Failed";
+                                                        }
+
+
+                                                    }
+
+                                                    <td class="text-center">@correctAnswerCount</td>
+
+                                                    <td class="text-center">
+                                                        @if (Status == "Passed")
+                                                        {
+                                                            <span class="badge bg-success">Passed</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-danger">Failed</span>
+                                                        }
+                                                    </td>
+
+                                                </tr>
+                                                i++;
+                                            }
+
+
+                                        }
+                                    </tbody>
+                                </table>
+
+                            }
+                            else
+                            {
+                                <table style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">No Preflight Crew Test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+
+                        </div>
+                        <div class="card-footer">
+                            <button id="btnPrint" class="btn btn-secondary" style="margin-left: 10px;">Print</button>
+
+                            <a class="btn btn-dark" href="@Url.Action("Index", "CrewData" , new { From_Block_Date = (TempData["From_Block_Date"]) , To_Block_Date = (TempData["To_Block_Date"]) })" )">Back</a>
+                        </div>
+
+
+                    </div>
+            </div>
+
+        }
+    </div>
+   
+}
+
+
+@if (TempData["Status"] != null)
+{
+    if (TempData["Status"].ToString() == "Error")
+    {
+        <script>
+            toastr.error('Error Loading Data.');
+        </script>
+    }
+}
+
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/dataTables.buttons.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.html5.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/pdfmake.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.flash.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/jszip.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/vfs_fonts.js"></script>
+<link href="~/Content/plugins/datatables/extensions/TableTools/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
+<script>
+  
+
+    document.getElementById('btnPrint').addEventListener('click', function () {
+        window.print(); // Triggers the browser's print dialog
+    });
+</script>
+

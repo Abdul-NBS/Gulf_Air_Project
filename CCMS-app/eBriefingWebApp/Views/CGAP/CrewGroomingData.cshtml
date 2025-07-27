@@ -1,0 +1,349 @@
+﻿@model eBriefingWebApp.Models.CrewGroomingPojo
+@{
+    ViewBag.Title = "Crew Grooming Data";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("CrewFlightFormInfo", "CrewFlightForm", FormMethod.Post))
+{
+    @Html.Hidden("LoggedUser", (string)TempData["LoggedUser"])
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">CREW GROOMING DATA</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td style="width:50%">
+                                        <table>
+                                            <tr>
+                                                <td class="text-left fw-bold">Staff No : @(Model.StaffNo)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Staff Name : @(Model.staffName)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Gender : @(Model.gender)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Nationality : @(Model.nation)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Height : @Model.height m</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Weight : @Model.weight kg (@Model.minweight kg - @Model.maxweight kg)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">
+                                                    Weight Entry Date :
+                                                    @if (Model.created.HasValue)
+                                                    {
+                                                        @Model.created.Value.ToString("dd MMM yyyy")
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Weight Status : @(Model.weightStat)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left fw-bold">Remarks : @(Model.remarks)</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td class="text-right fw-bold" style="width:50%">
+                                        @if (!string.IsNullOrEmpty(Model.imagepath))
+                                        {
+                                            <img src="@Model.imagepath" alt="Crew Photo" style="max-width: 150px; max-height: 150px;" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/img/default_male_img.jpg" alt="Default Profile" style="max-width: 150px; max-height: 150px; opacity: 0.5;" />
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <button id="getGroomingAttribute" class="btn btn-dark" type="button">Grooming Attributes</button>
+                        <button id="addWeight" class="btn btn-dark" type="button">Add Weight</button>
+                        <button id="showWeightHistory" class="btn btn-dark" type="button">Show Weight History</button>
+                        <a class="btn btn-dark" href="@Url.Action("PrintGroomingInfo", "CGAP", new { Id = Model.StaffNo})" target="_blank">Print Grooming Data</a>
+                        <a class="btn btn-dark" href="@Url.Action("Index", "CGAP")">Back</a>
+                        <br />
+                        <div id="groomingAttributeBlock">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0" style="margin-top: 20px;">Grooming Attributes</h4>
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center fw-bold" style="width: 150px;">
+                                            Eye Color
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.eyecolor, (SelectList)ViewBag.EyeColorList, "Select",
+                                                new { @class = "form-control", @id = "eyecolor", @required = "required", @style = "width: 120px;" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center fw-bold" style="width: 150px;">
+                                            Hair Color
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.haircolor, (SelectList)ViewBag.HairColorList, "Select",
+                                                new { @class = "form-control", @id = "haircolor", @required = "required", @style = "width: 120px;" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center fw-bold" style="width: 150px;">
+                                            Height
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.height, (SelectList)ViewBag.HeightOptions, "Select Height",
+                                                new { @class = "form-control", @required = "required", @style = "width: 120px;", @id = "heightDropdown" })
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 150px;">
+                                            <button type="button" class="btn btn-dark btn-sm save-row" id="saveGroomingAttributes">Save</button>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+
+                        <div class="modal fade" id="weightModal" tabindex="-1" aria-labelledby="weightModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="weightModalLabel">Add Weight</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="entryDate" class="form-label">Entry Date</label>
+                                            <input type="date" class="form-control" id="entryDate" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="minWeight" class="form-label">Minimum Weight</label>
+                                            <input type="text" class="form-control" id="minWeight" value="@Model.minweight" readonly />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="maxWeight" class="form-label">Maximum Weight</label>
+                                            <input type="text" class="form-control" id="maxWeight" value="@Model.maxweight" readonly />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newWeight" class="form-label">New Weight</label>
+                                            <input type="number" id="newWeight" class="form-control" placeholder="Enter Weight" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nextReviewDate" class="form-label">Next Review Date</label>
+                                            <input type="date" class="form-control" id="nextReviewDate" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="remarks" class="form-label">Remarks</label>
+                                            <textarea id="remarks" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="saveWeight">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="weightHistoryBlock" style="display: none;">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Weight History</h4>
+                            </div>
+                            <table id="weightHistoryTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Entry Date</th>
+                                        <th>Weight</th>
+                                        <th>Remarks</th>
+                                        <th>Loss/Gain</th>
+                                        <th>Updated By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be loaded here via AJAX -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (TempData["Status"] != null)
+{
+    if (TempData["Status"].ToString() == "Error")
+    {
+        <script>
+            toastr.error('Error Loading Data.');
+        </script>
+    }
+}
+
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/dataTables.buttons.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.html5.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/pdfmake.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.flash.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/jszip.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/vfs_fonts.js"></script>
+<link href="~/Content/plugins/datatables/extensions/TableTools/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        $("#groomingAttributeBlock").hide();
+
+        $("#getGroomingAttribute").click(function () {
+            $("#groomingAttributeBlock").toggle();
+        });
+
+        $("#addWeight").click(function () {
+            $("#weightModal").modal('show');
+        });
+
+        $("#saveWeight").click(function () {
+            var newWeight = $("#newWeight").val();
+            var entryDate = $("#entryDate").val();
+            var nextReviewDate = $("#nextReviewDate").val();
+            var remarks = $("#remarks").val();
+            var staffNumber = "@Model.StaffNo";
+            var loggedUser = $("#LoggedUser").val();
+
+            $.ajax({
+                url: '@Url.Action("UpdateWeight", "CGAP")',
+                type: 'POST',
+                data: {
+                    EntryDate: entryDate,
+                    Weight: newWeight,
+                    Remarks: remarks,
+                    NextReviewDate: nextReviewDate,
+                    StaffNumber: staffNumber,
+                    LoggedUser: loggedUser
+                },
+                success: function (response) {
+                    location.reload();
+                    $("#weightModal").modal('hide');
+                    toastr.success("Weight updated successfully!");
+                },
+                error: function (error) {
+                    console.error("Error updating weight:", error);
+                    toastr.error("Error updating weight.");
+                }
+            });
+        });
+
+        $("#saveGroomingAttributes").click(function (event) {
+            event.preventDefault();
+
+            var eyeColor = parseInt($("#eyecolor").val());
+            var hairColor = parseInt($("#haircolor").val());
+            var height = parseFloat($("#heightDropdown").val());
+            var staffNumber = "@Model.StaffNo";
+            var loggedUser = $("#LoggedUser").val();
+
+            $.ajax({
+                url: '/CGAP/UpdateGroomingAttributes',
+                type: 'POST',
+                data: {
+                    Eye_Color_Cd: eyeColor,
+                    Hair_Color_Cd: hairColor,
+                    Height: height,
+                    StaffNumber: staffNumber,
+                    LoggedUser: loggedUser
+                },
+                success: function (response) {
+                    location.reload();
+                    toastr.success("Grooming attributes updated successfully!");
+                },
+                error: function (error) {
+                    console.error("Error updating grooming attributes:", error);
+                    toastr.error("Error updating grooming attributes.");
+                }
+            });
+        });
+
+        $("#showWeightHistory").click(function () {
+            $("#weightHistoryBlock").toggle();
+            if ($("#weightHistoryBlock").is(":visible")) {
+                var staffNumber = "@Model.StaffNo";
+
+                $.ajax({
+                    url: '/CGAP/GetWeightHistory',
+                    type: 'GET',
+                    data: { StaffNumber: staffNumber },
+                    success: function (response) {
+                        var tableBody = $("#weightHistoryTable tbody");
+                        tableBody.empty();
+
+                        if (response.length === 0) {
+                            tableBody.append("<tr><td colspan='6'>No weight history found.</td></tr>");
+                        } else {
+                            $.each(response, function (index, item) {
+                                var row = $("<tr>");
+                                row.append("<td>" + item.EntryDate + "</td>");
+                                row.append("<td>" + item.Weight + "</td>");
+                                row.append("<td>" + (item.Remarks || "") + "</td>");
+                                row.append("<td>" + (item.LossOrGain || "") + "</td>");
+                                row.append("<td>" + (item.UpdatedCrewId || "") + "</td>");
+                                tableBody.append(row);
+                            });
+
+                            $('#weightHistoryTable').DataTable({
+                                "pageLength": 10,
+                                "pagingType": "full_numbers",
+                                "searching": true,
+                                "ordering": false,
+                                "info": true,
+                                "destroy": true
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error getting weight history:", error);
+                        toastr.error("Error getting weight history.");
+                    }
+                });
+            }
+        });
+
+        $('#TableData').dataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    title: 'CabinCrewPosition',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3]
+                    }
+                }
+            ]
+        });
+    });
+</script>

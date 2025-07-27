@@ -1,0 +1,129 @@
+﻿@model eBriefingWebApp.Maximum_Bids
+
+@{
+    ViewBag.Title = "Edit Maximum Layover Destination Data";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("EditMaxData", "CrewSeniority", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+
+
+            // @Html.HiddenFor(m => CSEid, new { name = "CrewSeniority.id" })
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Edit Maximum Layover Destination Data</h4>
+                            </div>
+                           <!-- <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>-->
+
+                        </div>
+
+                    </div>
+                    @{
+                        eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                        int? selectedCategoryId = db.Layover_Bids.Where(a => a.ID == Model.ID).Select(bid => bid.CAT_ID).FirstOrDefault();
+                    }
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;" colspan="5">Type :  @Model.BID_TYPE</td>
+                                   
+                                </tr>
+
+                                <tr>
+                                    <td colspan="5" class="text-center fw-bold" style="border: 1px solid #c6c1c0; background-color: #b1b5b2;">Maximum Bid Limit</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        <div class="form-group">
+                                            <label>Flight Crew Boeing</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.FC_BOING_MAX, new { @type = "numric", @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        <div class="form-group">
+                                            <label>Flight Crew Airbus</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.FC_AIRBUS_MAX, new { @type = "numric", @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        <div class="form-group">
+                                            <label>Cabin Managers</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.CM_MAX, new { @type = "numric", @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        <div class="form-group">
+                                            <label>Cabin Senior</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.CS_MAX, new { @type = "numric", @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        <div class="form-group">
+                                            <label>FG/FA</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.FG_FA_MAX, new { @type = "numric", @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <button id="btnSubmit" class="btn btn-dark" type="submit">Update Maximum Data</button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+</div>
+
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,189 @@
+﻿@model eBriefingWebApp.Layover_Pairing
+
+@{
+    ViewBag.Title = "Seperations Day Calculator";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("FltSepDaysCalculator", "Home", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+
+
+            // @Html.HiddenFor(m => CSEid, new { name = "CrewSeniority.id" })
+            <div class="col-md-12">
+                <div>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0"></h4>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style="width: 50%;" colspan="1">
+                                        <div>
+                                            <label style="text-align: left;">Pairing Category</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <label style="text-align: left;">@Model.Pairing_Category.CategoryName</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+                                        <div class="form-group">
+                                            <label style="text-align: left;">Fleet Category</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <label style="text-align: left;">@Model.Fleet_Category.Fleet</label>
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="width: 50%;" colspan="1">
+                                        <div class="form-group">
+                                            <label style="text-align: left;"> Layover Pairing Name</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <label srtyle="text-align: left;">@Model.Pairing</label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+                                        <label style="text-align: left;">Select Date of Operation</label>
+
+                                    </td>
+                                    <td>
+
+
+                                        <div>
+                                            <input name="Operation_Date" id="Operation_Date" class="form-control" type="date" required />
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <table>
+                            <tbody>
+
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="2">
+                                        <label style="text-align: left;">
+                                            Date of Operation
+                                        </label>
+
+                                    </td>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+
+                                        <label style="text-align: left; color:red">@ViewBag.OprDate</label>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="2">
+                                        <label style="text-align: left;">
+                                            Next Possible Date
+                                        </label>
+
+                                    </td>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+
+                                        <label style="text-align: left; color:red">@ViewBag.NextOpr</label>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+                        <div>
+                            <a class="btn btn-dark" href="@Url.Action("LayoverPairingIndex", "Home")" target="_blank">Back</a>
+                            <button id="btnSubmit" class="btn btn-dark" type="submit">Next possible Date </button>
+                        </div>
+
+                    </div>
+                    </div>
+
+          
+
+        }
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+
+
+            // Check if Operation_Date has a value
+         var categoryName = '@Model.Pairing_Category.CategoryName';
+
+        $('#Operation_Date').on('change', function () {
+            var selectedDate = $(this).val();
+            //var selectedCategory = $('#Pair_Cat_ID').val();
+            var daysToAdd = 0;
+
+            if (categoryName === "Category 1") {
+                daysToAdd = 90;
+            } else if (categoryName === "Category 2") {
+                daysToAdd = 90;
+            } else if (categoryName === "Category 3") {
+                daysToAdd = 60;
+            }
+
+            if (selectedDate !== '') {
+                var endDate = new Date(selectedDate);
+                endDate.setDate(endDate.getDate() + daysToAdd);
+                var options = { month: '2-digit', day: '2-digit', year: 'numeric' };
+                //var formattedEndDate = endDate.toISOString().slice(0, 10);
+                var formattedEndDate = new Intl.DateTimeFormat('en-US', options).format(endDate);
+
+                $('#EndDateTextbox').val(formattedEndDate);
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+

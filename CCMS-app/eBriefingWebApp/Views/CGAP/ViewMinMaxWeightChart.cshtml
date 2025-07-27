@@ -1,0 +1,568 @@
+﻿@model List<eBriefingWebApp.WeightMinMaxSetting>
+@{
+    ViewBag.Title = "Crew Height to Weight Ratio";
+    Layout = "~/Views/Shared/_layout.cshtml";
+
+    // Get variance percentage once at the top
+    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+    var variance = db.WeightVarianceSettings.Where(a => a.isactive == true && a.isdeleted == false).FirstOrDefault();
+    var variancepercent = variance.variance_percentage;
+    ViewBag.VariancePercent = variancepercent;
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<link href="~/Content/plugins/fontawesome/css/all.min.css" rel="stylesheet" />
+
+<!-- Updated Bootstrap modal dialog -->
+<div class="modal fade" id="editWeightModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Weight Range</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editWeightForm">
+                    <input type="hidden" id="editId" name="id" />
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Height (m)</label>
+                        <div class="form-control-plaintext" id="displayHeight"></div>
+                        <input type="hidden" id="editHeight" name="height" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Gender</label>
+                        <div class="form-control-plaintext" id="displayGender"></div>
+                        <input type="hidden" id="editGender" name="gender" />
+                    </div>
+                    <div class="form-group">
+                        <label>Min Weight (kg)</label>
+                        <input type="number" class="form-control" id="editMinWeight" name="minWeight" step="0.1" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Max Weight (kg)</label>
+                        <input type="number" class="form-control" id="editMaxWeight" name="maxWeight" step="0.1" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveWeightChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Variance Edit Modal -->
+<div class="modal fade" id="editVarianceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Variance Percentage</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editVarianceForm">
+                    <input type="hidden" id="editVarianceId" name="id" />
+                    <div class="form-group">
+                        <label>Variance Percentage</label>
+                        <input type="number" class="form-control" id="editVariancePercentage" name="variancePercentage" step="0.01" min="0" max="100" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" id="editVarianceDescription" name="description" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveVarianceChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Ratio Modal -->
+<div class="modal fade" id="addRatioModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Height-Weight Ratio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addRatioForm">
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Height (m)</label>
+                        <input type="text" class="form-control" id="newHeight" name="height"
+                               pattern="^\d+(\.\d{0,2})?$" title="Enter height in meters (e.g. 1.75)"
+                               required oninput="handleHeightInput(this)" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Gender</label>
+                        <select class="form-control" id="newGender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="F">Female</option>
+                            <option value="M">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Min Weight (kg)</label>
+                        <input type="number" class="form-control" id="newMinWeight" name="minWeight" step="0.1" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Max Weight (kg)</label>
+                        <input type="number" class="form-control" id="newMaxWeight" name="maxWeight" step="0.1" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Description</label>
+                        <textarea class="form-control" id="newDescription" name="description" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveNewRatio">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this height-weight ratio?</p>
+                <input type="hidden" id="deleteId" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("DailyTimeRecord", "OCB", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <h5 class="card-title mb-0 me-3">@ViewBag.Title</h5>
+                            <button type="button" class="btn btn-primary btn-sm" id="addNewRatio">
+                                <i class="fas fa-plus"></i> Add New
+                            </button>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success me-2">
+                                Current Variance: <strong>@(ViewBag.VariancePercent)%</strong>
+                            </span>
+                            <button type="button" class="btn btn-dark btn-sm edit-variance-btn">
+                                <i class="fas fa-edit"></i> Edit Variance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="genderTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="female-tab" data-bs-toggle="tab" data-bs-target="#female" type="button" role="tab">Female</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="male-tab" data-bs-toggle="tab" data-bs-target="#male" type="button" role="tab">Male</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="genderTabsContent">
+                        <div class="tab-pane fade show active" id="female" role="tabpanel">
+                            <table id="femaleTable" class="table table-striped table-hover my-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center fw-bold">Height (m)</th>
+                                        <th class="text-center fw-bold">Min Weight (kg)</th>
+                                        <th class="text-center fw-bold">Max Weight (kg)</th>
+                                        <th class="text-center fw-bold">Min Variance</th>
+                                        <th class="text-center fw-bold">Max Variance</th>
+                                        <th class="text-center fw-bold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.Count; i++)
+                                    {
+                                        if (Model[i].gender == "F")
+                                        {
+                                            var minWeight = Model[i].min_weight ?? 0;
+                                            var maxWeight = Model[i].max_weight ?? 0;
+
+                                            var minVariance = System.Math.Round((double)(minWeight * (1 - (variancepercent / 100))));
+                                            var maxVariance = System.Math.Round((double)(maxWeight * (1 + (variancepercent / 100))));
+
+                                            <tr data-id="@Model[i].id" data-index="@i" data-height="@Model[i].height" data-gender="@Model[i].gender" data-min="@minWeight" data-max="@maxWeight">
+                                                <td class="text-center">@string.Format("{0:0.00}", Model[i].height)</td>
+                                                <td class="text-center">@minWeight</td>
+                                                <td class="text-center">@maxWeight</td>
+                                                <td class="text-center">@minVariance</td>
+                                                <td class="text-center">@maxVariance</td>
+                                                <td style="width: 150px;" class="text-center">
+                                                    <button type="button" class="btn btn-dark btn-sm edit-row">Edit</button>
+                                                    <button type="button" class="btn btn-danger btn-sm delete-row" style="margin-left: 5px;">Delete</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="male" role="tabpanel">
+                            <table id="maleTable" class="table table-striped table-hover my-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center fw-bold">Height (m)</th>
+                                        <th class="text-center fw-bold">Min Weight (kg)</th>
+                                        <th class="text-center fw-bold">Max Weight (kg)</th>
+                                        <th class="text-center fw-bold">Min Variance</th>
+                                        <th class="text-center fw-bold">Max Variance</th>
+                                        <th class="text-center fw-bold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.Count; i++)
+                                    {
+                                        if (Model[i].gender == "M")
+                                        {
+                                            var minWeight = Model[i].min_weight ?? 0;
+                                            var maxWeight = Model[i].max_weight ?? 0;
+
+                                            var minVariance = System.Math.Round((double)(minWeight * (1 - (variancepercent / 100))));
+                                            var maxVariance = System.Math.Round((double)(maxWeight * (1 + (variancepercent / 100))));
+
+                                            <tr data-id="@Model[i].id" data-index="@i" data-height="@Model[i].height" data-gender="@Model[i].gender" data-min="@minWeight" data-max="@maxWeight">
+                                                <td class="text-center">@string.Format("{0:0.00}", Model[i].height)</td>
+                                                <td class="text-center">@minWeight</td>
+                                                <td class="text-center">@maxWeight</td>
+                                                <td class="text-center">@minVariance</td>
+                                                <td class="text-center">@maxVariance</td>
+                                                <td style="width: 150px;" class="text-center">
+                                                    <button type="button" class="btn btn-dark btn-sm edit-row">Edit</button>
+                                                    <button type="button" class="btn btn-danger btn-sm delete-row" style="margin-left: 5px;">Delete</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+        if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+}
+
+<!-- Add required scripts -->
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<script src="~/Content/js/popperjs_core2.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+    // Improved Height input handling function
+    function handleHeightInput(input) {
+        // Get current cursor position
+        var cursorPos = input.selectionStart;
+        var originalValue = input.value;
+
+        // Remove any non-numeric characters except first decimal point
+        var newValue = originalValue.replace(/[^0-9.]/g, '');
+
+        // Ensure only one decimal point
+        var decimalIndex = newValue.indexOf('.');
+        if (decimalIndex >= 0) {
+            newValue = newValue.substring(0, decimalIndex + 1) +
+                      newValue.substring(decimalIndex + 1).replace(/\./g, '');
+        }
+
+        // Limit to 2 decimal places
+        if (decimalIndex >= 0) {
+            var parts = newValue.split('.');
+            if (parts[1] && parts[1].length > 2) {
+                parts[1] = parts[1].substring(0, 2);
+                newValue = parts[0] + '.' + parts[1];
+            }
+        }
+
+        // Update the value if changed
+        if (newValue !== originalValue) {
+            input.value = newValue;
+
+            // Adjust cursor position
+            var changeLength = originalValue.length - newValue.length;
+            var newCursorPos = cursorPos - changeLength;
+
+            // Ensure cursor stays in a valid position
+            if (newCursorPos < 0) newCursorPos = 0;
+            if (newCursorPos > newValue.length) newCursorPos = newValue.length;
+
+            input.setSelectionRange(newCursorPos, newCursorPos);
+        }
+    }
+
+    $(document).ready(function() {
+        var editModal = new bootstrap.Modal(document.getElementById('editWeightModal'));
+        var currentRow = null;
+
+        // Initialize DataTables for both tables
+        var femaleTable = $('#femaleTable').DataTable({
+            dom: 'Bfrtip',
+            bPaginate: false,
+            buttons: [
+                {
+                    extend: 'excel',
+                    title: 'Female Weight Ranges',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4]
+                    }
+                }
+            ]
+        });
+
+        var maleTable = $('#maleTable').DataTable({
+            dom: 'Bfrtip',
+            bPaginate: false,
+            buttons: [
+                {
+                    extend: 'excel',
+                    title: 'Male Weight Ranges',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4]
+                    }
+                }
+            ]
+        });
+
+        // Edit button click handler (works for both tables)
+        $(document).on('click', '.edit-row', function() {
+            currentRow = $(this).closest('tr');
+            var id = currentRow.data('id');
+            var height = parseFloat(currentRow.data('height')); // Ensure height is a number
+            var gender = currentRow.data('gender');
+            var minWeight = currentRow.data('min');
+            var maxWeight = currentRow.data('max');
+
+            // Set values in the modal
+            $('#editId').val(id);
+            $('#displayHeight').text(height.toFixed(2));
+            $('#displayGender').text(gender === 'F' ? 'Female' : 'Male');
+            $('#editHeight').val(height);
+            $('#editGender').val(gender);
+            $('#editMinWeight').val(minWeight);
+            $('#editMaxWeight').val(maxWeight);
+
+            editModal.show();
+        });
+
+        // Save changes button click handler
+        $('#saveWeightChanges').click(function() {
+            var formData = {
+                id: $('#editId').val(),
+                height: $('#editHeight').val(),
+                gender: $('#editGender').val(),
+                minWeight: $('#editMinWeight').val(),
+                maxWeight: $('#editMaxWeight').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateWeightRange", "CGAP")',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Weight range updated successfully');
+                        editModal.hide();
+                        location.reload(); // Reload the page to reflect changes
+                    } else {
+                        toastr.error('Error updating weight range: ' + response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Error updating weight range');
+                }
+            });
+        });
+
+        // Edit Variance button click handler
+        $('.edit-variance-btn').click(function() {
+            $.ajax({
+                url: '@Url.Action("GetActiveVariance", "CGAP")',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        $('#editVarianceId').val(response.data.id);
+                        $('#editVariancePercentage').val(response.data.variance_percentage);
+                        $('#editVarianceDescription').val(response.data.description || '');
+
+                        var varianceModal = new bootstrap.Modal(document.getElementById('editVarianceModal'));
+                        varianceModal.show();
+                    } else {
+                        toastr.error('Error loading variance settings');
+                    }
+                },
+                error: function() {
+                    toastr.error('Error loading variance settings');
+                }
+            });
+        });
+
+        // Save Variance changes button click handler
+        $('#saveVarianceChanges').click(function() {
+            var formData = {
+                id: $('#editVarianceId').val(),
+                variancePercentage: $('#editVariancePercentage').val(),
+                description: $('#editVarianceDescription').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateVariance", "CGAP")',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Variance percentage updated successfully');
+                        $('#editVarianceModal').modal('hide');
+                        // Force a full page reload to update all calculations
+                        setTimeout(function() {
+                            location.reload(true); // true forces a reload from the server
+                        }, 1000); // 1 second delay to allow toastr message to be seen
+                    } else {
+                        toastr.error('Error updating variance: ' + response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Error updating variance');
+                }
+            });
+        });
+
+        // Add New Ratio button click handler
+        $('#addNewRatio').click(function() {
+            // Reset form
+            $('#addRatioForm')[0].reset();
+
+            // Show modal
+            var addModal = new bootstrap.Modal(document.getElementById('addRatioModal'));
+            addModal.show();
+        });
+
+        // Save New Ratio button click handler
+        $('#saveNewRatio').click(function() {
+            var heightValue = $('#newHeight').val();
+
+            // Validate height format
+            if (!/^\d+(\.\d{1,2})?$/.test(heightValue)) {
+                toastr.error('Please enter a valid height with up to 2 decimal places (e.g. 1.75)');
+                return;
+            }
+
+            var formData = {
+                height: parseFloat(heightValue).toFixed(2),
+                gender: $('#newGender').val(),
+                min_weight: $('#newMinWeight').val(),  // Changed from minWeight
+                max_weight: $('#newMaxWeight').val(),  // Changed from maxWeight
+                description: $('#newDescription').val()
+            };
+
+            // Basic validation
+            if (!formData.height || !formData.gender || !formData.min_weight || !formData.max_weight) {
+                toastr.error('Please fill all required fields');
+                return;
+            }
+
+            if (parseFloat(formData.min_weight) >= parseFloat(formData.max_weight)) {
+                toastr.error('Max weight must be greater than min weight');
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddWeightRange", "CGAP")',
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('New height-weight ratio added successfully');
+                        $('#addRatioModal').modal('hide');
+                        location.reload(); // Reload to show the new entry
+                    } else {
+                        toastr.error('Error adding new ratio: ' + response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Error adding new ratio');
+                }
+            });
+        });
+
+        // Delete button click handler
+        $(document).on('click', '.delete-row', function() {
+            var row = $(this).closest('tr');
+            var id = row.data('id');
+            var height = parseFloat(row.data('height')); // Ensure height is a number
+            var gender = row.data('gender') === 'F' ? 'Female' : 'Male';
+
+            $('#deleteId').val(id);
+            $('#deleteConfirmationModal .modal-body p').text(
+                `Are you sure you want to delete the ${gender} ratio for height ${height.toFixed(2)}m?`
+            );
+
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
+            deleteModal.show();
+        });
+
+        // Confirm delete button click handler
+        $('#confirmDelete').click(function() {
+            var id = $('#deleteId').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteWeightRange", "CGAP")',
+                data: { id: id },
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Ratio deleted successfully');
+                        $('#deleteConfirmationModal').modal('hide');
+                        location.reload(); // Reload to reflect changes
+                    } else {
+                        toastr.error('Error deleting ratio: ' + response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Error deleting ratio');
+                }
+            });
+        });
+    });
+</script>

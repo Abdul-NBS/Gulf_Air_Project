@@ -1,0 +1,438 @@
+@model eBriefingWebApp.DepInfoSheet
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+            page[size="A4"] {
+                width: 21cm;
+                height: 29.7cm;
+            }
+
+        @@media print {
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <page size="A4">
+        <div id="pdfForm">
+            <div style="width:100%; text-align:center; padding-top:10PX;">
+
+                <h4>DEPARTMENT INFO SHEET</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Flight Details and Customer Load</h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Departed Station :  @(Model.OCB_Flights.Orig)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Arrival Station :   @(Model.OCB_Flights.Dest)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Date :   @(Model.OCB_Flights.Flight_Date).ToString("dd-MMM-yyyy")</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight No :  GFA @(Model.OCB_Flights.Flt_No)</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                        <table style="width:100%">
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #c6c1c0; width: 30%"><span class="fw-bold">Booked Load : </span>&nbsp;&nbsp;&nbsp;<span class="fw-bold">J</span> &nbsp;@(Model.Booked_Load_J)&nbsp;&nbsp;&nbsp;<span class="fw-bold">Y</span>&nbsp;@(Model.Booked_Load_Y)</td>
+                                <td style="border: 1px solid #c6c1c0; width: 30%"><span class="fw-bold">Final Load : </span>&nbsp;&nbsp;&nbsp;<span class="fw-bold">J </span>&nbsp;@(Model.Final_Load_J)&nbsp;&nbsp;&nbsp;<span class="fw-bold">Y</span>&nbsp;@(Model.Final_Load_Y)</td>
+                                <td style="border: 1px solid #c6c1c0; width: 40%"><span class="fw-bold">Catered Load : </span>&nbsp;&nbsp;&nbsp;<span class="fw-bold">J</span> &nbsp;@(Model.Catered_Load_J)&nbsp;&nbsp;&nbsp;<span class="fw-bold">Y</span>&nbsp;@(Model.Catered_Load_Y)</td>
+                            </tr>
+
+                        </table>
+
+                        <table style="border: 1px solid black;width:100%">
+
+                            <thead style="border: 1px solid black;">
+                                <tr style="border: 1px solid black;">
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 40%; color: antiquewhite">CSM CHECK</th>
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 30%; color: antiquewhite">LOCAL TIME</th>
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 30%; color: antiquewhite">Remarks</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height:20px">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%;">F/D Boarded At: </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%;">@(Model.F_D_Board_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%;">@(Model.F_D_Board_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">C/Crew Boarded At: </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.C_Crew_Boarded_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.C_Crew_Boarded_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Cleaners On Time </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Cleaners_On_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%">@(Model.Cleaners_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Cleaners Off Time </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Cleaners_Off_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> </td>
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Automatic Boarding </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Boarding_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Boarding_Remarks)</td>
+
+
+                                </tr>
+
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">First Passenger Boarded At : </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.First_Passenger_Boarded_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.First_Passenger_Boarded_Remarks)</td>
+
+
+                                </tr>
+
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Last Passenger Boarded At : </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Last_Passenger_Boarded_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Last_Passenger_Boarded_Remarks)</td>
+
+
+                                </tr>
+
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Doors Closed  At : </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;"> @(Model.Doors_Closed_DateTime)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;"> @(Model.Doors_Closed_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Landing Cards Provided : </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Landing_Cards_Provided)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;"> @(Model.Landing_Cards_Provided_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Ship's papers on board(STD/ETD-30 min):</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Ships_Papers_On_Board)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Ships_Papers_On_Board_Remarks)</td>
+
+
+                                </tr>
+
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40% ">VIPs/CIPs introduced : </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%">
+                                        @(Model.VIP_CIP)
+                                    </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.VIP_CIP_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40% ">Cabin Baggage Labelled : </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%">
+                                        @(Model.Cabin_Baggage_Labeled)
+                                    </td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Cabin_Baggage_Labeled_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Cabin Baggage complaint :</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Cabin_Baggage_Compliant)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Cabin_Baggage_Compliant_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">Special Assistance Customers pre-boarded :</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Special_Assistance)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.Special_Assistance_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">GEN DEC Correct :</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.GEN_DEC)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.GEN_DEC_Remarks)</td>
+
+
+                                </tr>
+                                <tr style="height: 20px;">
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 40%">PIL Provided :</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.PIL_Provided)</td>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 30%"> @(Model.PIL_Provided_Remarks)</td>
+
+
+                                </tr>
+                            </tbody>
+
+
+
+                        </table>
+
+                        <table style=" width:100%">
+                            <tr style="height: 30px;">
+                                <td style="border: 1px solid black; background-color: #8d9081; width: 100%;color:antiquewhite">Number of Special Assistance Customers</td>
+                            </tr>
+                        </table>
+                        <table style="width:100%">
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">WCHC</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.WCHC)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">WCHS</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.WCHS)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">WCHR</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.WCHR)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">MAAS</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.MAAS)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">BLND</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.BLND)
+
+
+                                </td>
+
+
+                            </tr>
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">DEAF</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.DEAF)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">STCR</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.STCR)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">INAD</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.INAD)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">DEPU</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.DEPU)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">DEPA</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.DEPA)
+
+                                </td>
+
+                            </tr>
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">MEDA</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.MEDA)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">UMNR</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.UMNR)
+
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                    <span class="bold">OTHER</span>&nbsp;&nbsp;&nbsp;
+
+                                    @(Model.OTHER)
+                                   
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                </td>
+                                <td style="border: 1px solid #e5e5e4">
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width:100%">
+                            @{
+
+                                eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                                var blockId = Model.OCB_Flights.BlockId;
+                                var getPOS = db.OCB_CrewPos.Where(a => (a.Category == "CABIN SERVICE MANAGER" || a.Category == "CM") &&
+                                                        a.BlockId == blockId).FirstOrDefault();
+                                //var POsId = getPOS.CrewDetail.FullName;
+                                var CSM_SignUrl = Model.Csm_Sign;
+                                var Ground_StaffUrl = Model.Ground_staffsign;
+                                
+                                if (CSM_SignUrl == null)
+                                {
+                                   // CSM_SignUrl = "/Content/img/GulfAirLogoNew_500.png";
+                                }
+                                if (Ground_StaffUrl == null)
+                                {
+                                   // Ground_StaffUrl = "/Content/img/GulfAirLogoNew_500.png";
+                                }
+
+                            }
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4; background-color: #8d9081; width: 50%; color:antiquewhite">
+                                    CSM Additional Comments
+                                </td>
+                                <td style="border: 1px solid #e5e5e4; background-color: #8d9081; width: 50%; color: antiquewhite">
+                                    Ground Staff Additional Comments
+                                </td>
+                            </tr>
+                            <tr style="height:70px">
+                                <td style="border: 1px solid #e5e5e4; width: 50%">@(Model.AdditionalComments)</td>
+                                <td style="border: 1px solid #e5e5e4; width: 50%">@(Model.Ground_staffcomments)</td>
+                            </tr>
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4; width: 50%">CSM Name :  @getPOS.StaffNumber</td>
+
+                                <td style="border: 1px solid #e5e5e4; width: 50%">Ground Staff Name : @(Model.Ground_staffname)</td>
+                            </tr>
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4; width: 50%">Staff Number : @getPOS.CrewDetail.FullName </td>
+
+                                <td style="border: 1px solid #e5e5e4; width: 50%">Staff Number : @(Model.Ground_staffnum)</td>
+                            </tr>
+                            <tr style="height:20px">
+                                <td style="border: 1px solid #e5e5e4; width: 50%">Signature : 
+                                    
+                                        <img src=@CSM_SignUrl style="width:100px;height:30px;" />
+                                    
+                                </td>
+
+                                <td style="border: 1px solid #e5e5e4; width: 50%">Signature : 
+                                    
+                                        <img src=@Ground_StaffUrl style="width:100px;height:30px;" />
+                                    </td>
+                            </tr>
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+        </div>
+
+    </page>
+    <!--<div class="card-footer">
+
+        <button class="btn btn-dark btn-outline-secondary" type="submit" id="printDIS" value="printSheet" onclick="myFunction()">Download DIS Sheet</button>
+
+    </div>-->
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿@model eBriefingWebApp.PreFlight_CrewTest
+@{
+    ViewBag.Title = "AddFailedComment";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("AddFailedComment", "PreFlight", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Flight Details</h5>
+                </div>
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th class="fw-bold">Staff Number</th>
+                            <td class="text-start">
+                                @Model.OCB_CrewPos.StaffNumber
+                                <input type="hidden" name="CrewTestId" value="@Model.Id">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Full Name</th>
+                            <td class="text-start">@Model.OCB_Flights.OCB_Blocks.OCB_CrewPos.Where(a => a.StaffNumber == Model.OCB_CrewPos.StaffNumber).FirstOrDefault().CrewDetail.FullName</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Flight Number</th>
+                            <td class="text-start">@Model.OCB_Flights.Flt_No</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Flight Date</th>
+                            <td class="text-start">@Model.OCB_Flights.Flight_Date.Value.ToString("dd MMM yyyy")</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="card-footer">
+                    <a href="@Url.Action("AllCrewFailedTest", "PreFlight")" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Message Details</h5>
+                </div>
+                <div class="card-body">
+                    <textarea class="form-control" id="Comments" name="Comments" rows="4" cols="50"></textarea>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+}
+

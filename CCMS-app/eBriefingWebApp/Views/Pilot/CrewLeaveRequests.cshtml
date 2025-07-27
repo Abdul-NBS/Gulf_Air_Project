@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Submitted Leave Requests";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Submitted Leave Requests</h5>
+                </div>
+                <table class="table table-borderless my-0">
+                    <tbody>
+
+                        <tr>
+
+                            <th class="text-center">
+                                From Date
+                            </th>
+                            <th class="text-center">
+                                To Date
+                            </th>
+                            <th class="text-center">
+                                Leave Reason
+                            </th>
+                            <th class="text-center">
+                                Submitted date
+                            </th>
+
+                            <th class="text-center">
+                                Status
+                            </th>
+                            <th class="text-center">
+                                Admin Comments
+                            </th>
+
+
+                        </tr>
+                        
+                        @{ 
+                            foreach (var item in Model)
+                            {
+                                                <tr>
+
+                                                    <td class="text-center">
+                                                        @item.FROM_DATE.Value.ToString("dd-MMM-yyyy")
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.TO_DATE.Value.ToString("dd-MMM-yyyy")
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.LEAVE_REASON
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.SUBMITTED_TIME.Value.ToString("dd-MMM-yyyy")
+                                                    </td>
+
+                                                    @{
+                                                        var statusStr = "";
+                                                        var status = item.STATUS;
+                                                        if (status == "S")
+                                                        {
+                                                            statusStr = "Submitted";
+                                                        }
+                                                        else if (status == "A")
+                                                        {
+                                                            statusStr = "Approved";
+                                                        }
+                                                        else if (status == "R")
+                                                        {
+                                                            statusStr = "Rejected";
+                                                        }
+
+                                                    }
+                                                    <td class="text-center">
+                                                        @statusStr
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.ADMIN_REASON
+                                                    </td>
+
+                                                </tr>
+                                      
+                                    }
+                                   }
+
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+ }
+ else
+{
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Crew Leave Requests</h5>
+                </div>
+                <table class="table table-borderless my-0">
+                    <tbody>
+
+                        <tr>
+                            <th class="text-center">
+                              Crew hasn't placed  any leave request.
+                            </th></tr></tbody></table>
+            </div>
+            </div>
+        </div>
+}
+

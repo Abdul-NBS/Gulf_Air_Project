@@ -1,0 +1,74 @@
+﻿@model eBriefingWebApp.OCB_Notification
+@{
+    ViewBag.Title = "EditNotification";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Notification Details</h5>
+                </div>
+                <div class="card-body">
+                    <div style="margin-left:-15px;" class="form-group col-md-4">
+                        <label>Flight Number</label>
+                        @Html.DropDownList("FlightId", new SelectList(ViewBag.FleetsList, "Id", "Flt_No"), "Select Flight", new { @class = "form-control js-example-basic-single", @disabled= "disabled" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Message</label>
+                        @Html.TextAreaFor(u => Model.Comments, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark" type="submit">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Updated")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+

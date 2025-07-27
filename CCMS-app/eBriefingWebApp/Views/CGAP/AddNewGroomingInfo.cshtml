@@ -1,0 +1,242 @@
+﻿@model eBriefingWebApp.Models.CrewGroomingPojo
+
+@{
+    ViewBag.Title = "Add new Grooming Info";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<link href="~/Content/css/custom.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+@using (Html.BeginForm("AddNewGroomingInfo", "CGAP", FormMethod.Post))
+{
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Add new Grooming Info</h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                @if (!string.IsNullOrEmpty(Model.imagepath))
+                                {
+                                    <img src="@Model.imagepath" alt="Crew Photo" style="max-width: 150px; max-height: 150px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/img/default_male_img.jpg" alt="Default Profile" style="max-width: 150px; max-height: 150px; opacity: 0.5;" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @{
+                        var staffNo = Model.StaffNo;
+                        eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                        var CrewDetail = db.CrewDetails.Where(a => a.StaffNumber == staffNo).FirstOrDefault();
+                    }
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Staff No</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(model => model.StaffNo, new { @class = "form-control", @readonly = "readonly", @style = "width:120px" })
+                                                @Html.HiddenFor(model => model.gender) <!-- Add this hidden field -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Staff Name</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(model => CrewDetail.FullName, new { @class = "form-control", @readonly = "readonly", @style = "width:120px" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Rest of your form fields -->
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Eye Color</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.DropDownListFor(model => model.eyecolor, new SelectList(ViewBag.EyeColor, "ID", "Eyecolor"), "Select", new { @class = "form-control", @required = "required", @style = "width:120px" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Hair Color</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.DropDownListFor(model => model.haircolor, new SelectList(ViewBag.HairColor, "ID", "Haircolor"), "Select", new { @class = "form-control", @required = "required", @style = "width:120px" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Height</label>
+                                            <div class="input-group mb-3">
+                                                @Html.DropDownListFor(model => model.height, ViewBag.HeightOptions as SelectList, "Select Height", new { @class = "form-control", @required = "required", @id = "height" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Weight (kg)</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.weight, new { @type = "number", @class = "form-control", @required = "required", @step = "0.1", @id = "weight" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Min. Weight (kg)</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.minweight, new { @class = "form-control", @readonly = "readonly", @style = "width:120px", @id = "MinWeight" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        <div class="form-group">
+                                            <label>Max. Weight (kg)</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.TextBoxFor(u => Model.maxweight, new { @class = "form-control", @readonly = "readonly", @style = "width:120px", @id = "MaxWeight" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div id="VarianceInfo" class="variance-info-box" style="display: none;">
+                                            <!-- Variance information will appear here -->
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;" colspan="2">
+                                        <div class="form-group">
+                                            <label>Remarks</label>
+                                            <div class="input-group mb-3">
+                                                @Html.TextAreaFor(model => model.remarks, new { @class = "form-control", @rows = "2" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button id="btnSubmit" class="btn btn-dark" type="submit">Save Grooming Data</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        var crewGender = '@Model.gender';
+
+        // Function to calculate and display weight variance
+        function calculateWeightVariance() {
+            var height = parseFloat($("#height").val());
+            var weight = parseFloat($("#weight").val());
+
+            if (!isNaN(height) && height > 0) {
+                // First get the standard weight range for height
+                $.get('@Url.Action("GetWeightRangeByHeight", "CGAP")', {
+                    height: height,
+                    gender: crewGender
+                }, function(heightData) {
+                    if (heightData.success) {
+                        // Then get the variance percentage
+                        $.get('@Url.Action("GetVariancePercentage", "CGAP")', {
+                            gender: crewGender
+                        }, function(varianceData) {
+                            if (varianceData.percentage) {
+                                // Calculate variance-adjusted weights
+                                var variance = varianceData.percentage;
+                                var minVariance = Math.round(heightData.minWeight * (1 - (variance / 100)));
+                                var maxVariance = Math.round(heightData.maxWeight * (1 + (variance / 100)));
+
+                                // Update the fields
+                                $("#MinWeight").val(heightData.minWeight.toFixed(2));
+                                $("#MaxWeight").val(heightData.maxWeight.toFixed(2));
+
+                                // Show information
+                                var infoHtml = `<strong>Height-Based Weight Range with Variance:</strong><br>
+                                               <strong>Standard Range:</strong> ${heightData.minWeight.toFixed(2)} kg to ${heightData.maxWeight.toFixed(2)} kg<br>
+                                               <strong>Variance Applied:</strong> ±${variance}%<br>
+                                               <strong>Allowed Range:</strong> ${minVariance.toFixed(2)} kg to ${maxVariance.toFixed(2)} kg`;
+
+                                if (!isNaN(weight) && weight > 0) {
+                                    infoHtml += `<br><strong>Current Weight:</strong> ${weight.toFixed(2)} kg`;
+                                    // Check if weight is within allowed range
+                                    if (weight < minVariance || weight > maxVariance) {
+                                        infoHtml += `<br><strong class="text-danger">Weight is outside allowed range!</strong>`;
+                                    }
+                                }
+
+                                $("#VarianceInfo").html(infoHtml).show();
+                            }
+                        });
+                    } else {
+                        toastr.error("No weight range found for this height");
+                        clearWeightFields();
+                    }
+                });
+            } else {
+                clearWeightFields();
+            }
+        }
+
+        // Auto-calculate when height changes
+        $("#height").change(function() {
+            calculateWeightVariance();
+        });
+
+        // Auto-calculate when weight changes (if height is already selected)
+        $("#weight").change(function() {
+            if ($("#height").val()) {
+                calculateWeightVariance();
+            }
+        });
+
+        function clearWeightFields() {
+            $("#MinWeight").val("");
+            $("#MaxWeight").val("");
+            $("#VarianceInfo").hide();
+        }
+    });
+</script>
+
+<style>
+    .variance-info-box {
+        padding: 15px;
+        margin: 10px 0;
+        background-color: #f8f9fa;
+        border-left: 4px solid #17a2b8;
+        border-radius: 4px;
+        line-height: 1.6;
+    }
+
+    .input-group {
+        align-items: center;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+</style>

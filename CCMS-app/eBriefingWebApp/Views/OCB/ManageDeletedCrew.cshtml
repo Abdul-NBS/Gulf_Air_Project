@@ -1,0 +1,88 @@
+﻿@model List<eBriefingWebApp.OCB_CrewPos>
+@{
+    ViewBag.Title = "Manage Deleted Crew";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="card-title mb-0">Crew List</h5>
+                    </div>
+                    <div class="col-md-4 justify-content-end" style="text-align:end;">
+                        <a href="@Url.Action("AddAllCrewPos", "OCB", new { BlockId = ViewBag.BlockId})" class="btn btn-dark btn-sm">Add All Crew</a>
+                        <a href="@Url.Action("CabinCrewPos", "OCB", new { Id = ViewBag.BlockId, Block_Date = ViewBag.BlockDate })" class="btn btn-dark btn-sm">Back</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <table class="table my-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Category</th>
+                            <th class="text-center fw-bold">Staff No</th>
+                            <th class="text-center fw-bold">Full Name</th>
+                            <th class="text-center fw-bold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Category</td>
+                                <td class="text-center">@item.StaffNumber</td>
+                                <td class="text-left">@item.CrewDetail.FullName</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("ReAddCrewPos", "OCB", new { BlockId = item.BlockId, PosId = item.Id})" title="Add Crew">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle align-middle me-2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+
+            </div>
+            <div class="card-footer">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@if (TempData["Status"] != null)
+{
+    if (TempData["Status"].ToString() == "Added")
+    {
+        <script>
+            toastr.success('Record Added.');
+        </script>
+    }
+    else if (TempData["Status"].ToString() == "Saved")
+    {
+        <script>
+            toastr.success('Record Saved.');
+        </script>
+    }
+    else if (TempData["Status"].ToString() == "Error")
+    {
+        <script>
+            toastr.error('Error Saving Record.');
+        </script>
+    }
+}

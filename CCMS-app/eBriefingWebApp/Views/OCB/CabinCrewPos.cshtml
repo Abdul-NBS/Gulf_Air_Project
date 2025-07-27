@@ -1,0 +1,488 @@
+﻿@model List<eBriefingWebApp.OCB_CrewPos>
+@{
+    ViewBag.Title = "Cabin Crew Pos";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+
+
+@using (Html.BeginForm("CabinCrewPos", "OCB", FormMethod.Post))
+{
+    if (Model.FirstOrDefault() != null)
+    {
+        if (Model.FirstOrDefault().OCB_Blocks != null)
+        {
+
+            var block = Model.FirstOrDefault().OCB_Blocks;
+
+            //var block = ((eBriefingWebApp.OCB_Blocks)ViewBag.Block);
+
+            <input type="hidden" name="Id" value="@block.Id" />
+            <input type="hidden" id="currentPage" value="@ViewBag.CurrentPage" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Block Detail</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table my-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="fw-bold">Block Number</th>
+                                        <td class="text-start">
+                                            @block.Block_No
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">Start On</th>
+                                        <td class="text-start">
+                                            @block.Block_Date.Value.ToString("dd-MMM-yyyy")
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">End At</th>
+                                        <td class="text-start">
+                                            @block.End_Date.Value.ToString("dd-MMM-yyyy")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">Length</th>
+                                        <td class="text-start">
+                                            @block.Days_No
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">Total Crew</th>
+                                        <td class="text-start">
+                                            @block.OCB_CrewPos.Where(a => a.is_deleted == false).Count()
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">EQP</th>
+                                        <td class="text-start">
+                                            @Html.DropDownList("EQP", new SelectList(ViewBag.EqpList, "EQP", "EQP", block.Eqp), "Select", new { @class = "form-control", @required = "required", @style = "width:80px" })
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <a class="btn btn-dark" href="@Url.Action("", "OCB", new { Block_Date = Convert.ToDateTime(TempData["Block_Date"]).ToString("yyyy-MM-dd")})">Back</a>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Block Detail</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table my-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="fw-bold">Duty</th>
+                                        <td class="text-start">OPS</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">C.C Pick Up Time</th>
+                                        <td class="text-start">
+                                            @block.Start_Time.Value.AddMinutes(-160).ToString("HH:mm")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">C.C Report Time</th>
+                                        <td class="text-start">
+                                            @block.Start_Time.Value.AddMinutes(-100).ToString("HH:mm")
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="fw-bold">Sched Time Dep</th>
+                                        <td class="text-start">@block.Start_Time.Value.ToString("HH:mm")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Flights List</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped table-hover my-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center fw-bold">Flight #</th>
+                                        <th class="text-center fw-bold">Flight Date</th>
+                                        <th class="text-center fw-bold">Orig/Dest</th>
+                                        <th class="text-center fw-bold">EQP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (block.OCB_Flights != null || block.OCB_Flights.Count > 0)
+                                    {
+                                        foreach (var item in block.OCB_Flights)
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    @item.Flt_No
+                                                </td>
+                                                <td class="text-center">@item.Flight_Date.Value.ToString("dd-MMM-yyyy")</td>
+                                                <td class="text-center">@item.Orig / @item.Dest</td>
+                                                <td class="text-center">@item.EQP</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="card-title mb-0">Crew Position</h5>
+                                </div>
+                                <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                    <a href="@Url.Action("ManageDeletedCrew", "OCB", new { Id = block.Id})" class="btn btn-dark btn-sm">Manage Deleted Crew</a>
+                                    <a href="@Url.Action("AddNewCrewPos", "OCB", new { Id = block.Id})" class="btn btn-dark btn-sm">Add New Crew</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <table class="table my-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center fw-bold">#</th>
+                                        <th class="text-center fw-bold">Cat</th>
+                                        <th class="text-center fw-bold">Staff No</th>
+                                        <th class="text-center fw-bold">Full Name</th>
+                                        <th class="text-center fw-bold">LANG/G/NAT</th>
+                                        <th class="text-center fw-bold">Auto Pos</th>
+                                        <th class="text-center fw-bold">Last 4 Pos</th>
+                                        <th class="text-center fw-bold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int count = 1;
+                                    }
+
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        for (int j = 0; j < Model.Count; j++)
+                                        {
+                                            string bgClass = "";
+
+                                            @Html.HiddenFor(m => Model[j].Id, new { name = "OCB_CrewPos.Id" })
+                                            @Html.HiddenFor(m => Model[j].BlockId, new { name = "OCB_CrewPos.BlockId" })
+                                            @Html.HiddenFor(m => Model[j].is_deleted, new { name = "OCB_CrewPos.is_deleted" })
+                                            @Html.HiddenFor(m => Model[j].ManualAdd, new { name = "OCB_CrewPos.ManualAdd" })
+                                            @Html.HiddenFor(m => Model[j].CrewDetail, new { name = "OCB_CrewPos.CrewDetail" })
+
+                                            bool isDoors = false;
+
+                                            string staffNumbr = Model[j] != null ? Model[j].StaffNumber : string.Empty;
+
+                                            eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+
+                                            var getHistory = db.OCB_Crew_Pos_History
+                                                                .Where(a => a.OCB_CrewPos.StaffNumber == staffNumbr &&
+                                                                a.OCB_CrewPos.OCB_Blocks.Block_Date < DateTime.Now)
+                                                                .OrderByDescending(a => a.OCB_CrewPos.OCB_Blocks.Block_Date)
+                                                                .Take(4)
+                                                                .Select(a => a.OCB_CrewPos)
+                                                                .ToList();
+
+                                            var getLastHistory = getHistory.Count > 0 ? getHistory.FirstOrDefault() : null;
+
+                                            if (getLastHistory != null && getLastHistory.OCB_AC_Pos != null && getLastHistory.OCB_AC_Pos.Door == "Y")
+                                            {
+                                                var getBlockDate = Model[j] != null && Model[j].OCB_Blocks != null && Model[j].OCB_Blocks.Block_Date.HasValue ? Model[j].OCB_Blocks.Block_Date.Value : DateTime.MinValue;
+                                                var addMonths = getLastHistory.OCB_Blocks != null && getLastHistory.OCB_Blocks.Block_Date.HasValue ? getLastHistory.OCB_Blocks.Block_Date.Value.AddMonths(3) : DateTime.MinValue;
+
+                                                if (getBlockDate >= addMonths)
+                                                {
+                                                    isDoors = true;
+                                                    bgClass = "bg-danger";
+                                                }
+                                                else
+                                                {
+                                                    bgClass = "";
+                                                }
+                                            }
+
+                                            // check recencyvalidity
+                                            String eqpfamily = "";
+                                            String eqpNo = block.Eqp;
+                                            if (eqpNo != null)
+                                            {
+                                                String eqpType = eqpNo.Substring(0, 1);
+                                                if (eqpType == "3")
+                                                {
+                                                    eqpfamily = "320";
+                                                }
+                                                else if (eqpType == "7")
+                                                {
+                                                    eqpfamily = "789";
+                                                }
+                                            }
+
+                                            if (eqpfamily != "")
+                                            {
+
+
+                                                var recencyData = db.vwRecencySummaries.Where(a => a.StaffNumber == staffNumbr && a.Family == eqpfamily).FirstOrDefault();
+                                                if (recencyData != null)
+                                                {
+                                                    var getBlockDate = Model[j] != null && Model[j].OCB_Blocks != null && Model[j].OCB_Blocks.Block_Date.HasValue ? Model[j].OCB_Blocks.Block_Date.Value : DateTime.MinValue;
+                                                    var expiredDate = recencyData.Expiry_Date;
+                                                    if (expiredDate <= getBlockDate)
+                                                    {
+                                                        isDoors = true;
+                                                        bgClass = "bg-danger";
+                                                    }
+                                                    else
+                                                    {
+                                                        bgClass = "";
+                                                    }
+                                                }
+                                            }
+
+
+                                            if (Model[j] != null && Model[j].ManualAdd == true && isDoors == false)
+                                            {
+                                                bgClass = "bg-yellow bg-opacity-50";
+                                            }
+
+                                            if (Model[j] != null && Model[j].PosId == null && isDoors == false)
+                                            {
+                                                bgClass = "bg-yellow bg-opacity-50";
+                                            }
+
+                                            <tr id="crewtr" class="@bgClass">
+                                                <td class="text-center">
+                                                    @count.ToString()
+                                                </td>
+                                                <td class="text-center">
+                                                    @(Model[j] != null ? Model[j].Category : string.Empty)
+                                                </td>
+                                                <td class="text-center">
+                                                    @(Model[j] != null ? Model[j].StaffNumber : string.Empty)
+
+                                                    @if (Model[j] != null && Model[j].is_deleted == false)
+                                                    {
+                                                        @Html.HiddenFor(m => Model[j].StaffNumber, new { name = "OCB_CrewPos.StaffNumber" })
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @(Model[j] != null && Model[j].CrewDetail != null ? Model[j].CrewDetail.FullName : string.Empty)
+                                                </td>
+                                                <td class="text-center">
+                                                    @{
+                                                        string details = string.Empty;
+                                                        if (Model[j] != null && Model[j].CrewDetail != null)
+                                                        {
+                                                            var lang1 = !String.IsNullOrEmpty(Model[j].CrewDetail.Lang1) ? Model[j].CrewDetail.Lang1.Substring(0, 2) : string.Empty;
+                                                            var sex = !string.IsNullOrEmpty(Model[j].CrewDetail.Sex) ? Model[j].CrewDetail.Sex : string.Empty;
+                                                            var nation = !string.IsNullOrEmpty(Model[j].CrewDetail.Nation) ? Model[j].CrewDetail.Nation.Substring(0, 3) : string.Empty;
+
+                                                            details = string.Join(" - ", new[] { lang1, sex, nation }.Where(s => !string.IsNullOrEmpty(s)));
+                                                        }
+
+                                                        @details
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (Model[j] != null && Model[j].OCB_Blocks != null && Model[j].OCB_Blocks.Block_Date.HasValue && DateTime.Now.Date.AddDays(-1) <= Model[j].OCB_Blocks.Block_Date.Value.Date)
+                                                    {
+                                                        if (Model[j].is_deleted == true)
+                                                        {
+                                                            <label>NA</label>
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DropDownListFor(m => Model[j].PosId, new SelectList(ViewBag.AC_Pos, "Id", "PosCode", Model[j].PosId), "Select", new { @class = "form-control", @style = "width:80px" })
+
+                                                            if (Model[j].is_deleted == false)
+                                                            {
+                                                                @Html.HiddenFor(m => Model[j].PosId, new { name = "OCB_CrewPos.PosId" })
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Model[j] != null && Model[j].OCB_AC_Pos != null)
+                                                        {
+                                                            <label>@Model[j].OCB_AC_Pos.PosCode</label>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    <table class="table">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                <th style="border: 1px solid black;">4</th>
+                                                                <th style="border: 1px solid black;">3</th>
+                                                                <th style="border: 1px solid black;">2</th>
+                                                                <th style="border: 1px solid black;">1</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                @foreach (var history in getHistory)
+                                                                {
+                                                                    if (getHistory.Count > 0)
+                                                                    {
+                                                                        <td style="border: 1px solid black;"><label>@(history.OCB_AC_Pos != null ? history.OCB_AC_Pos.PosCode : string.Empty) = @(history.OCB_Blocks != null ? history.OCB_Blocks.Days_No : 0) - @(history.OCB_Blocks != null ? history.OCB_Blocks.Eqp : string.Empty)</label></td>
+                                                                    }
+                                                                }
+
+                                                                @for (int i = 0; i < (4 - getHistory.Count); i++)
+                                                                {
+                                                                    <td style="border: 1px solid black;"> </td>
+                                                                }
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="@Url.Action("RemoveCrewPos", "OCB", new { Id = Model[j] != null ? Model[j].Id : 0, BlockId = Model[j] != null ? Model[j].BlockId : 0 })" title="Remove Crew">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 align-middle me-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                    </a>
+
+                                                    @if (Model[j] != null && Model[j].OCB_Comments != null && Model[j].OCB_Comments.FirstOrDefault() != null)
+                                                    {
+                                                        <a style="color:green;" href="@Url.Action("AddBriefingComment", "OCB", new { Id = Model[j] != null ? Model[j].Id : 0 })" title="Edit Briefing Comment">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit align-middle me-2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="@Url.Action("AddBriefingComment", "OCB", new { Id = Model[j] != null ? Model[j].Id : 0 })" title="Add Briefing Comment">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square align-middle me-2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                                        </a>
+                                                    }
+                                                </td>
+                                            </tr>
+
+                                            count++;
+                                        }
+                                    }
+
+
+
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-info">Save Changes</button>
+                            <a class="btn btn-dark" href="@Url.Action("CabinCrewPosPrint", "OCB", new { Id = block.Id})" target="_blank">Print</a>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            if (TempData["Status"] != null)
+            {
+                if (TempData["Status"].ToString() == "Added")
+                {
+                    <script>
+                        toastr.success('Record Added.');
+                    </script>
+                }
+                else if (TempData["Status"].ToString() == "Saved")
+                {
+                    <script>
+                        toastr.success('Record Saved.');
+                    </script>
+                }
+                else if (TempData["Status"].ToString() == "Deleted")
+                {
+                    <script>
+                        toastr.success('Crew Comment Deleted.');
+                    </script>
+                }
+                else if (TempData["Status"].ToString() == "Exist")
+                {
+                    <script>
+                        toastr.warning('Duplicat Records in Crew Posisions.');
+                    </script>
+                }
+                else if (TempData["Status"].ToString() == "Error")
+                {
+                    <script>
+                        toastr.error('Error Saving Record.');
+                    </script>
+                }
+            }
+        }
+    }
+
+
+}
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this block?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteLink" class="btn btn-danger">Confirm Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const blockId = button.dataset.blockId;
+            const blockDate = button.dataset.blockDate;
+
+            // Define the base URL
+            const baseUrl = '/OCB/DeleteBlock'; // Or use '@Url.Content("~/OCB/DeleteBlock")' if needed
+
+            // Append parameters using template literals
+            const deleteUrl = `${baseUrl}?BlockId=${encodeURIComponent(blockId)}&Block_Date=${encodeURIComponent(blockDate)}`;
+
+            document.getElementById('confirmDeleteLink').href = deleteUrl;
+        });
+    });
+</script>
+

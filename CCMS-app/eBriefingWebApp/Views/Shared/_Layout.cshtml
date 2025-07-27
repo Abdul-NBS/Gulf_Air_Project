@@ -1,0 +1,444 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <title>CCMS</title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap/js/jquery-1.9.1.min.js"></script>
+    <script src="~/Content/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/Content/bootstrap/js/dist/modal.js"></script>
+    <link href="~/Content/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav id="sidebar" class="sidebar js-sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="#">
+                    <span class="align-middle">CCMS</span>
+                </a>
+                 
+                <ul class="sidebar-nav">
+                    @if (Roles.IsUserInRole("CSM.Briefing") || Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            OCB
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Cabin Crew A/C Position</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("DailyTimeRecord", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Allocation Report</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("AllocationScreen", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Allocation Screen</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("BriefingComment", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Comments Report</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("CrewDetails", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Details</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("RecencyReport", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Upcoming Recency Expiry</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("RecencyReportIndex", "OCB")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle"> Recency Expiry Report</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Briefing") || Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            eBriefing App
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "eBriefing")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Blocks List</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("ManageNotification", "eBriefing")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Notifications</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Briefing") || Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            OBA
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewAppraisals", "Appraisal")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Appraisals</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("ManageAppraisals", "Appraisal")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Manage Appraisals</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("CrewAppraisalsList", "Appraisal")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Overall Appraisal Data</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("SectorSearch", "Appraisal")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Sector  Appraisal Data</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("CrewOBASearch", "Appraisal")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew wise  Appraisal Data</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Admins") || Roles.IsUserInRole("CSM.Briefing"))
+                    {
+                        <li class="sidebar-header">
+                            OSS
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "CrewFlightForm")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">OSS Details</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("OverallIndex", "CrewFlightForm")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">OSS Overall Data</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("OSSSectorSearch", "CrewFlightForm")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">OSS Sector Wise Data</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Briefing") || Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            Pre Flight Test
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewTestHistory", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew History</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("FlightTestHistory", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Flight History</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("AllCrewWithNoTest", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">All Crew With No Test</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("AllCrewFailedTest", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">All Crew Failed Test</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("TestSecondChance", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Second Chance</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("ExceptionReport", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Exception Report</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("Questions", "PreFlight")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Manage Questions</span>
+                            </a>
+                        </li>
+                    }
+
+
+
+                    @if (Roles.IsUserInRole("CSM.Admins") || Roles.IsUserInRole("CSM.IOC"))
+                    {
+                        <li class="sidebar-header">
+                            DIS
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "DIS")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Departure Info Sheet</span>
+                            </a>
+                        </li>
+                    }
+                    @if (Roles.IsUserInRole("CSM.Admins") || Roles.IsUserInRole("CSM.IOC"))
+                    {
+                        <li class="sidebar-header">
+                            FAM
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "FAM")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">FAM Form</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Briefing") || Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            Onedrive Reports
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "SharePointLog")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">CC Onedrive  Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("ExcludeData", "SharePointLog")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">File Unaccessed Report</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Admins") || Roles.IsUserInRole("CSM.GroundOps") || Roles.IsUserInRole("CSM.Outstations"))
+                    {
+                        <li class="sidebar-header">
+                            Stations
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "GroundOps")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Potable Water</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("PotableWaterPax", "GroundOps")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Potable Water with pax</span>
+                            </a>
+                        </li>
+                    }
+
+
+                    @if (Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            Inflight Break Log
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewBreakData", "CrewBreak")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Inflight Break Log</span>
+                            </a>
+                        </li>
+                      
+                    }
+
+                    @if (Roles.IsUserInRole("Transport.Supervisor") || Roles.IsUserInRole("CSM.CrewLeave"))
+                    {
+                        <li class="sidebar-header">
+                            Crew Leave
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewLeaveRequests", "CrewLeave")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Leave requests</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewLeaveToReview", "CrewLeave")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Leave To Review</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("RosterPeriodData", "CrewLeave")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Update Roster dates</span>
+                            </a>
+                        </li>
+                    }
+                    @if (Roles.IsUserInRole("Transport.Supervisor"))
+                    {
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("ManageAnnouncements", "CrewLeave")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Manage Leave Announcements</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.DocumentApprover"))
+                    {
+                        <li class="sidebar-header">
+                            Crew Documents
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewDocumentsByDate", "CrewDocument")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Documents</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("DocumentForReview", "CrewDocument")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Documents To Review</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("GetStaffWise", "CrewDocument")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Wise Documents</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("CrewDocumentCategories", "CrewDocument")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Update Document Categories</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("Transport.Supervisor"))
+                    {
+                        <li class="sidebar-header">
+                            Crew Seniority
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "CrewSeniority")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">View Crew Seniority</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("UploadExcel", "CrewSeniority")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Seniority Upload</span>
+                            </a>
+                        </li>
+                    }
+                    @if (Roles.IsUserInRole("Transport.Supervisor"))
+                    {
+                        <li class="sidebar-header">
+                            Preferential Bidding
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("LayoverBidData", "CrewSeniority")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Layover Destination Categories</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("MaximumLayoverBid", "CrewSeniority")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Maximum Layover Pairing Categories</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("LayoverPairingIndex", "CrewSeniority")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Layover Pairing Categories</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.CrewGrooming") || Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            Crew Grooming and Letters
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "CGAP")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Grooming Data</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("ViewMinMaxWeightChart", "CGAP")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Height Weight Ratio</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("IndexAppLetter", "CGAP")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Appreciation Data</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("IndexCommLetter", "CGAP")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Commendation Data</span>
+                            </a>
+                            <a class="sidebar-link" href="@Url.Action("IndexWarnLetter", "CGAP")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Crew Warning Data</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Roles.IsUserInRole("CSM.Admins"))
+                    {
+                        <li class="sidebar-header">
+                            Crew Data
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="@Url.Action("Index", "CrewData")">
+                                <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Consolidated Crew Data</span>
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+                </div>
+        </nav>
+
+        <div class="main">
+            <nav class="navbar navbar-expand navbar-light navbar-bg">
+                <a class="sidebar-toggle js-sidebar-toggle">
+                    <i class="hamburger align-self-center"></i>
+                </a>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav navbar-align">
+                        <li class="nav-item dropdown">
+                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                                <i class="align-middle" data-feather="settings"></i>
+                            </a>
+
+                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                                @if (@Session["FullName"] != null)
+                                {
+                                    <img src="~/Content/img/avatar.png" class="avatar img-fluid rounded me-1" /> <span class="text-dark">Welcome @Session["FullName"].ToString()!</span>
+                                }
+                                else
+                                {
+                                    <img src="~/Content/img/avatar.png" class="avatar img-fluid rounded me-1" /> <span class="text-dark">Welcome!</span>
+                                }
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i> Crew Categories</a>
+                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i> Application Settings</a>
+                                @*<div class="dropdown-divider"></div>*@
+                                <a class="dropdown-item" href="@Url.Action("Logout", "Home")">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="content">
+                <div class="container-fluid p-0">
+
+                    <h1 class="h3 mb-3"><strong>eBriefing</strong> @ViewBag.Title</h1>
+
+                    @RenderBody()
+
+                </div>
+            </main>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row text-muted">
+                        <div class="col-6 text-start">
+                            <p class="mb-0">
+                                <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>eBriefing V3.0</strong></a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/Content/js/app.js"></script>
+
+</body>
+
+</html>

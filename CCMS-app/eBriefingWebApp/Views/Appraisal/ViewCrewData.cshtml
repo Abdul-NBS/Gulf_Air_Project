@@ -1,0 +1,104 @@
+﻿@model eBriefingWebApp.Models.CrewAppraisalData
+@{
+    ViewBag.Title = "Crew Appraisal Data";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Crew Appraisals</h5>
+                </div>
+                <br />
+                <div class="col-md-4 justify-content-end">
+
+                </div>
+                <table class="table table-borderless my-0">
+                    <tbody>
+
+                        <tr>
+                            <th class="text-center">
+                                Total Flights
+                            </th>
+                            <th class="text-center">
+                                Staff No
+                            </th>
+                            <th class="text-center">
+                               Staff Name
+                            </th>
+
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                @Model.totalFlight
+                            </td>
+                            <td class="text-center">
+                                @Model.StaffNo
+                            </td>
+                            <td class="text-center">
+                                @Model.StaffName
+                            </td>
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                @if (Model.pojoAppraisals != null)
+                {
+                    <div class="card-header">
+                        <h2 class="card-title mb-0">Appraisals Information</h2>
+                    </div>
+                    <table class="table table-borderless my-0">
+                        <tbody>
+
+                            <tr>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Block Name</th>
+                                <th class="text-center">Appraiser Id</th>
+                                <th class="text-center">Appraiser  Name</th>
+                                <th class="text-center">Average Score</th>
+                                <th class="text-center">More Details</th>
+                            </tr>
+                            @foreach (var item in Model.pojoAppraisals)
+                            {
+                                <tr>
+                                    <td class="text-center">@item.submitteddate.Value.ToString("dd MMM yyyy")</td>
+                                    <td class="text-center">@item.BlockNo</td>
+                                    <td class="text-center">@item.appraiserId</td>
+                                    <td class="text-center">@item.appraiserName</td>
+                                    <td class="text-center">@item.TotalScore</td>
+
+
+                                    <td class="text-center">
+                                        <a href="@Url.Action("ViewAppraisalData", "Appraisal", new { Id = @item.Id , Month = (TempData["Block_Date"]) })" title="View Appraisal Details">
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list align-middle me-2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list align-middle me-2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                }
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card-footer">
+
+                <a class="btn btn-dark" href="@Url.Action("CrewAppraisalsList", "Appraisal", new {Block_Date = (TempData["Block_Date"])})">Back</a>
+            </div>
+            </div>
+        </div>
+            }
+

@@ -1,0 +1,129 @@
+﻿@model eBriefingWebApp.CrewLeaveRequest
+
+@{
+    ViewBag.Title = "Request Leave";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<!--<script src="~/Content/js/jquery-3.6.0.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("RequestLeave", "CrewLeave", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+            <input type="hidden" id="rosterFromDateHid" value="@ViewBag.RosterFromDate.ToString("dd-MMM-yyyy")" />
+            <input type="hidden" id="rosterToDateHid" value="@ViewBag.RosterToDate.ToString("dd-MMM-yyyy")" />
+            // @Html.HiddenFor(m => CSEid, new { name = "CrewSeniority.id" })
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Request Leave</h4>
+                            </div>
+                            <!--   <div class="col-md-4 justify-content-end" style="text-align:end;">
+                            <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                        </div>
+                         -->
+                        </div>
+
+                    </div>
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="2">
+                                        <div class="form-group">
+                                          
+                                            <p class="text-danger mt-1">You can submit your leave requests for period from  @ViewBag.MinRequestDate.ToString("dd-MMM-yyyy") to @ViewBag.RosterToDate.ToString("dd-MMM-yyyy") </p>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="2">
+                                        <div class="form-group">
+                                            <label style="text-align: left;">From Date</label>
+                                            @Html.TextBoxFor(m => Model.FROM_DATE, new { @class = "form-control", @required = "required", @type = "date" })
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="2">
+                                        <div class="form-group">
+                                            <label style="text-align: left;">To Date</label>
+                                            @Html.TextBoxFor(m => Model.TO_DATE, new { @class = "form-control", @required = "required", @type = "date" })
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    @* New row for the textarea *@
+                                    <td class="fw-bold" colspan="2">
+                                        @* Span across both columns *@
+                                        <div class="form-group">
+                                            <label style="text-align: left;">Leave Comments</label>
+                                            @Html.TextAreaFor(m => Model.LEAVE_REASON, new { @class = "form-control", @rows = "5" }) @* Added rows attribute *@
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+
+
+
+
+                        </table>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <!--<a class="btn btn-dark" href="@Url.Action("Dashboard", "Home")" target="_blank">Back</a> -->
+                        <button id="btnSubmit" class="btn btn-dark" type="submit">Request Leave</button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+
+}
+<div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="validationModalLabel">Validation Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalMessage">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/js/CrewLeave.js"></script>

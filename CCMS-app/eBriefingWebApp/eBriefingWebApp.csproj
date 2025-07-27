@@ -1,0 +1,1660 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ACD4D25A-B837-4FE2-B885-D5F9E6197134}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eBriefingWebApp</RootNamespace>
+    <AssemblyName>eBriefingWebApp</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <ApplicationInsightsResourceId>/subscriptions/3df2fa53-718c-444f-b124-82850bfc862c/resourceGroups/GF_eBriefing/providers/microsoft.insights/components/ebriefing</ApplicationInsightsResourceId>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=8.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.8.0.0\lib\netstandard2.0\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=6.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.6.1.0\lib\net472\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.4.0.0.16\lib\net472\AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.S3, Version=4.0.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.S3.4.0.5\lib\net472\AWSSDK.S3.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Core, Version=1.39.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Core.1.39.0\lib\net472\Azure.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Identity, Version=1.11.3.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Identity.1.11.3\lib\netstandard2.0\Azure.Identity.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Storage.Blobs, Version=12.19.1.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Storage.Blobs.12.19.1\lib\netstandard2.0\Azure.Storage.Blobs.dll</HintPath>
+    </Reference>
+    <Reference Include="Azure.Storage.Common, Version=12.18.1.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Storage.Common.12.18.1\lib\netstandard2.0\Azure.Storage.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=7.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.5.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=7.5.0.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.7.5.0\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=7.5.0.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.7.5.0\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.21.0.429, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.21.0\lib\net452\Microsoft.AI.DependencyCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.21.0.429, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.21.0\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.21.0.429, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.21.0\lib\net452\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.21.0.429, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.21.0\lib\net452\Microsoft.AI.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.21.0.429, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.21.0\lib\net452\Microsoft.AI.WindowsServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.21.0.429, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.21.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.8\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authentication.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authentication.Core.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authorization, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authorization.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Authorization.Policy, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Authorization.Policy.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authorization.Policy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Server.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Extensions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Extensions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Mvc.Core.2.2.5\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.ResponseCaching.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.ResponseCaching.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.ResponseCaching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Routing.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Configuration.ConfigurationBuilders.Base, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Configuration.ConfigurationBuilders.Base.2.0.0\lib\Net471\Microsoft.Configuration.ConfigurationBuilders.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Configuration.ConfigurationBuilders.UserSecrets, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.2.0.0\lib\Net471\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.DotNet.PlatformAbstractions.2.1.0\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.8.0.0\lib\net462\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.2.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.1\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyModel, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyModel.2.1.0\lib\net451\Microsoft.Extensions.DependencyModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.ObjectPool, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.ObjectPool.2.2.0\lib\netstandard2.0\Microsoft.Extensions.ObjectPool.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.8.0.0\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Graph, Version=5.52.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Graph.5.52.0\lib\netstandard2.0\Microsoft.Graph.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Graph.Core, Version=3.1.11.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Graph.Core.3.1.11\lib\net462\Microsoft.Graph.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client, Version=4.60.3.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.4.60.3\lib\net462\Microsoft.Identity.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Identity.Client.Extensions.Msal, Version=4.60.3.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Client.Extensions.Msal.4.60.3\lib\netstandard2.0\Microsoft.Identity.Client.Extensions.Msal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Abstractions, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Abstractions.7.5.1\lib\net472\Microsoft.IdentityModel.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.7.5.1\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.7.5.1\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.40306.1554, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.4.403061554\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.7.5.1\lib\net472\Microsoft.IdentityModel.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.OpenIdConnect.7.5.1\lib\net472\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.7.5.1\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Abstractions, Version=1.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Abstractions.1.8.4\lib\netstandard2.0\Microsoft.Kiota.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Authentication.Azure, Version=1.1.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Authentication.Azure.1.1.5\lib\netstandard2.0\Microsoft.Kiota.Authentication.Azure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Http.HttpClientLibrary, Version=1.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Http.HttpClientLibrary.1.4.0\lib\net462\Microsoft.Kiota.Http.HttpClientLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Serialization.Form, Version=1.1.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Serialization.Form.1.1.6\lib\netstandard2.0\Microsoft.Kiota.Serialization.Form.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Serialization.Json, Version=1.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Serialization.Json.1.2.3\lib\netstandard2.0\Microsoft.Kiota.Serialization.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Serialization.Multipart, Version=1.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Serialization.Multipart.1.1.4\lib\netstandard2.0\Microsoft.Kiota.Serialization.Multipart.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Kiota.Serialization.Text, Version=1.1.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Kiota.Serialization.Text.1.1.5\lib\netstandard2.0\Microsoft.Kiota.Serialization.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OpenIdConnect, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OpenIdConnect.4.2.2\lib\net45\Microsoft.Owin.Security.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Std.UriTemplate, Version=0.0.57.0, Culture=neutral, PublicKeyToken=c118b0afb4598f9a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Std.UriTemplate.0.0.57\lib\netstandard2.0\Std.UriTemplate.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ClientModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ClientModel.1.0.0\lib\netstandard2.0\System.ClientModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.7.0.2\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.8.0.4\lib\net462\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=7.5.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.7.5.1\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.FileSystem.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.AccessControl.5.0.0\lib\net461\System.IO.FileSystem.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Hashing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Hashing.6.0.0\lib\net461\System.IO.Hashing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory.Data, Version=1.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.Data.1.0.2\lib\net461\System.Memory.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Net.Http.WinHttpHandler, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.WinHttpHandler.6.0.0\lib\net461\System.Net.Http.WinHttpHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.5.0.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Claims, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Claims.4.3.0\lib\net46\System.Security.Claims.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.ProtectedData, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.ProtectedData.4.7.0\lib\net461\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.8.0.5\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap\dist\css\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap.css" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.bundle.js" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="Content\bootstrap\js\dist\alert.js" />
+    <Content Include="Content\bootstrap\js\dist\button.js" />
+    <Content Include="Content\bootstrap\js\dist\carousel.js" />
+    <Content Include="Content\bootstrap\js\dist\collapse.js" />
+    <Content Include="Content\bootstrap\js\dist\dropdown.js" />
+    <Content Include="Content\bootstrap\js\dist\index.js" />
+    <Content Include="Content\bootstrap\js\dist\modal.js" />
+    <Content Include="Content\bootstrap\js\dist\popover.js" />
+    <Content Include="Content\bootstrap\js\dist\scrollspy.js" />
+    <Content Include="Content\bootstrap\js\dist\tab.js" />
+    <Content Include="Content\bootstrap\js\dist\tooltip.js" />
+    <Content Include="Content\bootstrap\js\dist\util.js" />
+    <Content Include="Content\bootstrap\js\jquery-1.9.1.min.js" />
+    <Content Include="Content\bootstrap\js\src\alert.js" />
+    <Content Include="Content\bootstrap\js\src\button.js" />
+    <Content Include="Content\bootstrap\js\src\carousel.js" />
+    <Content Include="Content\bootstrap\js\src\collapse.js" />
+    <Content Include="Content\bootstrap\js\src\dropdown.js" />
+    <Content Include="Content\bootstrap\js\src\index.js" />
+    <Content Include="Content\bootstrap\js\src\modal.js" />
+    <Content Include="Content\bootstrap\js\src\popover.js" />
+    <Content Include="Content\bootstrap\js\src\scrollspy.js" />
+    <Content Include="Content\bootstrap\js\src\tab.js" />
+    <Content Include="Content\bootstrap\js\src\tooltip.js" />
+    <Content Include="Content\bootstrap\js\src\util.js" />
+    <Content Include="Content\bootstrap\js\tests\index.html" />
+    <Content Include="Content\bootstrap\js\tests\karma.conf.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\alert.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\button.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\carousel.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\collapse.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\dropdown.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\modal.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\popover.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\scrollspy.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\tab.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\tooltip.js" />
+    <Content Include="Content\bootstrap\js\tests\unit\util.js" />
+    <Content Include="Content\bootstrap\js\tests\vendor\jquery-1.9.1.min.js" />
+    <Content Include="Content\bootstrap\js\tests\vendor\qunit.css" />
+    <Content Include="Content\bootstrap\js\tests\vendor\qunit.js" />
+    <Content Include="Content\bootstrap\js\tests\visual\alert.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\button.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\carousel.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\collapse.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\dropdown.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\modal.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\popover.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\scrollspy.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\tab.html" />
+    <Content Include="Content\bootstrap\js\tests\visual\tooltip.html" />
+    <Content Include="Content\css\app.css" />
+    <Content Include="Content\img\avatar.png" />
+    <Content Include="Content\img\avatar1.png" />
+    <Content Include="Content\img\default_male_img.jpg" />
+    <Content Include="Content\img\Destination_notes.png" />
+    <Content Include="Content\img\GulfAirLogoNew_500.png" />
+    <Content Include="Content\img\icons\icon-48x48.png" />
+    <Content Include="Content\img\Pairing_Notes.png" />
+    <Content Include="Content\img\Week_Shrt_CD.png" />
+    <Content Include="Content\js\app.js" />
+    <Content Include="Content\js\app.js.LICENSE.txt" />
+    <Content Include="Content\js\jquery-3.6.0.js" />
+    <Content Include="Content\js\popperjs_core2.10.2.min.js" />
+    <Content Include="Content\plugins\datatables-autofill\css\autoFill.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-autofill\css\autoFill.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-autofill\js\autoFill.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-autofill\js\autoFill.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-autofill\js\dataTables.autoFill.js" />
+    <Content Include="Content\plugins\datatables-autofill\js\dataTables.autoFill.min.js" />
+    <Content Include="Content\plugins\datatables-bs4\css\dataTables.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-bs4\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-bs4\js\dataTables.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-bs4\js\dataTables.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-buttons\css\buttons.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-buttons\css\buttons.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.colVis.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.colVis.min.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.flash.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.flash.min.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.html5.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.html5.min.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.print.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\buttons.print.min.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\dataTables.buttons.js" />
+    <Content Include="Content\plugins\datatables-buttons\js\dataTables.buttons.min.js" />
+    <Content Include="Content\plugins\datatables-colreorder\css\colReorder.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-colreorder\css\colReorder.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-colreorder\js\colReorder.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-colreorder\js\colReorder.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-colreorder\js\dataTables.colReorder.js" />
+    <Content Include="Content\plugins\datatables-colreorder\js\dataTables.colReorder.min.js" />
+    <Content Include="Content\plugins\datatables-fixedcolumns\css\fixedColumns.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-fixedcolumns\css\fixedColumns.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-fixedcolumns\js\dataTables.fixedColumns.js" />
+    <Content Include="Content\plugins\datatables-fixedcolumns\js\dataTables.fixedColumns.min.js" />
+    <Content Include="Content\plugins\datatables-fixedcolumns\js\fixedColumns.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-fixedcolumns\js\fixedColumns.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-fixedheader\css\fixedHeader.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-fixedheader\css\fixedHeader.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-fixedheader\js\dataTables.fixedHeader.js" />
+    <Content Include="Content\plugins\datatables-fixedheader\js\dataTables.fixedHeader.min.js" />
+    <Content Include="Content\plugins\datatables-fixedheader\js\fixedHeader.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-fixedheader\js\fixedHeader.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-keytable\css\keyTable.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-keytable\css\keyTable.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-keytable\js\dataTables.keyTable.js" />
+    <Content Include="Content\plugins\datatables-keytable\js\dataTables.keyTable.min.js" />
+    <Content Include="Content\plugins\datatables-keytable\js\keyTable.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-keytable\js\keyTable.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-responsive\css\responsive.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-responsive\css\responsive.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-responsive\js\dataTables.responsive.js" />
+    <Content Include="Content\plugins\datatables-responsive\js\dataTables.responsive.min.js" />
+    <Content Include="Content\plugins\datatables-responsive\js\responsive.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-responsive\js\responsive.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-rowgroup\css\rowGroup.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-rowgroup\css\rowGroup.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-rowgroup\js\dataTables.rowGroup.js" />
+    <Content Include="Content\plugins\datatables-rowgroup\js\dataTables.rowGroup.min.js" />
+    <Content Include="Content\plugins\datatables-rowgroup\js\rowGroup.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-rowgroup\js\rowGroup.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-rowreorder\css\rowReorder.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-rowreorder\css\rowReorder.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-rowreorder\js\dataTables.rowReorder.js" />
+    <Content Include="Content\plugins\datatables-rowreorder\js\dataTables.rowReorder.min.js" />
+    <Content Include="Content\plugins\datatables-rowreorder\js\rowReorder.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-rowreorder\js\rowReorder.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-scroller\css\scroller.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-scroller\css\scroller.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-scroller\js\dataTables.scroller.js" />
+    <Content Include="Content\plugins\datatables-scroller\js\dataTables.scroller.min.js" />
+    <Content Include="Content\plugins\datatables-scroller\js\scroller.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-scroller\js\scroller.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables-select\css\select.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables-select\css\select.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables-select\js\dataTables.select.js" />
+    <Content Include="Content\plugins\datatables-select\js\dataTables.select.min.js" />
+    <Content Include="Content\plugins\datatables-select\js\select.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables-select\js\select.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables\dataTables.bootstrap4.css" />
+    <Content Include="Content\plugins\datatables\dataTables.bootstrap4.js" />
+    <Content Include="Content\plugins\datatables\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\plugins\datatables\dataTables.bootstrap4.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\css\dataTables.autoFill.css" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\css\dataTables.autoFill.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\columns.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\complete-callback.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\fill-both.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\fill-horizontal.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\scrolling.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\examples\step-callback.html" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\images\filler.png" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\js\dataTables.autoFill.js" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\js\dataTables.autoFill.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\AutoFill\Readme.txt" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\css\dataTables.colReorder.css" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\css\dataTables.colReorder.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\alt_insert.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\colvis.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\col_filter.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\fixedcolumns.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\fixedheader.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\jqueryui.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\new_init.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\predefined.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\realtime.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\reset.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\scrolling.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\server_side.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\examples\state_save.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\images\insert.png" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\js\dataTables.colReorder.js" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\js\dataTables.colReorder.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\License.txt" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\css\dataTables.colVis.css" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\css\dataTables.colvis.jqueryui.css" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\css\dataTables.colVis.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\button_order.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\exclude_columns.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\group_columns.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\jqueryui.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\mouseover.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\new_init.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\restore.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\text.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\title_callback.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\two_tables.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\examples\two_tables_identical.html" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\js\dataTables.colVis.js" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\js\dataTables.colVis.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\License.txt" />
+    <Content Include="Content\plugins\datatables\extensions\css\buttons.dataTables.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\css\dataTables.tableTools.css" />
+    <Content Include="Content\plugins\datatables\extensions\css\dataTables.tableTools.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\examples\ajax.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\alter_buttons.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\bootstrap.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\button_text.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\collection.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\defaults.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\jqueryui.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\multiple_tables.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\multi_instance.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\new_init.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\pdf_message.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\plug-in.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\select_column.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\select_multi.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\select_os.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\select_single.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\examples\swf_path.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\css\dataTables.fixedColumns.css" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\css\dataTables.fixedColumns.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\bootstrap.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\colvis.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\col_filter.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\css_size.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\index_column.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\left_right_columns.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\right_column.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\rowspan.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\server-side-processing.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\size_fixed.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\size_fluid.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\examples\two_columns.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\js\dataTables.fixedColumns.js" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\js\dataTables.fixedColumns.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\License.txt" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\css\dataTables.fixedHeader.css" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\css\dataTables.fixedHeader.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\examples\header_footer.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\examples\top_left_right.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\examples\two_tables.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\examples\zIndexes.html" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\js\dataTables.fixedHeader.js" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\js\dataTables.fixedHeader.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\FixedHeader\Readme.txt" />
+    <Content Include="Content\plugins\datatables\extensions\images\collection.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\collection_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\copy.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\copy_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\csv.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\csv_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\pdf.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\pdf_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\print.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\print_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\xls.png" />
+    <Content Include="Content\plugins\datatables\extensions\images\xls_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\js\buttons.flash.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\buttons.html5.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\dataTables.buttons.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\dataTables.tableTools.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\dataTables.tableTools.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\jszip.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\pdfmake.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\js\vfs_fonts.js" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\css\dataTables.keyTable.css" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\css\dataTables.keyTable.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\examples\events.html" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\examples\html.html" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\examples\scrolling.html" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\js\dataTables.keyTable.js" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\js\dataTables.keyTable.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\KeyTable\Readme.txt" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\css\dataTables.responsive.css" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\child-rows\column-control.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\child-rows\custom-renderer.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\child-rows\disable-child-rows.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\child-rows\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\child-rows\right-column.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\child-rows\whole-row-control.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\display-control\auto.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\display-control\classes.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\display-control\complexHeader.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\display-control\fixedHeader.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\display-control\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\display-control\init-classes.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\initialisation\ajax.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\initialisation\className.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\initialisation\default.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\initialisation\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\initialisation\new.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\initialisation\option.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\styling\bootstrap.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\styling\compact.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\styling\foundation.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\styling\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\examples\styling\scrolling.html" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\js\dataTables.responsive.js" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\js\dataTables.responsive.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\License.txt" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\css\dataTables.scroller.css" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\css\dataTables.scroller.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\api_scrolling.html" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\data\2500.txt" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\data\ssp.php" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\large_js_source.html" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\server-side_processing.html" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\examples\state_saving.html" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\images\loading-background.png" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\js\dataTables.scroller.js" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\js\dataTables.scroller.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\Scroller\Readme.txt" />
+    <Content Include="Content\plugins\datatables\extensions\swf\copy_csv_xls.swf" />
+    <Content Include="Content\plugins\datatables\extensions\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\css\buttons.dataTables.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\css\dataTables.tableTools.css" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\css\dataTables.tableTools.min.css" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\ajax.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\alter_buttons.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\bootstrap.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\button_text.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\collection.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\defaults.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\index.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\jqueryui.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\multiple_tables.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\multi_instance.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\new_init.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\pdf_message.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\plug-in.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\select_column.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\select_multi.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\select_os.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\select_single.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\simple.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\examples\swf_path.html" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\collection.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\collection_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\copy.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\copy_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\csv.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\csv_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\pdf.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\pdf_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\print.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\print_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\xls.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\xls_hover.png" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\buttons.flash.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\buttons.html5.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\dataTables.buttons.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\dataTables.tableTools.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\dataTables.tableTools.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\jszip.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\pdfmake.min.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\js\vfs_fonts.js" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\swf\copy_csv_xls.swf" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="Content\plugins\datatables\images\sort_asc.png" />
+    <Content Include="Content\plugins\datatables\images\sort_asc_disabled.png" />
+    <Content Include="Content\plugins\datatables\images\sort_both.png" />
+    <Content Include="Content\plugins\datatables\images\sort_desc.png" />
+    <Content Include="Content\plugins\datatables\images\sort_desc_disabled.png" />
+    <Content Include="Content\plugins\datatables\jquery.dataTables.css" />
+    <Content Include="Content\plugins\datatables\jquery.dataTables.js" />
+    <Content Include="Content\plugins\datatables\jquery.dataTables.min.css" />
+    <Content Include="Content\plugins\datatables\jquery.dataTables.min.js" />
+    <Content Include="Content\plugins\datatables\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\plugins\select2-bootstrap4-theme\select2-bootstrap4.css" />
+    <Content Include="Content\plugins\select2-bootstrap4-theme\select2-bootstrap4.min.css" />
+    <Content Include="Content\plugins\select2\css\select2.css" />
+    <Content Include="Content\plugins\select2\css\select2.min.css" />
+    <Content Include="Content\plugins\select2\js\i18n\af.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ar.js" />
+    <Content Include="Content\plugins\select2\js\i18n\az.js" />
+    <Content Include="Content\plugins\select2\js\i18n\bg.js" />
+    <Content Include="Content\plugins\select2\js\i18n\bn.js" />
+    <Content Include="Content\plugins\select2\js\i18n\bs.js" />
+    <Content Include="Content\plugins\select2\js\i18n\build.txt" />
+    <Content Include="Content\plugins\select2\js\i18n\ca.js" />
+    <Content Include="Content\plugins\select2\js\i18n\cs.js" />
+    <Content Include="Content\plugins\select2\js\i18n\da.js" />
+    <Content Include="Content\plugins\select2\js\i18n\de.js" />
+    <Content Include="Content\plugins\select2\js\i18n\dsb.js" />
+    <Content Include="Content\plugins\select2\js\i18n\el.js" />
+    <Content Include="Content\plugins\select2\js\i18n\en.js" />
+    <Content Include="Content\plugins\select2\js\i18n\es.js" />
+    <Content Include="Content\plugins\select2\js\i18n\et.js" />
+    <Content Include="Content\plugins\select2\js\i18n\eu.js" />
+    <Content Include="Content\plugins\select2\js\i18n\fa.js" />
+    <Content Include="Content\plugins\select2\js\i18n\fi.js" />
+    <Content Include="Content\plugins\select2\js\i18n\fr.js" />
+    <Content Include="Content\plugins\select2\js\i18n\gl.js" />
+    <Content Include="Content\plugins\select2\js\i18n\he.js" />
+    <Content Include="Content\plugins\select2\js\i18n\hi.js" />
+    <Content Include="Content\plugins\select2\js\i18n\hr.js" />
+    <Content Include="Content\plugins\select2\js\i18n\hsb.js" />
+    <Content Include="Content\plugins\select2\js\i18n\hu.js" />
+    <Content Include="Content\plugins\select2\js\i18n\hy.js" />
+    <Content Include="Content\plugins\select2\js\i18n\id.js" />
+    <Content Include="Content\plugins\select2\js\i18n\is.js" />
+    <Content Include="Content\plugins\select2\js\i18n\it.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ja.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ka.js" />
+    <Content Include="Content\plugins\select2\js\i18n\km.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ko.js" />
+    <Content Include="Content\plugins\select2\js\i18n\lt.js" />
+    <Content Include="Content\plugins\select2\js\i18n\lv.js" />
+    <Content Include="Content\plugins\select2\js\i18n\mk.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ms.js" />
+    <Content Include="Content\plugins\select2\js\i18n\nb.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ne.js" />
+    <Content Include="Content\plugins\select2\js\i18n\nl.js" />
+    <Content Include="Content\plugins\select2\js\i18n\pl.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ps.js" />
+    <Content Include="Content\plugins\select2\js\i18n\pt-BR.js" />
+    <Content Include="Content\plugins\select2\js\i18n\pt.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ro.js" />
+    <Content Include="Content\plugins\select2\js\i18n\ru.js" />
+    <Content Include="Content\plugins\select2\js\i18n\sk.js" />
+    <Content Include="Content\plugins\select2\js\i18n\sl.js" />
+    <Content Include="Content\plugins\select2\js\i18n\sq.js" />
+    <Content Include="Content\plugins\select2\js\i18n\sr-Cyrl.js" />
+    <Content Include="Content\plugins\select2\js\i18n\sr.js" />
+    <Content Include="Content\plugins\select2\js\i18n\sv.js" />
+    <Content Include="Content\plugins\select2\js\i18n\th.js" />
+    <Content Include="Content\plugins\select2\js\i18n\tk.js" />
+    <Content Include="Content\plugins\select2\js\i18n\tr.js" />
+    <Content Include="Content\plugins\select2\js\i18n\uk.js" />
+    <Content Include="Content\plugins\select2\js\i18n\vi.js" />
+    <Content Include="Content\plugins\select2\js\i18n\zh-CN.js" />
+    <Content Include="Content\plugins\select2\js\i18n\zh-TW.js" />
+    <Content Include="Content\plugins\select2\js\select2.full.js" />
+    <Content Include="Content\plugins\select2\js\select2.full.min.js" />
+    <Content Include="Content\plugins\select2\js\select2.js" />
+    <Content Include="Content\plugins\select2\js\select2.min.js" />
+    <Content Include="Content\plugins\toastr\toastr.css" />
+    <Content Include="Content\plugins\toastr\toastr.min.css" />
+    <Content Include="Content\plugins\toastr\toastr.min.js" />
+    <Content Include="CSMModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CSMModel.edmx</DependentUpon>
+      <LastGenOutput>CSMModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="CSMModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CSMModel.edmx</DependentUpon>
+      <LastGenOutput>CSMModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AiportTimeZone.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AirportCode.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppError.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppLog.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Appraisal.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppraisalQuestionAnswer.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppraisalSection.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AppraisalSectionQuestion.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Appraisal_Team_Leads.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BlockDeleteLog.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bus.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Buses_Allocation.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Buses_Drivers.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\CrewBreakController.cs" />
+    <Compile Include="Controllers\CrewDocumentController.cs" />
+    <Compile Include="Controllers\CrewDataController.cs" />
+    <Compile Include="Controllers\CrewLeaveController.cs" />
+    <Compile Include="Controllers\PilotController.cs" />
+    <Compile Include="Controllers\SharePointLogController.cs" />
+    <Compile Include="Controllers\CrewFlightFormController.cs" />
+    <Compile Include="Controllers\AppraisalController.cs" />
+    <Compile Include="Controllers\CGAPController.cs" />
+    <Compile Include="Controllers\CrewSeniorityController.cs" />
+    <Compile Include="CrewAppraisal.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewAppraisalEval.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewCategory.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewDetail.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewDocumentCategory.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewDocumentStatusHistory.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewEffectiveSeniority.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewEffectiveSeniorityPeriod.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewFlightForm.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewFlightFormAnswer.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewFlightFormSectionComment.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewGroomingAttribute.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewGroomingRemark.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewLeaveAnnouncement.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewLeaveRequest.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewLeaveRosterPeriod.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewPhoto.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewTeamAssignment.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewTransportCategory.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewTransportRequest.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CrewWeightDetailList.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Appreciation.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Commendation.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Grooming.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Grooming_EyeColor.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Grooming_HairColor.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Grooming_WeightStatus.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_Transports.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Crew_WarningLetter.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CSMModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="C__EFMigrationsHistory.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="database_firewall_rules.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DepInfoSheet.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentRejectReason.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Doc_Category.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Doc_Crew_Log.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Doc_Files.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Doc_Versions.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DreversAccount.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailSetting.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EvalSectionsComment.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exception_Log_Table.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAM_Form.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Fleet.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Fleet_Category.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FlightForm.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FlightFormSection.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FlightFormSectionItem.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FlightMeal.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InactiveCrewList.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InflightRestSheet.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Layover_Bids.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Layover_Category.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Layover_Pairing.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Maximum_Bids.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MealsCount.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CrewAppraisalDataPojo.cs" />
+    <Compile Include="Models\CrewDataPojo.cs" />
+    <Compile Include="Models\CrewGroomingPojo.cs" />
+    <Compile Include="Models\CrewWeightHistoryPojo.cs" />
+    <Compile Include="Models\InflightBreakData.cs" />
+    <Compile Include="Models\MonthlyLeadAppraisalData.cs" />
+    <Compile Include="Models\OssCountPojo.cs" />
+    <Compile Include="Models\CrewAppDataPojo.cs" />
+    <Compile Include="Models\SectorOSSDataPojo.cs" />
+    <Compile Include="Models\SectorAppDataPojo.cs" />
+    <Compile Include="Models\SharePointLogPojo.cs" />
+    <Compile Include="Models\AppraisalInfoObj.cs" />
+    <Compile Include="Controllers\CustomRoleProvider.cs" />
+    <Compile Include="Controllers\FAMController.cs" />
+    <Compile Include="Controllers\eBriefingController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GroundOpsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\DISController.cs" />
+    <Compile Include="Controllers\OCBController.cs" />
+    <Compile Include="Controllers\PreFlightController.cs" />
+    <Compile Include="Models\AppraisalPojo.cs" />
+    <Compile Include="Models\CrewAppraisalData.cs" />
+    <Compile Include="Models\CrewEvalScoreInfo.cs" />
+    <Compile Include="Models\CrewFltForm.cs" />
+    <Compile Include="Models\CrewFltSectionObj.cs" />
+    <Compile Include="Models\CrewPeriodSeniority.cs" />
+    <Compile Include="Models\CrewSeniority.cs" />
+    <Compile Include="Models\MonthlyAppraisalData.cs" />
+    <Compile Include="Models\MonthlyCrewAppraisalData.cs" />
+    <Compile Include="Models\RcStaff.cs" />
+    <Compile Include="CSMModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CSMModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CSMModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSMModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="enums\enumCrewCategory.cs" />
+    <Compile Include="enums\enumStatus.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\CrewCategory.cs" />
+    <Compile Include="Helper\EncryptionHelper.cs" />
+    <Compile Include="Helper\UserHelper.cs" />
+    <Compile Include="Interfaces\IGetGraphUserService.cs" />
+    <Compile Include="Models\AssignedBuses.cs" />
+    <Compile Include="Models\CategoryComparer.cs" />
+    <Compile Include="Models\ClsAllocationScreen.cs" />
+    <Compile Include="Models\ClsAnswer.cs" />
+    <Compile Include="Models\ClsCrewPos.cs" />
+    <Compile Include="Models\ClsFlight.cs" />
+    <Compile Include="Models\ClsFlightSummery.cs" />
+    <Compile Include="Models\clsPickup.cs" />
+    <Compile Include="Models\ClsPickupGroups.cs" />
+    <Compile Include="Models\clsPickupStatus.cs" />
+    <Compile Include="Models\ClsStatus.cs" />
+    <Compile Include="Models\ClsTestQuestion.cs" />
+    <Compile Include="Models\EncryptString.cs" />
+    <Compile Include="Models\FFFormInfo.cs" />
+    <Compile Include="Models\GetGraphUserService.cs" />
+    <Compile Include="Models\GraphApiConfig.cs" />
+    <Compile Include="Models\MailHelper.cs" />
+    <Compile Include="Models\RecencyRptInfo.cs" />
+    <Compile Include="Models\ReponseModel.cs" />
+    <Compile Include="Models\SectionQuestionAnswer.cs" />
+    <Compile Include="Models\SingleFileModel.cs" />
+    <Compile Include="Models\StaffInfo.cs" />
+    <Compile Include="Models\Token.cs" />
+    <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="OCB_AC_Pos.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_AllocationScreen.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_Blocks.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_Comments.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_CrewPos.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_Crew_Pos_History.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_Flights.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_Notification.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OCB_Upcoming_Crew.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OtpFlightInfo.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OtpFlightStatu.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="otpGatesdep.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OtpPassengerDetail.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OutOfBase.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pairing_Category.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PickupDetail.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PilotCrewDetail.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PilotCrewDocRejectReason.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PilotCrewDocument.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PilotCrewDocumentStatusHistory.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PilotDetail.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PotableWater.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreBookedMeal.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_Answers.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_Categories.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_Comments.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_CrewTest.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_FailedComments.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_Settings.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_TestExlude.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_TestLog.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreFlight_TestQuestions.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Roster_Data.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Seniority_PeriodDetails.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Setting.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SharepointFilePrefix.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SharePointLog.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SharePointLogsTable.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialMeal.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SSR.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SSR_Count.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Compile Include="StationManager.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TransportGroup.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\CabinCrewPosVM.cs" />
+    <Compile Include="ViewModels\CrewDashVM.cs" />
+    <Compile Include="ViewModels\CrewManualsVM.cs" />
+    <Compile Include="ViewModels\DailyTimeRecordVM.cs" />
+    <Compile Include="ViewModels\DashboardVM.cs" />
+    <Compile Include="ViewModels\DocumentsUpdateVM.cs" />
+    <Compile Include="ViewModels\ManualsVM.cs" />
+    <Compile Include="ViewModels\OCBCrewPosVM.cs" />
+    <Compile Include="ViewModels\OCB_CrewPosViewModel.cs" />
+    <Compile Include="ViewModels\PreFlightCrewHistoryVM.cs" />
+    <Compile Include="ViewModels\PreFlightTestVM.cs" />
+    <Compile Include="ViewModels\TimeVM.cs" />
+    <Compile Include="vwRecency.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwRecencySummary.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WeightMinMaxSetting.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WeightVarianceSetting.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Zone.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ZoneArea.cs">
+      <DependentUpon>CSMModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap.css.map" />
+    <Content Include="Content\bootstrap\dist\css\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.js.map" />
+    <Content Include="Content\bootstrap\dist\js\bootstrap.min.js.map" />
+    <Content Include="Content\bootstrap\js\dist\alert.js.map" />
+    <Content Include="Content\bootstrap\js\dist\button.js.map" />
+    <Content Include="Content\bootstrap\js\dist\carousel.js.map" />
+    <Content Include="Content\bootstrap\js\dist\collapse.js.map" />
+    <Content Include="Content\bootstrap\js\dist\dropdown.js.map" />
+    <Content Include="Content\bootstrap\js\dist\index.js.map" />
+    <Content Include="Content\bootstrap\js\dist\modal.js.map" />
+    <Content Include="Content\bootstrap\js\dist\popover.js.map" />
+    <Content Include="Content\bootstrap\js\dist\scrollspy.js.map" />
+    <Content Include="Content\bootstrap\js\dist\tab.js.map" />
+    <Content Include="Content\bootstrap\js\dist\tooltip.js.map" />
+    <Content Include="Content\bootstrap\js\dist\util.js.map" />
+    <Content Include="Content\bootstrap\js\tests\README.md" />
+    <Content Include="Content\bootstrap\js\tests\unit\.eslintrc.json" />
+    <Content Include="Content\css\app.css.map" />
+    <Content Include="Content\fonts\.gitkeep" />
+    <Content Include="Content\js\app.js.map" />
+    <Content Include="Content\plugins\datatables\extensions\ColReorder\Readme.md" />
+    <Content Include="Content\plugins\datatables\extensions\ColVis\Readme.md" />
+    <Content Include="Content\plugins\datatables\extensions\FixedColumns\Readme.md" />
+    <Content Include="Content\plugins\datatables\extensions\images\psd\collection.psd" />
+    <Content Include="Content\plugins\datatables\extensions\images\psd\copy document.psd" />
+    <Content Include="Content\plugins\datatables\extensions\images\psd\file_types.psd" />
+    <Content Include="Content\plugins\datatables\extensions\images\psd\printer.psd" />
+    <Content Include="Content\plugins\datatables\extensions\Readme.md" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\css\dataTables.responsive.scss" />
+    <Content Include="Content\plugins\datatables\extensions\Responsive\Readme.md" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\psd\collection.psd" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\psd\copy document.psd" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\psd\file_types.psd" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\images\psd\printer.psd" />
+    <Content Include="Content\plugins\datatables\extensions\TableTools\Readme.md" />
+    <Content Include="Content\plugins\toastr\toastr.js.map" />
+    <Content Include="ApplicationInsights.config" />
+    <EntityDeploy Include="CSMModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CSMModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="CSMModel.edmx.diagram">
+      <DependentUpon>CSMModel.edmx</DependentUpon>
+    </Content>
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Content Include="Views\Error\General.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
+    <None Include="packages.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\ebriefing - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ebriefing - Web Deploy.pubxml" />
+    <Content Include="Views\Appraisal\AddNewAnswer.cshtml" />
+    <Content Include="Views\Appraisal\AddNewAppraisal.cshtml" />
+    <Content Include="Views\Appraisal\AddNewSection.cshtml" />
+    <Content Include="Views\Appraisal\AddQuestion.cshtml" />
+    <Content Include="Views\Appraisal\CrewAppraisals.cshtml" />
+    <Content Include="Views\Appraisal\EditAppraisal.cshtml" />
+    <Content Include="Views\Appraisal\EditQuestion.cshtml" />
+    <Content Include="Views\Appraisal\EditSection.cshtml" />
+    <Content Include="Views\Appraisal\Index.cshtml" />
+    <Content Include="Views\Appraisal\ManageAnswers.cshtml" />
+    <Content Include="Views\Appraisal\ManageAppraisals.cshtml" />
+    <Content Include="Views\Appraisal\ManageQuestions.cshtml" />
+    <Content Include="Views\Appraisal\ManageSections.cshtml" />
+    <Content Include="Views\eBriefing\AddNewNotification.cshtml" />
+    <Content Include="Views\eBriefing\BlockDetail.cshtml" />
+    <Content Include="Views\eBriefing\EditNotification.cshtml" />
+    <Content Include="Views\eBriefing\FlightDetail.cshtml" />
+    <Content Include="Views\eBriefing\Index.cshtml" />
+    <Content Include="Views\eBriefing\ManageNotification.cshtml" />
+    <Content Include="Views\Home\OutOfBase.cshtml" />
+    <Content Include="Views\OCB\AddBriefingComment.cshtml" />
+    <Content Include="Views\OCB\AddNewAllocation.cshtml" />
+    <Content Include="Views\OCB\AddNewCrewPos.cshtml" />
+    <Content Include="Views\OCB\AllocationScreen.cshtml" />
+    <Content Include="Views\OCB\BriefingComment.cshtml" />
+    <Content Include="Views\OCB\CabinCrewPos.cshtml" />
+    <Content Include="Views\OCB\CabinCrewPosPrint.cshtml" />
+    <Content Include="Views\OCB\CrewDetail.cshtml" />
+    <Content Include="Views\OCB\CrewDetails.cshtml" />
+    <Content Include="Views\OCB\CrewPosHistory.cshtml" />
+    <Content Include="Views\OCB\DailyTimeRecord.cshtml" />
+    <Content Include="Views\OCB\Index.cshtml" />
+    <Content Include="Views\OCB\ManageDeletedCrew.cshtml" />
+    <Content Include="Views\PreFlight\AddExceptionMessage.cshtml" />
+    <Content Include="Views\PreFlight\AddFailedComment.cshtml" />
+    <Content Include="Views\PreFlight\AddNewAnswer.cshtml" />
+    <Content Include="Views\PreFlight\AddNewQuestion.cshtml" />
+    <Content Include="Views\PreFlight\AllCrewFailedTest.cshtml" />
+    <Content Include="Views\PreFlight\AllCrewWithNoTest.cshtml" />
+    <Content Include="Views\PreFlight\CrewTestDetail.cshtml" />
+    <Content Include="Views\PreFlight\CrewTestHistory.cshtml" />
+    <Content Include="Views\PreFlight\EditAnswer.cshtml" />
+    <Content Include="Views\PreFlight\EditQuestion.cshtml" />
+    <Content Include="Views\PreFlight\ExceptionReport.cshtml" />
+    <Content Include="Views\PreFlight\FlightTestDetail.cshtml" />
+    <Content Include="Views\PreFlight\FlightTestHistory.cshtml" />
+    <Content Include="Views\PreFlight\Index.cshtml" />
+    <Content Include="Views\PreFlight\ManageAnswers.cshtml" />
+    <Content Include="Views\PreFlight\Questions.cshtml" />
+    <Content Include="Views\PreFlight\TestSecondChance.cshtml" />
+    <Content Include="Views\GroundOps\Index.cshtml" />
+    <Content Include="Views\DIS\Index.cshtml" />
+    <Content Include="Views\DIS\DISData.cshtml" />
+    <Content Include="Views\FAM\Index.cshtml" />
+    <Content Include="Views\FAM\FAMFormData.cshtml" />
+    <Content Include="Views\DIS\DISPrint.cshtml" />
+    <Content Include="Views\FAM\FAMPrint.cshtml" />
+    <Content Include="Views\GroundOps\StnMngr.cshtml" />
+    <Content Include="Views\OCB\RecencyReport.cshtml" />
+    <Content Include="Views\OCB\StaffRecencyReport.cshtml" />
+    <Content Include="Views\OCB\RecencyReportIndex.cshtml" />
+    <Content Include="Views\Appraisal\CrewAppraisalInfo.cshtml" />
+    <Content Include="Views\Appraisal\PrintAppraisalInfo.cshtml" />
+    <Content Include="Views\CrewFlightForm\Index.cshtml" />
+    <Content Include="Views\CrewFlightForm\CrewFlightFormInfo.cshtml" />
+    <Content Include="Views\CrewFlightForm\PrintCrewFlightFormInfo.cshtml" />
+    <Content Include="Views\OCB\ViewEditManualAlloc.cshtml" />
+    <Content Include="Views\CrewSeniority\Index.cshtml" />
+    <Content Include="Views\CrewSeniority\SeniorityData.cshtml" />
+    <Content Include="Views\CrewSeniority\EditSeniorityData.cshtml" />
+    <Content Include="Views\CrewSeniority\UploadExcel.cshtml" />
+    <Content Include="Views\CrewSeniority\CrewSeniorityHistory.cshtml" />
+    <Content Include="Views\CrewSeniority\LayoverBidData.cshtml" />
+    <Content Include="Views\CrewSeniority\EditBidData.cshtml" />
+    <Content Include="Views\CrewSeniority\AddNewBidData.cshtml" />
+    <Content Include="Views\CrewSeniority\MaximumLayoverBid.cshtml" />
+    <Content Include="Views\CrewSeniority\EditMaxData.cshtml" />
+    <Content Include="Views\CrewSeniority\LayoverPairingIndex.cshtml" />
+    <Content Include="Views\CrewSeniority\AddNewPairingData.cshtml" />
+    <Content Include="Views\CrewSeniority\GetRosterData.cshtml" />
+    <Content Include="Views\CrewSeniority\NewRosterMonthData.cshtml" />
+    <Content Include="Views\CrewSeniority\EditPairingData.cshtml" />
+    <Content Include="Views\CGAP\Index.cshtml" />
+    <Content Include="Views\Appraisal\CrewAppraisalsList.cshtml" />
+    <Content Include="Views\Appraisal\ViewCrewData.cshtml" />
+    <Content Include="Views\Appraisal\ViewAppraisalData.cshtml" />
+    <Content Include="Views\SharePointLog\Index.cshtml" />
+    <Content Include="Views\SharePointLog\IndexPost.cshtml" />
+    <Content Include="Views\SharePointLog\ExcludeData.cshtml" />
+    <Content Include="Views\SharePointLog\ExcludeDataPost.cshtml" />
+    <Content Include="Views\CrewFlightForm\OverallIndex.cshtml" />
+    <Content Include="Views\CrewFlightForm\TLDataInfo.cshtml" />
+    <Content Include="Views\CrewFlightForm\CrewFlightFormInfoFromOverall.cshtml" />
+    <Content Include="Views\Appraisal\ViewLeadData.cshtml" />
+    <Content Include="Views\Appraisal\SectorSearch.cshtml" />
+    <Content Include="Views\Appraisal\CrewAppraisalInfoFromSector.cshtml" />
+    <Content Include="Views\Appraisal\ViewAppraisalDataByLead.cshtml" />
+    <Content Include="Views\CGAP\CrewGroomingData.cshtml" />
+    <Content Include="Views\CGAP\AddNewGroomingInfo.cshtml" />
+    <Content Include="Views\CGAP\PrintGroomingInfo.cshtml" />
+    <Content Include="Views\Appraisal\CrewOBASearch.cshtml" />
+    <Content Include="Views\Appraisal\CrewAppraisalInfoFromCrewSearch.cshtml" />
+    <Content Include="Views\CrewLeave\CrewLeaveRequests.cshtml" />
+    <Content Include="Views\CrewLeave\CrewLeaveToReview.cshtml" />
+    <Content Include="Views\CrewLeave\RosterPeriodData.cshtml" />
+    <Content Include="Views\Pilot\CrewEffectiveSeniority.cshtml" />
+    <Content Include="Views\Pilot\FltSepDaysCalculator.cshtml" />
+    <Content Include="Views\Pilot\LayoverBidData.cshtml" />
+    <Content Include="Views\Pilot\LayoverPairingIndex.cshtml" />
+    <Content Include="Views\Pilot\CrewLeaveRequest.cshtml" />
+    <Content Include="Views\Pilot\CrewLeaveRequests.cshtml" />
+    <Content Include="Views\CGAP\IndexAppLetter.cshtml" />
+    <Content Include="Views\CGAP\AppriciationData.cshtml" />
+    <Content Include="Views\CGAP\ViewAppData.cshtml" />
+    <Content Include="Views\CGAP\IndexCommLetter.cshtml" />
+    <Content Include="Views\CGAP\ViewCommData.cshtml" />
+    <Content Include="Views\CGAP\CommendationData.cshtml" />
+    <Content Include="Views\CGAP\IndexWarnLetter.cshtml" />
+    <Content Include="Views\CGAP\WarningLetterData.cshtml" />
+    <Content Include="Views\CGAP\ViewWarnData.cshtml" />
+    <Content Include="Views\CrewData\Index.cshtml" />
+    <Content Include="Views\CrewData\CrewDataConsolidated.cshtml" />
+    <Content Include="Views\CrewFlightForm\OSSSectorSearch.cshtml" />
+    <Content Include="Views\CrewFlightForm\CrewFlightFormInfoFromSector.cshtml" />
+    <Content Include="Views\OCB\UpdateSettings.cshtml" />
+    <Content Include="Views\CrewDocument\CrewDocumentCategories.cshtml" />
+    <Content Include="Views\CrewDocument\DocumentForReview.cshtml" />
+    <Content Include="Views\CrewDocument\GetStaffWise.cshtml" />
+    <Content Include="Views\CrewDocument\CrewDocumentsByDate.cshtml" />
+    <Content Include="Views\CrewDocument\ShowAllHistoryDocuments.cshtml" />
+    <Content Include="Views\CrewLeave\ManageAnnouncements.cshtml" />
+    <Content Include="Views\CrewDocument\_DocumentsTable.cshtml.cshtml" />
+    <Content Include="Views\CrewBreak\CrewBreakData.cshtml" />
+    <Content Include="Views\CGAP\ViewMinMaxWeightChart.cshtml" />
+    <Content Include="Views\GroundOps\PotableWaterPax.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.S3.4.0.5\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.S3.4.0.5\analyzers\dotnet\cs\SharedAnalysisCode.dll" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>54450</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:54450/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.21.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.21.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.21.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.21.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.Web.2.21.0\build\Microsoft.ApplicationInsights.Web.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.Web.2.21.0\build\Microsoft.ApplicationInsights.Web.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.21.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.21.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.21.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.21.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.21.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.Web.2.21.0\build\Microsoft.ApplicationInsights.Web.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.Web.2.21.0\build\Microsoft.ApplicationInsights.Web.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

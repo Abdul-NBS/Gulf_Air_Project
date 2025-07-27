@@ -1,0 +1,161 @@
+﻿@model eBriefingWebApp.PreFlight_CrewTest
+@{
+    ViewBag.Title = "Crew Test Detail";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Flight Details</h5>
+            </div>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <th class="fw-bold">Staff Number</th>
+                        <td class="text-start">@Model.OCB_CrewPos.StaffNumber</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Flight Number</th>
+                        <td class="text-start">@Model.OCB_Flights.Flt_No</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Flight Date</th>
+                        <td class="text-start">@Model.OCB_Flights.Flight_Date.Value.ToString("dd MMM yyyy")</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Orig/Dest</th>
+                        <td class="text-start">@Model.OCB_Flights.Orig / @Model.OCB_Flights.Dest</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card-footer">
+                <a href="@Url.Action("CrewTestHistory", "PreFlight")" class="btn btn-dark" type="submit">Back</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Test Details</h5>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th class="fw-bold">Correct Answers</th>
+                        <td class="text-start">@Model.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == true).Count()</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Wrong Answers</th>
+                        <td class="text-start">@Model.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == false).Count()</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Test Date/Time</th>
+                        <td class="text-start">@Model.TestDateTime.Value.ToString("dd MMM yyyy hh:mm tt")</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Status</th>
+                        <td class="text-start">
+                            @{
+                                int noOfQtns = Model.PreFlight_TestLog.Count;
+                                int noOFattempts = noOfQtns / 3;
+                                int countIn = noOFattempts - 1;
+                                int startIndex = countIn * 3;
+                                var answersetSet = Model.PreFlight_TestLog.Skip(startIndex).Take(3).ToList();
+                                int correct = answersetSet.Where(a => a.PreFlight_Answers.Answer == true).Count();
+                                int wrong = answersetSet.Where(a => a.PreFlight_Answers.Answer == false).Count();
+                                var passString = "";
+                                var failString = "";
+                                if (correct >= wrong) {
+
+                                    if (noOFattempts == 1)
+                                    {
+                                        passString = "Passed";
+                                    } else
+                                    {
+                                        passString = "Passed after " + noOFattempts + " Attempts";
+                                    }
+                                }
+                                else {
+
+                                    if (noOFattempts == 1)
+                                    {
+                                        failString = "Failed";
+                                    }
+                                    else
+                                    {
+                                        failString = "Failed after " + noOFattempts + " Attempts";
+                                    }
+                                }
+
+                                if (correct >= wrong)
+                                {
+                                <label style="color:green;">@passString</label>
+                                }
+                                    else
+                                    {
+                                    <label style="color:red;">@failString</label>
+                                    }
+                            }
+                        </td>
+                    </tr>
+                  <!--  @if (Model.IsFaildTest == true)
+                    {
+                        <tr>
+                            <th class="fw-bold">Second Chance Status</th>
+                            <td class="text-start">
+                                @if (Model.AllowSecondChance == true)
+                                {
+                                    <label style="color:green;">Second Chance Allowed</label>
+                                }
+                                else
+                                {
+                                    <label style="color:red;">Second Chance Not Allowed</label>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Second Chance Status</th>
+                            <td class="text-start">
+                                @if (Model.DidSecondChance == true)
+                                {
+                                    <label style="color:green;">Second Chance Completed</label>
+                                }
+                                else
+                                {
+                                    <label style="color:red;">Second Chance Not Completed</label>
+                                }
+                            </td>
+                        </tr>
+                    }-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var item in Model.PreFlight_TestLog)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <label class="fw-bold">@item.PreFlight_Answers.PreFlight_TestQuestions.Question</label>
+                    <br />
+                    <p>
+                        @item.PreFlight_Answers.AnswerText
+                    </p>
+                    @if (item.PreFlight_Answers.Answer == true)
+                    {
+                        <label class="fw-bold" style="color:green;">(Correct)</label>
+                    }
+                    else
+                    {
+                        <label class="fw-bold" style="color:red;">(Wrong)</label>
+                    }
+                </div>
+            </div>
+        }
+    </div>    
+</div>

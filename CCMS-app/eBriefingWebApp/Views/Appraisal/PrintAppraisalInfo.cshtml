@@ -1,0 +1,309 @@
+﻿@model eBriefingWebApp.Models.AppraisalInfoObj
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+            page[size="A4"] {
+                width: 21cm;
+                height: 29.7cm;
+            }
+
+        @@media print {
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <page size="A3">
+        <div id="pdfForm">
+            <div style="width:100%; text-align:center; padding-top:10PX;">
+
+                <h4>ONBOARD APPRAISAL</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">ONBOARD APPRAISAL</h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                @{
+                                    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                                    var blockDetails = db.OCB_Blocks.Where(a => a.Id == Model.crewAppraisal.BlockId).FirstOrDefault();
+                                    var userPosId = Model.crewAppraisal.CrewPosId;
+                                    var crewStaff = db.OCB_CrewPos.Where(a => a.Id == userPosId).FirstOrDefault();
+                                    var StaffInfo = db.CrewDetails.Where(a => a.StaffNumber == crewStaff.StaffNumber).FirstOrDefault();
+                                }
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Name :  @(StaffInfo.FullName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Staff number :     @(StaffInfo.StaffNumber)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Block no:    @(blockDetails.Block_No)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Rank :   @(Model.crewAppraisal.OCB_CrewPos.Category)</td>
+
+
+
+                                </tr>
+                                @{
+
+                                    var appraiserId = Model.crewAppraisal.AppraiserStaffNumber;
+                                    var appraiserStaffInfo = db.CrewDetails.Where(a => a.StaffNumber == appraiserId).FirstOrDefault();
+                                }
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Name of Appraiser :  @(appraiserStaffInfo.FullName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Appraiser Staff number :  @(Model.crewAppraisal.AppraiserStaffNumber)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Date :     @Model.crewAppraisal.SubmittedDateTime.Value.ToString("dd-MMM-yyyy")</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;"></td>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0;">ASSESSMENT RESULT</td>
+                                </tr>
+                                @{
+
+                                    var appraisalList = db.AppraisalSections.Where(a => a.AppraisalId == Model.crewAppraisal.AppraisalId).ToList();
+                                    var designation = Model.crewAppraisal.OCB_CrewPos.Category;
+
+                                    foreach (var item in appraisalList)
+                                    {
+                                        if ((designation != "CSM" && designation != "CM" && designation != "CS") && item.Is_Csm == false && item.Title != "Overall comments")
+                                        {
+                                            var i = 1;
+                                            <tr style="height: 30px;">
+
+                                                <td td colspan="5" style="border: 1px solid #c6c1c0; color: black; font-weight: bold; text-align: left;">Section name : @(item.Title)</td>
+
+                                            </tr>
+                                            <tr style="height: 10px; background-color: #f0f0f0; color: #000000; text-align: center;">
+                                                <td style="border: 1px solid #c6c1c0; width: 5%; font-weight: bold;">#</td>
+                                                <td style="width: 45%; border: 1px solid #c6c1c0; font-weight: bold;">Questions</td>
+                                                <td style="border: 1px solid #c6c1c0; width: 10%; font-weight: bold;">Result</td>
+                                                <td style="border: 1px solid #c6c1c0; width: 10%; font-weight: bold;">Criteria Score</td>
+                                                <!-- <td style="border: 1px solid #c6c1c0; width: 30%; font-weight: bold;">Comment</td> -->
+
+                                            </tr>
+
+                                            //var secCount = 0;
+                                            foreach (var evalObj in Model.CrewEvalScorelist)
+                                            {
+
+                                                {
+                                                    if (item.Id == evalObj.sectionId)
+                                                    {
+                                                        // secCount++;
+                                                        {
+
+                                                            <tr style="height:10px">
+                                                                <td style="border: 1px solid #c6c1c0; width: 5%; text-align: center;">@i</td>
+                                                                <td style="width: 65%; border: 1px solid #c6c1c0">@(evalObj.Question)</td>
+                                                                <td style="border: 1px solid #c6c1c0; width: 15%">@(evalObj.scoreDesc)</td>
+                                                                <td style="border: 1px solid #c6c1c0; width: 15% ; text-align: center;">@(evalObj.scorePoint)</td>
+                                                                <!--<td style="border: 1px solid #c6c1c0; width: 30%">@(evalObj.comments) </td> -->
+
+
+                                                            </tr>
+                                                            i++;
+
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                            var secCommnet = db.CrewAppraisalEvals.Where(a => a.SectionId == item.Id && a.CrewAppraisalId == Model.crewAppraisal.Id).FirstOrDefault();
+                                            if (secCommnet != null)
+                                            {
+                                                <tr style="height: 30px;">
+                                                    <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">Section Comment : @secCommnet.Comments</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                {
+                                                    <tr style="height: 30px;">
+                                                        <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">Section Comment :</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <tr>
+                                                <td colspan="4"><br></td>
+                                            </tr>
+                                            //if (secCount == 0)
+                                            // {
+                                            //    <tr style="height: 10px;">
+
+                                            //       <td td colspan="5" style="border: 1px solid #c6c1c0; color: red; font-weight: bold; text-align: center;">No questions from this sections assessed</td>
+
+                                            //   </tr>
+                                            // }
+
+                                        }
+
+                                        if ((designation == "CSM" || designation == "CM" || designation == "CS") && item.Title != "Overall comments")
+                                        {
+                                            var i = 1;
+                                            <tr style="height: 30px;">
+
+                                                <td td colspan="5" style="border: 1px solid #c6c1c0; color: black; font-weight: bold; text-align: left;">Section name : @(item.Title)</td>
+
+                                            </tr>
+                                            <tr style="height: 10px; background-color: #f0f0f0; color: #000000; text-align: center;">
+                                                <td style="border: 1px solid #c6c1c0; width: 5%; font-weight: bold;">#</td>
+                                                <td style="width: 45%; border: 1px solid #c6c1c0; font-weight: bold;">Questions</td>
+                                                <td style="border: 1px solid #c6c1c0; width: 10%; font-weight: bold;">Result</td>
+                                                <td style="border: 1px solid #c6c1c0; width: 10%; font-weight: bold;">Criteria Score</td>
+                                                <!--<td style="border: 1px solid #c6c1c0; width: 30%; font-weight: bold;">Comment</td>-->
+
+                                            </tr>
+
+                                            // var secCount = 0;
+                                            foreach (var evalObj in Model.CrewEvalScorelist)
+                                            {
+
+                                                {
+                                                    if (item.Id == evalObj.sectionId)
+                                                    {
+                                                        // secCount++;
+                                                        {
+
+                                                            <tr style="height:10px">
+                                                                <td style="border: 1px solid #c6c1c0; width: 5%; text-align: center;">@i</td>
+                                                                <td style="width: 65%; border: 1px solid #c6c1c0">@(evalObj.Question)</td>
+                                                                <td style="border: 1px solid #c6c1c0; width: 15%">@(evalObj.scoreDesc)</td>
+                                                                <td style="border: 1px solid #c6c1c0; width: 15% ; text-align: center;">@(evalObj.scorePoint)</td>
+                                                                <!--<td style="border: 1px solid #c6c1c0; width: 30%">@(evalObj.comments) </td> -->
+
+
+                                                            </tr>
+                                                            i++;
+
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+
+                                            var secCommnet = db.CrewAppraisalEvals.Where(a => a.SectionId == item.Id && a.CrewAppraisalId == Model.crewAppraisal.Id).FirstOrDefault();
+                                            if (secCommnet != null)
+                                            {
+                                                <tr style="height: 30px;">
+                                                    <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">Section Comment : @secCommnet.Comments</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                {
+                                                    <tr style="height: 30px;">
+                                                        <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: left;">Section Comment :</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <tr>
+                                                <td colspan="4"><br></td>
+                                            </tr>
+
+                                            // if (secCount == 0)
+                                            // {
+                                            //  <tr style="height: 10px;">
+
+                                            //  <td td colspan="5" style="border: 1px solid #c6c1c0; color: red; font-weight: bold; text-align: center;">No questions from this sections assessed</td>
+
+                                            // </tr>
+                                            // }
+                                        }
+
+                                    }
+
+                                }
+
+
+                            </tbody>
+                        </table>
+                        @{
+                            var overallComments = db.CrewAppraisalEvals.Where(a => a.CrewAppraisalId == Model.crewAppraisal.Id && a.QuestionId == 0).ToList();
+                        }
+                        <br />
+                        @foreach (var comnts in overallComments)
+                        {
+                            var cmntsection = db.AppraisalSections.Where(a => a.Id == comnts.SectionId).FirstOrDefault();
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr style="height: 30px;">
+                                        <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0;">@cmntsection.Title</td>
+                                    </tr>
+                                    <tr style="height: 80px;">
+                                        <td colspan="5" style="border: 1px solid #c6c1c0;">@comnts.Comments</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                            <br />
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr style="height: 30px;">
+                                        <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0;">Crew Comments</td>
+                                    </tr>
+                                    <tr style="height: 80px;">
+                                        <td colspan="5" style="border: 1px solid #c6c1c0;">@Model.crewAppraisal.CrewComment</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <br />
+                            @{
+                                String appraiserSign = Model.crewAppraisal.AppraiserSignatureURL;
+                                String crewsign = @Model.crewAppraisal.AppraiseeSignatureURL;
+                            }
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr style="height: 30px;">
+                                        <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center;">Appraiser Signature &nbsp;&nbsp; <img src=@appraiserSign width="150" height="50"></td>
+                                        <td colspan="5" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center;">Crew Signature  &nbsp;&nbsp;  <img src=@crewsign width="150" height="50"> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+</html>

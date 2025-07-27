@@ -1,0 +1,156 @@
+﻿@model eBriefingWebApp.OCB_CrewPos
+@{
+    ViewBag.Title = "Add New Crew Pos";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Crew Detail</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="input-group mb-3 justify-content-end">
+
+                            @Html.TextBoxFor(u => Model.StaffNumber, new { @id = "StaffNumber", @type = "numric", @class = "form-control", @placeholder = "Staff Number", @required = "required" })
+                            <input id="btnGetCrew" class="btn btn-dark btn-sm" type="button" value="Get Crew Detail" />
+                        </div>
+                    </div>
+
+                    <div id="divStaffName" class="form-group">
+                        <label class="fw-bold">Full Name</label>
+                        <br />
+                        <label id="lblStaffName"></label>
+                        @Html.HiddenFor(u => u.BlockId)
+                    </div>
+
+                    <div id="divCategory" class="form-group">
+                        <label class="fw-bold">Category</label>
+                        <br />
+                        <label id="lblCategory"></label>
+                        @Html.HiddenFor(m => Model.Category)
+                    </div>
+
+                    <div class="form-group">
+                        <label class="fw-bold">Crew Posision</label>
+                        @Html.DropDownListFor(m => @Model.PosId, new SelectList(ViewBag.AC_Pos, "Id", "PosCode"), "Select Pos Code", new { @class = "form-control", @required = "required", @name = "PosId" })
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <button id="btnSubmit" class="btn btn-dark" type="submit" disabled>Add New</button>
+                    <a href="@Url.Action("CabinCrewPos", "OCB", new { Id = Model.BlockId})" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Block Detail</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Block Number</label>
+                        <br />
+                        @ViewBag.Block.Block_No
+                    </div>
+
+                    <div class="form-group">
+                        <label class="fw-bold">Block Date</label>
+                        <br />
+                        @Convert.ToDateTime(ViewBag.Block.Block_Date).ToString("dd MMM yyyy")
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Not Found")
+        {
+            <script>
+                toastr.warning('Flight No Found.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+
+    <script src="~/Content/js/jquery-3.6.0.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#divStaffName").hide();
+            $("#divCategory").hide();
+        });
+
+        $("#btnGetCrew").click(function () {
+            var staffNumber = $("#StaffNumber").val();
+
+            if (staffNumber != "") {
+                GetReocrd(staffNumber);
+            }
+            else {
+                alert("Missing Staff Number");
+            }
+        });
+
+        function GetReocrd(staffNumber) {
+            $.ajax({
+                url: "/OCB/GetStaffInfo",
+                type: "Get",
+                data: { StaffNumber: staffNumber },
+                success: function (data) {
+                    $("#divStaffName").show();
+                    $("#divCategory").show();
+
+                    $("#lblStaffName").text(data.FullName);
+                    $("#lblCategory").text(data.Category);
+                    $("#Category").val(data.Category);
+
+                    $("#btnSubmit").prop('disabled', false);
+                },
+                error: function (msg) {
+                    $("#divStaffName").hide();
+                    $("#divCategory").hide();
+                    $("#lblStaffName").text("");
+                    $("#lblCategory").text("");
+                    $("#btnSubmit").prop('disabled', true);
+                    alert("Crew Details Not Found.");
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿
+@model eBriefingWebApp.Appraisal
+@{
+    ViewBag.Title = "Edit Appraisal";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("EditAppraisal", "Appraisal", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Edit Appraisal</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Title</label>
+                        @Html.TextAreaFor(m => @Model.Title, new { @class = "form-control" })
+                        @Html.HiddenFor(m => Model.Id)
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <br />
+                        <input type="checkbox" name="Is_CSM" value="@Model.Is_CSM.Value" checked="@Model.Is_CSM.Value" /> Activate for CSM
+                        <br />
+                        <input type="checkbox" name="Is_Crew" value="@Model.Is_Crew.Value" checked="@Model.Is_Crew.Value" /> Activate for Crew
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark" type="submit">Save</button>
+                    <a href="@Url.Action("ManageAppraisals", "Appraisal")" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+}
+

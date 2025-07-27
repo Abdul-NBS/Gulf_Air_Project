@@ -1,0 +1,93 @@
+﻿@model List<eBriefingWebApp.Roster_Data>
+
+@{
+    ViewBag.Title = "Roster Data";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("DISData", "DIS", FormMethod.Post))
+{
+  
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 class="card-title mb-0">Roster Data</h4>
+                                </div>
+                                
+
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <table class="table my-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center fw-bold">Month</th>
+                                       
+                                        <th class="text-center fw-bold">High Seniority Group</th>
+                                        <th class="text-center fw-bold">Roster Publication Date</th>
+                                        <th class="text-center fw-bold">Edit Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int j = 0; j < Model.Count; j++)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@(Model[j].ROSTERMONTH) - @(Model[j].ROSTERYEAR)</td>
+                                            
+                                            <td class="text-center">Group @(Model[j].HIGH_SENIORITY_GROUP)</td>
+                                            <td class="text-center">@(Model[j].ROSTER_PUB_DATE.Value.ToString("dd MMM yyyy"))</td>
+                                            <td class="text-center">
+                                                <a href="@Url.Action("DeleteRosterData", "CrewSeniority", new { Id = (Model[j].ID) })" title="Delete Bid data">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x align-middle me-2">
+                                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                    </svg>
+
+                                                </a>
+                                            </td>
+                                            </tr>
+                                    }
+
+
+
+                                    </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+
+                            <a class="btn btn-dark" href="@Url.Action("Index", "CrewSeniority")" target="_blank">Back</a>
+                            <a class="btn btn-dark" href="@Url.Action("NewRosterMonthData", "CrewSeniority")" target="_blank">New Roster Data</a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            
+        }
+    </div>
+       
+}
+
+
+
+
+
+
+
+
+
+

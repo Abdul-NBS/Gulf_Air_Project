@@ -1,0 +1,286 @@
+﻿@model eBriefingWebApp.Models.CrewSeniority
+
+@{
+    ViewBag.Title = "Crew Effective Seniority";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("DISData", "DIS", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Crew Effective Seniority</h4>
+                            </div>
+                            <!--<div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>-->
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Number :  @(Model.CrewId)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Name :   @(Model.crewName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Position :   @(Model.crewPosition)</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Group :   @(Model.group)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Seniority in Group :  @(Model.groupSeniority)</td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Net Seniority :  @(Model.NetSeniority)</td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Fleet :  @(Model.fleet)</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <table style="width:100%">
+                            <tr style="height:20px"><td></td></tr>
+                        </table>
+
+                        <table style="width:100%">
+                            <tr style="height:20px"><td></td></tr>
+                        </table>
+                        <table class="table my-0">
+                            <tr style="background-color: #f2f2f2;">
+                                @foreach (var item in Model.periodseniority)
+                                {
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        @item.Period
+                                    </td>
+
+
+
+                                }
+                            </tr>
+                            <tr>
+                                @foreach (var item in Model.periodseniority)
+                                {
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        @item.periodSeniority
+                                    </td>
+                                }
+                            </tr>
+
+
+                        </table>
+
+
+
+
+
+                    </div>
+                    <div class="card-footer">
+
+                        <a class="btn btn-dark" href="@Url.Action("Index", "CrewSeniority")" target="_blank">Back</a>
+                        <!--<a class="btn btn-dark" href="@Url.Action("CrewSeniorityHistory", "CrewSeniority", new { CrewId = Model.CrewId, CesId = Model.Id })" target="_blank">View History</a>-->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+    <div class="col-md-8">
+        <h4 class="card-title mb-0">Crew Effective Seniority History</h4>
+    </div>
+    List<eBriefingWebApp.Models.CrewSeniority> crSeniorityList = new List<eBriefingWebApp.Models.CrewSeniority>();
+    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+    var getPastSeniority = db.CrewEffectiveSeniorities.Where(a => a.CrewId == @Model.CrewId && a.IsActive == false).ToList();
+    foreach (var crew in getPastSeniority)
+    {
+
+        eBriefingWebApp.Models.CrewSeniority srseniority = new eBriefingWebApp.Models.CrewSeniority();
+        List<eBriefingWebApp.Models.CrewPeriodSeniority> periodSeniorityList = new List<eBriefingWebApp.Models.CrewPeriodSeniority>();
+        srseniority.Id = crew.ID;
+        srseniority.crewName = crew.PilotCrewDetail.FullName;
+        srseniority.CrewId = crew.CrewId;
+        srseniority.group = crew.GroupNo;
+        srseniority.groupSeniority = crew.GroupSeniority;
+        srseniority.crewPosition = crew.PilotCrewDetail.Category;
+        srseniority.fleet = crew.Fleet;
+        srseniority.NetSeniority = crew.NetSeniority;
+
+        //get period data
+        var periodSeniority = db.CrewEffectiveSeniorityPeriods.Where(a => a.CESID == crew.ID && a.IsActive == false).ToList();
+        eBriefingWebApp.Models.CrewPeriodSeniority crewPeriodSeniority;
+        foreach (var period in periodSeniority)
+        {
+            crewPeriodSeniority = new eBriefingWebApp.Models.CrewPeriodSeniority();
+            var periodDetail = db.Seniority_PeriodDetails.Where(a => a.ID == period.PeriodId).FirstOrDefault();
+            if (periodDetail != null)
+            {
+                crewPeriodSeniority.periodMonth = periodDetail.PeriodMonth;
+                crewPeriodSeniority.periodYear = periodDetail.PeriodYear;
+                crewPeriodSeniority.periodSeniority = period.PeriodSeniority;
+                String periodStr = crewPeriodSeniority.periodMonth.ToString() + "/" + crewPeriodSeniority.periodYear.ToString();
+                DateTime parsedDate = DateTime.ParseExact(periodStr, "M/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                string formattedDate = parsedDate.ToString("MMM yyyy"); ;
+                crewPeriodSeniority.Period = formattedDate;
+                crewPeriodSeniority.id = period.ID;
+                crewPeriodSeniority.CSEId = period.CESID;
+                
+                periodSeniorityList.Add(crewPeriodSeniority);
+            }
+        }
+
+        srseniority.periodseniority = periodSeniorityList;
+        crSeniorityList.Add(srseniority);
+    }
+
+
+    if (crSeniorityList.Count > 0)
+    {
+        <div class="row">
+            @if (Model != null)
+            {
+                var firstItem = crSeniorityList[0];
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                               
+                                
+
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <table class="table my-0">
+                                <tbody>
+                                    <tr>
+
+                                        <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Number :  @(firstItem.CrewId)</td>
+
+                                        <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Name :   @(firstItem.crewName)</td>
+
+                                        <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Position :   @(firstItem.crewPosition)</td>
+
+                                        
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <table style="width:100%">
+                                <tr style="height:20px"><td></td></tr>
+                            </table>
+
+                            <table style="width:100%">
+                                <tr style="height:20px"><td></td></tr>
+                            </table>
+
+
+                            @foreach (var item in crSeniorityList)
+                            {
+                                <table class="table my-0">
+                                    <tr>
+                                        <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Group :  @(item.group)</td>
+                                        <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Group Seniority :  @(item.groupSeniority)</td>
+                                        <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Net Seniority :   @(item.NetSeniority)</td>
+                                         <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Fleet :   @(item.fleet)</td>
+                                    </tr>
+                                </table>
+                                var crewObj = item.periodseniority;
+                                <table class="table my-0">
+                                    <tr style="background-color: #f2f2f2;">
+                                        @foreach (var per in crewObj)
+                                        {
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                                @per.Period
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        @foreach (var per2 in crewObj)
+                                        {
+                                            <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                                @per2.periodSeniority
+                                            </td>
+                                        }
+                                    </tr>
+                                </table>
+                                <br />
+                            }
+
+
+
+                        </div>
+
+
+                    </div>
+                    
+                </div>
+
+            }
+
+
+        </div>
+
+    }
+    else
+    {
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <table class="table my-0">
+                        <tbody>
+                            <tr>
+
+                                <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">No past History</td>
+
+                                
+
+                            </tr>
+                        </tbody>
+                        </table>
+                        </div>
+                </div>
+              </div>
+            </div>
+
+    }
+}
+
+
+
+
+
+
+

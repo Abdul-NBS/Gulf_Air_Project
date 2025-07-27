@@ -1,0 +1,92 @@
+﻿@model eBriefingWebApp.Models.ClsAllocationScreen
+@{
+    ViewBag.Title = "Add New Allocation";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Flight</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Flight Date</label>
+                        <br />
+                        @Model.FlightDate.ToString("dd-MMM-yyy")
+                        @Html.HiddenFor(u => u.FlightDate)
+                    </div>
+                    <div class="form-group">
+                        <label>Flight Number</label>
+                        <div class="input-group mb-3 justify-content-end">
+                            @Html.TextBoxFor(u => Model.FlightNumber, new { @type = "numric", @class = "form-control", @placeholder = "Flight Number", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Duty</label>
+                        <div class="input-group mb-3 justify-content-end">
+                            @Html.TextBoxFor(u => Model.Duty, new { @type = "text", @class = "form-control", @placeholder = "Duty", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Room Number</label>
+                        <div class="input-group mb-3 justify-content-end">
+                            @Html.TextBoxFor(u => Model.RoomNumber, new { @type = "numric", @class = "form-control", @placeholder = "Room Number", @required = "required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="input-group mb-3 justify-content-end">
+                            @Html.DropDownListFor(m => Model.Status, new SelectList(ViewBag.GetStatus, "Value", "Text", Model.Status), "Select Status", new { @class = "form-control" })
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <button id="btnSubmit" class="btn btn-dark" type="submit">Add New</button>
+                    <a href="@Url.Action("DailyTimeRecord", "OCB", new { FlightDate = @Model.FlightDate.ToString("dd-MMM-yyyy") })" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+
+}
+
+

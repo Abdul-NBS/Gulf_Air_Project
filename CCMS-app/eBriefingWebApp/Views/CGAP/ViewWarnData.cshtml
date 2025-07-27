@@ -1,0 +1,154 @@
+﻿@model eBriefingWebApp.Crew_WarningLetter
+
+@{
+    ViewBag.Title = "Crew Warning Letter";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("DISData", "DIS", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Crew Warning Letter</h4>
+                            </div>
+                            <!--<div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>-->
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table my-0" style="width: 50%;">
+                            <tbody>
+                                <tr>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Staff Number :</td>
+
+
+                                    <td class="text-left" style="border: 1px solid #c6c1c0;"> @(Model.StaffNumber)</td>
+
+
+
+
+                                </tr>
+
+                                <tr>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Staff Name :</td>
+
+
+                                    <td class="text-left" style="border: 1px solid #c6c1c0;">@(Model.StaffName)</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Warning Date :</td>
+
+                                    <td class="text-left" style="border: 1px solid #c6c1c0;">@(Model.WarnEntryDate.Value.ToString("dd MMM yyyy"))</td>
+                                </tr>
+
+
+
+
+                                <tr>
+
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Warning Subject : </td>
+
+                                    <td class="text-left" style="border: 1px solid #c6c1c0;">@(Model.WarnEntrySubject)</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Warning Description :</td>
+                                    <td class="text-left" style="border: 1px solid #c6c1c0;">
+                                        <div class="overflow-auto" style="max-height: 200px;">@(Model.WarnEntryDesc)</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Warning Letter Type :</td>
+                                    <td class="text-left" style="border: 1px solid #c6c1c0;">
+                                        <div class="overflow-auto" style="max-height: 200px;">@(Model.WarnEntryType)</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">Done by :</td>
+                                    <td class="text-left " style="border: 1px solid #c6c1c0;">
+                                        @(Model.Updated_By)
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">
+                                        Attachment File:
+                                    </td>
+                                    @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+                                    {
+                                        <td class="text-left" style="border: 1px solid #c6c1c0;">
+                                            <a href="@Url.Content(Model.AttachmentPath)" target="_blank">
+                                                <i class="fas fa-file"></i> View Attachment
+                                            </a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-left fw-bold" style="border: 1px solid #c6c1c0;">
+                                            <span>No attachment available.</span>
+                                        </td>
+                                    }
+
+                                </tr>
+
+
+
+                            </tbody>
+
+                        </table>
+                     
+
+
+
+
+                    </div>
+                    <div class="card-footer">
+
+                        <a class="btn btn-dark" href="@Url.Action("WarningLetterData", "CGAP" , new {StaffNumber = Model.StaffNumber })">Back</a>
+                        
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+    
+
+
+     
+
+    
+   
+
+    
+
+}
+
+
+
+
+
+
+

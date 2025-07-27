@@ -1,0 +1,141 @@
+﻿@model eBriefingWebApp.OCB_Comments
+@{
+    ViewBag.Title = "Add Briefing Comment";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Block Details</h5>
+                </div>
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th class="fw-bold">Staff Number</th>
+                            <td class="text-start">
+                                @Model.OCB_CrewPos.StaffNumber
+                                <input type="hidden" id="CrewPosId" name="CrewPosId" value="@Model.OCB_CrewPos.Id">
+                                <input type="hidden" id="BlockId" name="BlockId" value="@Model.OCB_CrewPos.BlockId">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Full Name</th>
+                            <td class="text-start">@Model.OCB_CrewPos.CrewDetail.FullName
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Block Number</th>
+                            <td class="text-start">@Model.OCB_CrewPos.OCB_Blocks.Block_No</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Block Date</th>
+                            <td class="text-start">@Model.OCB_CrewPos.OCB_Blocks.Block_Date.Value.ToString("dd MMM yyyy")</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="card-footer">
+                    <a href="@Url.Action("CabinCrewPos", "OCB", new { Id = Model.Id})" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Message Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="control-label fw-bold">Time (hr/min)</label>
+                        <div class="form-inline">
+                            <select id="DropHr" name="DropHr" style="width:100px;" class="form-control">
+                                @foreach (var item in ((List<string>)ViewBag.Hr))
+                                {
+                                    if (Model.Time != null)
+                                    {
+                                        if (item == Model.Time.Split(':')[0].ToString())
+                                        {
+                                            <option value="@item" selected>@item</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                }
+                            </select>
+
+                            <select id="DropMin" name="DropMin" style="width:100px;" class="form-control">
+                                @foreach (var item in ((List<string>)ViewBag.Mins))
+                                {
+                                    if (Model.Time != null)
+                                    {
+                                        if (item == Model.Time.Split(':')[1].ToString())
+                                        {
+                                            <option value="@item" selected>@item</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <label class="control-label fw-bold">Message</label>
+                    <textarea class="form-control" id="Comment" name="Comment" rows="4" cols="50">@Model.Comment</textarea>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark" type="submit">Submit</button>
+                    <a href="@Url.Action("DeleteBriefingComment", "OCB", new { Id = Model.Id, BlockId = Model.OCB_CrewPos.BlockId})" class="btn btn-dark" type="submit">Delete Comment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Updated")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+}
+
+

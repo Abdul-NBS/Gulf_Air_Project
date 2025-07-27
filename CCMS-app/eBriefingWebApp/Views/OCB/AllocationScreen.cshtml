@@ -1,0 +1,148 @@
+﻿@model List<eBriefingWebApp.OCB_AllocationScreen>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Allocation Screen</title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <meta http-equiv="refresh" content="30">
+</head>
+<body>
+    <table id="TableData" class="table table-borderless" style=" font-size: 32px;">
+        <thead class="table-dark">
+            <tr>
+                <th class="text-center fw-bold" style="color:black;">Duty</th>
+                <th class="text-center fw-bold" style="color: black;">Flight No</th>
+                <th class="text-center fw-bold" style="color: black;">Check In</th>
+                <th class="text-center fw-bold" style="color: black;">Route</th>
+                <th class="text-center fw-bold" style="color: black;">Room</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Where(a => a.Status != "Exclude" && a.Status != "Pin").ToList())
+            {
+                // Convert Start_Time to UTC
+                var startTimeUTC = item.OCB_Flights.OCB_Blocks.Start_Time.Value.AddMinutes(-100);
+
+                // Convert Start_Time to +3 GMT for display
+                var startTimeDisplay = startTimeUTC.AddHours(3);
+                var showAllocation = true;
+
+                // Compare with current time in UTC
+                if (startTimeUTC.AddMinutes(35) < DateTime.UtcNow)
+                {
+                    showAllocation = false;
+                }
+
+                if (item.RoomNumber != null)
+                {
+                    if (showAllocation == true)
+                    {
+                        if (item.Status == "L")
+                        {
+                            <tr class="table-danger text-white">
+                                <td class="text-center font-weight-bold">@item.Duty</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Flt_No</td>
+                                <td class="text-center font-weight-bold">@startTimeDisplay.ToString("HH:mm")</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Dest</td>
+                                <td class="text-center font-weight-bold">@item.RoomNumber</td>
+                            </tr>
+                        }
+                        else if (item.Status == "E")
+                        {
+                            <tr class="table-warning">
+                                <td class="text-center font-weight-bold">@item.Duty</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Flt_No</td>
+                                <td class="text-center font-weight-bold">@startTimeDisplay.ToString("HH:mm")</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Dest</td>
+                                <td class="text-center font-weight-bold">@item.RoomNumber</td>
+                            </tr>
+                        }
+                        else if (item.Status == "J")
+                        {
+                            <tr class="table-light">
+                                <td class="text-center font-weight-bold">@item.Duty</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Flt_No</td>
+                                <td class="text-center font-weight-bold">@startTimeDisplay.ToString("HH:mm")</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Dest</td>
+                                <td class="text-center font-weight-bold">@item.RoomNumber</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="table-info text-white">
+                                <td class="text-center font-weight-bold">@item.Duty</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Flt_No</td>
+                                <td class="text-center font-weight-bold">@startTimeDisplay.ToString("HH:mm")</td>
+                                <td class="text-center font-weight-bold">@item.OCB_Flights.Dest</td>
+                                <td class="text-center font-weight-bold">@item.RoomNumber</td>
+                            </tr>
+                        }
+                    }
+
+                }
+
+            }
+
+            @{
+                var getPins = ViewBag.getPinFlights as List<eBriefingWebApp.OCB_AllocationScreen>;
+            }
+
+            @foreach (var item in getPins)
+            {
+                var startTime = item.OCB_Flights.OCB_Blocks.Start_Time.Value.AddMinutes(-100).AddHours(3);
+
+                if (item.RoomNumber != null)
+                {
+                    <tr class="table-info text-white">
+                        <td class="text-center font-weight-bold">@item.Duty</td>
+                        <td class="text-center font-weight-bold">@item.OCB_Flights.Flt_No</td>
+                        <td class="text-center font-weight-bold">@startTime.ToString("HH:mm")</td>
+                        <td class="text-center font-weight-bold">@item.OCB_Flights.Dest</td>
+                        <td class="text-center font-weight-bold">@item.RoomNumber</td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/dataTables.buttons.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.html5.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/pdfmake.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.flash.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/jszip.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/vfs_fonts.js"></script>
+<link href="~/Content/plugins/datatables/extensions/TableTools/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script>
+    $('#TableData').dataTable({
+        dom: 'Bfrtip',
+        order: [[2, 'desc'], [3, 'asc']],
+        columnDefs: [
+            {
+                type: 'time-date-sort',
+                targets: [2],
+            }
+        ],
+        buttons: [
+            {
+                extend: 'excel',
+                title: 'CabinCrewPosition',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6]
+                }
+            }
+        ]
+    });
+</script>

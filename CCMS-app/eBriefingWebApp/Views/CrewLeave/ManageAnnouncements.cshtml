@@ -1,0 +1,56 @@
+﻿@model eBriefingWebApp.CrewLeaveAnnouncement
+
+@{
+    ViewBag.Title = "Update Management Announcement";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("UpdateAnnouncement", "CrewLeave", FormMethod.Post))
+{
+    // Important for security
+    @Html.AntiForgeryToken()
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            <div class="col-md-12">
+                <div class="card">
+
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="card-header">
+                
+                        <table class="table my-0">
+                            <tbody>
+
+                                <tr>
+                                    <td class="fw-bold" style="width: 100%;" colspan="2">
+                                        <label style="text-align: left;">Announcement</label>
+                                        <div class="col-md-12 justify-content-end">
+                                            <div class="input-group mb-3">
+                                                @Html.TextAreaFor(model => model.Announcement, new { @class = "form-control", rows = "5" })
+                                                @Html.ValidationMessageFor(model => model.Announcement, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button id="btnSubmit" class="btn btn-dark" type="submit">Update Announcement</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,348 @@
+@model eBriefingWebApp.FAM_Form
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+            page[size="A4"] {
+                width: 21cm;
+                height: 29.7cm;
+            }
+
+        @@media print {
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <page size="A4">
+        <div id="pdfForm">
+            <div style="width:100%; text-align:center; padding-top:10PX;">
+
+                <h4>FAMILIARISATION FLIGHT FORM</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">
+                                    Cabin Crew Training
+                                    Initial Qualification
+                                </h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table style="width:100%">
+                            @{
+
+                                eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                                var blockId = Model.OCB_Flights.BlockId;
+                                var snyid = Model.Staff_Number;
+                                var getCSM = db.OCB_CrewPos.Where(a => (a.Category == "CABIN SERVICE MANAGER" || a.Category == "CM") &&
+                                                    a.BlockId == blockId).FirstOrDefault();
+                                var getSNY = db.CrewDetails.Where(a => a.StaffNumber == snyid).FirstOrDefault();
+
+                                //var POsId = getPOS.CrewDetail.FullName;
+
+                            }
+                            <tr>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                    CSM Name :   @getCSM.CrewDetail.FullName
+
+                                </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                    Staff #      @getCSM.StaffNumber
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                    SNY Name :  @getSNY.FullName
+                                </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                    Staff #     @Model.Staff_Number
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <table style="width:100%">
+                            <tr>
+                                <td class="text-center fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 40%; color: antiquewhite" colspan="4">
+                                    FAMILIARISATION FLIGHT DETAILS
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    First Sector: @(Model.OCB_Flights.Orig)   To @(Model.OCB_Flights.Dest)
+                                </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    Date/s: @(Model.OCB_Flights.Flight_Date)
+                                </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    AC Registration:
+                                </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    Flight No: @(Model.OCB_Flights.Flt_No)
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <table style="width:100%">
+                            <thead>
+                                <tr style=" height:35px">
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 40%; color: antiquewhite">Subject Matter</th>
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 40%; color: antiquewhite">Result</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">Legal Document Validity</td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">@(Model.Legal_Doc_Validity)</td>
+
+                                </tr>
+                            </tbody>
+                            <thead>
+                                <tr style=" height:35px">
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 40%; color: antiquewhite">Safety & Security</th>
+                                    <th class="text-left fw-bold" style="border: 1px solid black; background-color: #8d9081; width: 40%; color: antiquewhite">First Sector SNY Observes</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">Pre-Flight Checklist</td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">@(Model.pre_Flight_Check)</td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Pre-Passenger Boarding
+                                        Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.pre_Passenger_Boarding_Check)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Passenger Boarding Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.passenger_Boarding_Check)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Exit Seats Briefing Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.exit_Seats_Briefing_Check)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Pre-Taxi Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.pre_Taxi)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Door Arming Procedure
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.door_Arming)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Pre-Take Off Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.pre_Take_Off)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Lavatory Cruise Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.lavatory_Cruise)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Cruise Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.cruise)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Descent Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.desent)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        After Landing Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.after_Landing)
+                                    </td>
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Door Disarming Procedure
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.door_Disarming)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Door Warning Procedure
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.door_Warning)
+                                    </td>
+
+                                </tr>
+
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Door Opening Procedure
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.door_Opening)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Terminating Flights Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.terminating_Flights)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:25px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        Departure From A/C Checklist
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.departure_From_AC)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:60px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        CSM Comments
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.cSM_Comments)
+                                    </td>
+
+                                </tr>
+                                <tr style=" height:60px">
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        SNY Comments
+                                    </td>
+                                    <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">
+                                        @(Model.sNY_Comments)
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        
+                        <table style="width:100%">
+                            <tr style=" height:35px">
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;">Overall Rating </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 50%;"> @(Model.Rating)</td>
+                            </tr>
+                        </table>
+                        
+                        <table style="width:100%">
+                            <tr style=" height:35px">
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 75%;">
+                                    <span class=" fw-bold">CSM Signature:</span>
+                                </td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    Date:
+                                </td>
+                            </tr>
+                            <tr style=" height:35px">
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 75%;"><span class=" fw-bold">SNY Signature:</span></td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    Date:
+                                </td>
+                            </tr>
+                            <tr style=" height:35px">
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 75%;"><span class=" fw-bold">SMCC / MCC Signature:</span></td>
+                                <td class="text-left fw-bold" style="border: 1px solid #c6c1c0; width: 25%;">
+                                    Date:
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+                    
+                </div>
+
+            </div>
+
+            <br />
+            <br />
+        </div>
+
+    </page>
+    
+</body>
+</html>
+
+
+

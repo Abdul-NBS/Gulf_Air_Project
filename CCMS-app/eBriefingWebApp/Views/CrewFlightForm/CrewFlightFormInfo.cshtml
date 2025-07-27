@@ -1,0 +1,189 @@
+﻿@model eBriefingWebApp.Models.CrewFltForm
+@{
+    ViewBag.Title = "Crew Flight Form Info";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("CrewFlightFormInfo", "CrewFlightForm", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">OSS OBSERVATION CHECKLIST</h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                @{
+                                    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                                    var fltdetail = db.OCB_Flights.Where(a => a.Id == Model.crewFlt.Flight_Id).FirstOrDefault();
+                                    // var crewStaff = db.OCB_CrewPos.Where(a => a.Id == Model.crewFlt.StaffNumber).FirstOrDefault();
+                                    var StaffInfo = db.CrewDetails.Where(a => a.StaffNumber == Model.crewFlt.StaffNumber).FirstOrDefault();
+                                    var OverAllComnetsSection = db.FlightFormSections.Where(a => a.SectionTitle == "Overall Comments").FirstOrDefault();
+                                }
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flt no: :   @(fltdetail.Flt_No)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Orgin :   @(fltdetail.Orig)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Destination :   @(fltdetail.Dest)</td>
+
+
+                                </tr>
+
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Name :  @(StaffInfo.FullName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Staff number :   @(StaffInfo.StaffNumber)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Flight Date   :   @(Model.crewFlt.Submit_Date_and_Time.ToString("dd MMM yyyy"))</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0;">OBSERVATION CHECKLIST</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <table style="width:100%">
+                            <tbody>
+                                @{
+                                    foreach (var item in @Model.sections)
+                                    {
+                                        if (item.SectionId != OverAllComnetsSection.Id)
+                                        {
+                                            int i = 1;
+                                            <tr>
+                                                <td colspan="3" style="border: 1px solid #c6c1c0; text-align: left; height: 30px; font-weight: bold; ">
+                                                    Phase :
+                                                    @item.SectionName
+                                                </td>
+                                            </tr>
+
+                                            foreach (var item1 in item.qnalist)
+                                            {
+
+                                                <tr style=" height: 30px">
+                                                    <td style="border: 1px solid #c6c1c0;text-align: center; width :5%">
+                                                        @i
+                                                    </td>
+                                                    <td style="border: 1px solid #c6c1c0;text-align: left; width :60%">
+                                                        @item1.Question
+                                                    </td>
+                                                    <td style="border: 1px solid #c6c1c0;text-align: center; width: 35%">
+                                                        @item1.Answer
+                                                    </td>
+
+                                                </tr>
+
+                                                i++;
+                                            }
+
+                                            <tr>
+                                                <td colspan="3" style="border: 1px solid #c6c1c0; text-align: left; height: 40px">
+                                                    <strong> Comments: </strong> @item.secComment
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height : 20px">
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                        <table style="width:100%">
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" style="border: 1px solid #c6c1c0; font-weight: bold; text-align: center; background-color: #f0f0f0;">Overall comments</td></tr>
+                                    @{ 
+                                        var overCommnets = db.CrewFlightFormSectionComments.Where(a => a.Crew_Flight_Form_Id == @Model.crewFlt.Id && a.Flight_Form_Section_Id == OverAllComnetsSection.Id).FirstOrDefault();
+                                        var overallcomment = "No Comment";
+
+                                        if (overCommnets != null){
+                                            overallcomment = overCommnets.Comments;
+                                        }
+                                    }
+                                <tr><td colspan="3" style="border: 1px solid #c6c1c0;">@overallcomment</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="card-footer">
+
+                        <a class="btn btn-dark" href="@Url.Action("PrintCrewFlightFormInfo", "CrewFlightForm", new { Id = Model.crewFlt.Id})" target="_blank">Print Crew Flight Form</a>
+                        <a class="btn btn-dark" href="@Url.Action("Index", "CrewFlightForm" , new { From_Block_Date = (TempData["From_Block_Date"]) , To_Block_Date = (TempData["To_Block_Date"]) })")">Back</a>
+                    </div>
+
+
+                </div>
+            </div>
+
+        }
+    </div>
+}
+
+
+@if (TempData["Status"] != null)
+{
+    if (TempData["Status"].ToString() == "Error")
+    {
+        <script>
+            toastr.error('Error Loading Data.');
+        </script>
+    }
+}
+
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/dataTables.buttons.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.html5.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/pdfmake.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.flash.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/jszip.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/vfs_fonts.js"></script>
+<link href="~/Content/plugins/datatables/extensions/TableTools/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script>
+    $('#TableData').dataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title: 'CabinCrewPosition',
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                }
+            }
+        ]
+    });
+</script>
+

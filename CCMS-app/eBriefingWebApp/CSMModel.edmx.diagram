@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9e409643ecb249cd8f922ff4ec155828" Name="Diagram1">
+        <EntityTypeShape EntityType="CSMModel.C__EFMigrationsHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.AiportTimeZone" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.AirportCode" Width="1.5" PointX="10.75" PointY="36.625" />
+        <EntityTypeShape EntityType="CSMModel.AppError" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.AppLog" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.Appraisal_Team_Leads" Width="1.5" PointX="11.75" PointY="64.5" />
+        <EntityTypeShape EntityType="CSMModel.AppraisalQuestionAnswer" Width="1.5" PointX="12.75" PointY="25.625" />
+        <EntityTypeShape EntityType="CSMModel.Appraisal" Width="1.5" PointX="6" PointY="23.75" />
+        <EntityTypeShape EntityType="CSMModel.AppraisalSectionQuestion" Width="1.5" PointX="10.5" PointY="25.625" />
+        <EntityTypeShape EntityType="CSMModel.AppraisalSection" Width="1.5" PointX="8.25" PointY="25.625" />
+        <EntityTypeShape EntityType="CSMModel.BlockDeleteLog" Width="1.5" PointX="2.75" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.Bus" Width="1.5" PointX="0.75" PointY="7.125" />
+        <EntityTypeShape EntityType="CSMModel.Buses_Allocation" Width="1.5" PointX="3" PointY="4.375" />
+        <EntityTypeShape EntityType="CSMModel.Buses_Drivers" Width="1.5" PointX="3" PointY="7.5" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Appreciation" Width="1.5" PointX="5.75" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Commendation" Width="1.5" PointX="16.75" PointY="10.75" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Grooming" Width="1.5" PointX="11" PointY="11.375" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Grooming_EyeColor" Width="1.5" PointX="8.75" PointY="19.5" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Grooming_HairColor" Width="1.5" PointX="8.75" PointY="9.875" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Grooming_WeightStatus" Width="1.5" PointX="8.75" PointY="6.625" />
+        <EntityTypeShape EntityType="CSMModel.Crew_Transports" Width="1.5" PointX="3" PointY="29" />
+        <EntityTypeShape EntityType="CSMModel.Crew_WarningLetter" Width="1.5" PointX="17.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewAppraisalEval" Width="1.5" PointX="15" PointY="25.625" />
+        <EntityTypeShape EntityType="CSMModel.CrewAppraisal" Width="1.5" PointX="8.25" PointY="42.625" />
+        <EntityTypeShape EntityType="CSMModel.CrewCategory" Width="1.5" PointX="18.75" PointY="5.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewDetail" Width="1.5" PointX="0.75" PointY="48.5" />
+        <EntityTypeShape EntityType="CSMModel.CrewDocumentCategory" Width="1.5" PointX="13.75" PointY="21.25" />
+        <EntityTypeShape EntityType="CSMModel.CrewDocumentStatusHistory" Width="1.5" PointX="18.25" PointY="23.625" />
+        <EntityTypeShape EntityType="CSMModel.CrewEffectiveSeniority" Width="1.5" PointX="11" PointY="17.625" />
+        <EntityTypeShape EntityType="CSMModel.CrewEffectiveSeniorityPeriod" Width="1.5" PointX="13.25" PointY="17.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewFlightFormAnswer" Width="1.5" PointX="13.5" PointY="46.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewFlightForm" Width="1.5" PointX="8.25" PointY="49.5" />
+        <EntityTypeShape EntityType="CSMModel.CrewFlightFormSectionComment" Width="1.5" PointX="13.5" PointY="49.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewGroomingAttribute" Width="1.5" PointX="18.75" PointY="8.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewGroomingRemark" Width="1.5" PointX="18.75" PointY="13.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewLeaveAnnouncement" Width="1.5" PointX="19.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewLeaveRequest" Width="1.5" PointX="11" PointY="32.125" />
+        <EntityTypeShape EntityType="CSMModel.CrewLeaveRosterPeriod" Width="1.5" PointX="5.75" PointY="19.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewPhoto" Width="1.5" PointX="20.75" PointY="3.75" />
+        <EntityTypeShape EntityType="CSMModel.CrewTeamAssignment" Width="1.5" PointX="14" PointY="42.5" />
+        <EntityTypeShape EntityType="CSMModel.CrewTransportCategory" Width="1.5" PointX="11.75" PointY="7.625" />
+        <EntityTypeShape EntityType="CSMModel.CrewTransportRequest" Width="1.5" PointX="14" PointY="12.875" />
+        <EntityTypeShape EntityType="CSMModel.CrewWeightDetailList" Width="1.5" PointX="11" PointY="68.875" />
+        <EntityTypeShape EntityType="CSMModel.DepInfoSheet" Width="1.5" PointX="5.25" PointY="53.875" />
+        <EntityTypeShape EntityType="CSMModel.Doc_Category" Width="1.5" PointX="20.75" PointY="6.75" />
+        <EntityTypeShape EntityType="CSMModel.Doc_Crew_Log" Width="1.5" PointX="20.75" PointY="9.75" />
+        <EntityTypeShape EntityType="CSMModel.Doc_Files" Width="1.5" PointX="20.75" PointY="12.75" />
+        <EntityTypeShape EntityType="CSMModel.Doc_Versions" Width="1.5" PointX="20.75" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.DocumentRejectReason" Width="1.5" PointX="18.25" PointY="17.125" />
+        <EntityTypeShape EntityType="CSMModel.DreversAccount" Width="1.5" PointX="0.75" PointY="11.25" />
+        <EntityTypeShape EntityType="CSMModel.EmailSetting" Width="1.5" PointX="22.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.EvalSectionsComment" Width="1.5" PointX="22.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CSMModel.Exception_Log_Table" Width="1.5" PointX="22.75" PointY="8.75" />
+        <EntityTypeShape EntityType="CSMModel.FAM_Form" Width="1.5" PointX="11.25" PointY="44.875" />
+        <EntityTypeShape EntityType="CSMModel.Fleet_Category" Width="1.5" PointX="5.75" PointY="1.625" />
+        <EntityTypeShape EntityType="CSMModel.Fleet" Width="1.5" PointX="7.5" PointY="61" />
+        <EntityTypeShape EntityType="CSMModel.FlightForm" Width="1.5" PointX="6" PointY="51" />
+        <EntityTypeShape EntityType="CSMModel.FlightFormSectionItem" Width="1.5" PointX="11.25" PointY="56.75" />
+        <EntityTypeShape EntityType="CSMModel.FlightFormSection" Width="1.5" PointX="9" PointY="56.625" />
+        <EntityTypeShape EntityType="CSMModel.FlightMeal" Width="1.5" PointX="5.25" PointY="74.25" />
+        <EntityTypeShape EntityType="CSMModel.InactiveCrewList" Width="1.5" PointX="5.75" PointY="8.75" />
+        <EntityTypeShape EntityType="CSMModel.InflightRestSheet" Width="1.5" PointX="22.75" PointY="11.75" />
+        <EntityTypeShape EntityType="CSMModel.Layover_Bids" Width="1.5" PointX="13" PointY="1" />
+        <EntityTypeShape EntityType="CSMModel.Layover_Category" Width="1.5" PointX="10.75" PointY="1.875" />
+        <EntityTypeShape EntityType="CSMModel.Layover_Pairing" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="CSMModel.Maximum_Bids" Width="1.5" PointX="22.75" PointY="15.75" />
+        <EntityTypeShape EntityType="CSMModel.MealsCount" Width="1.5" PointX="5.25" PointY="70.75" />
+        <EntityTypeShape EntityType="CSMModel.OCB_AC_Pos" Width="1.5" PointX="0.75" PointY="39.125" />
+        <EntityTypeShape EntityType="CSMModel.OCB_AllocationScreen" Width="1.5" PointX="5.25" PointY="67.75" />
+        <EntityTypeShape EntityType="CSMModel.OCB_Blocks" Width="1.5" PointX="0.75" PointY="43.25" />
+        <EntityTypeShape EntityType="CSMModel.OCB_Comments" Width="1.5" PointX="5.25" PointY="78.875" />
+        <EntityTypeShape EntityType="CSMModel.OCB_Crew_Pos_History" Width="1.5" PointX="8.25" PointY="39.25" />
+        <EntityTypeShape EntityType="CSMModel.OCB_CrewPos" Width="1.5" PointX="3" PointY="41.875" />
+        <EntityTypeShape EntityType="CSMModel.OCB_Flights" Width="1.5" PointX="3" PointY="47.875" />
+        <EntityTypeShape EntityType="CSMModel.OCB_Notification" Width="1.5" PointX="5.25" PointY="31" />
+        <EntityTypeShape EntityType="CSMModel.OCB_Upcoming_Crew" Width="1.5" PointX="22.75" PointY="19.75" />
+        <EntityTypeShape EntityType="CSMModel.OtpFlightInfo" Width="1.5" PointX="13.75" PointY="6" />
+        <EntityTypeShape EntityType="CSMModel.OtpFlightStatu" Width="1.5" PointX="24.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.otpGatesdep" Width="1.5" PointX="24.75" PointY="10.75" />
+        <EntityTypeShape EntityType="CSMModel.OtpPassengerDetail" Width="1.5" PointX="16" PointY="6.125" />
+        <EntityTypeShape EntityType="CSMModel.OutOfBase" Width="1.5" PointX="3" PointY="61.625" />
+        <EntityTypeShape EntityType="CSMModel.Pairing_Category" Width="1.5" PointX="5.75" PointY="5.5" />
+        <EntityTypeShape EntityType="CSMModel.PickupDetail" Width="1.5" PointX="3" PointY="22.75" />
+        <EntityTypeShape EntityType="CSMModel.PilotCrewDetail" Width="1.5" PointX="8.75" PointY="13.5" />
+        <EntityTypeShape EntityType="CSMModel.PilotCrewDocRejectReason" Width="1.5" PointX="20.5" PointY="18.75" />
+        <EntityTypeShape EntityType="CSMModel.PilotCrewDocument" Width="1.5" PointX="16" PointY="17.5" />
+        <EntityTypeShape EntityType="CSMModel.PilotCrewDocumentStatusHistory" Width="1.5" PointX="18.25" PointY="20.125" />
+        <EntityTypeShape EntityType="CSMModel.PilotDetail" Width="1.5" PointX="24.75" PointY="14.75" />
+        <EntityTypeShape EntityType="CSMModel.PotableWater" Width="1.5" PointX="5.25" PointY="42.875" />
+        <EntityTypeShape EntityType="CSMModel.PreBookedMeal" Width="1.5" PointX="5.25" PointY="34.125" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_Answers" Width="1.5" PointX="14.25" PointY="60.75" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_Categories" Width="1.5" PointX="9.75" PointY="60.875" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_Comments" Width="1.5" PointX="13.5" PointY="54.25" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_CrewTest" Width="1.5" PointX="11.25" PointY="52.125" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_FailedComments" Width="1.5" PointX="13.5" PointY="57.125" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_Settings" Width="1.5" PointX="24.75" PointY="19.75" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_TestExlude" Width="1.5" PointX="11.25" PointY="40.5" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_TestLog" Width="1.5" PointX="16.5" PointY="52.75" />
+        <EntityTypeShape EntityType="CSMModel.PreFlight_TestQuestions" Width="1.5" PointX="12" PointY="60.75" />
+        <EntityTypeShape EntityType="CSMModel.Roster_Data" Width="1.5" PointX="24.75" PointY="24.75" />
+        <EntityTypeShape EntityType="CSMModel.Seniority_PeriodDetails" Width="1.5" PointX="11" PointY="22" />
+        <EntityTypeShape EntityType="CSMModel.Setting" Width="1.5" PointX="20.75" PointY="25.75" />
+        <EntityTypeShape EntityType="CSMModel.SharepointFilePrefix" Width="1.5" PointX="26.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CSMModel.SharePointLog" Width="1.5" PointX="3" PointY="55" />
+        <EntityTypeShape EntityType="CSMModel.SharePointLogsTable" Width="1.5" PointX="3" PointY="58.375" />
+        <EntityTypeShape EntityType="CSMModel.SpecialMeal" Width="1.5" PointX="5.25" PointY="46" />
+        <EntityTypeShape EntityType="CSMModel.SSR" Width="1.5" PointX="5.25" PointY="38.75" />
+        <EntityTypeShape EntityType="CSMModel.SSR_Count" Width="1.5" PointX="5.25" PointY="27.75" />
+        <EntityTypeShape EntityType="CSMModel.StationManager" Width="1.5" PointX="26.75" PointY="3.75" />
+        <EntityTypeShape EntityType="CSMModel.TransportGroup" Width="1.5" PointX="0.75" PointY="4.5" />
+        <EntityTypeShape EntityType="CSMModel.WeightMinMaxSetting" Width="1.5" PointX="5" PointY="11" />
+        <EntityTypeShape EntityType="CSMModel.WeightVarianceSetting" Width="1.5" PointX="2.75" PointY="11.625" />
+        <EntityTypeShape EntityType="CSMModel.ZoneArea" Width="1.5" PointX="3" PointY="19.375" />
+        <EntityTypeShape EntityType="CSMModel.Zone" Width="1.5" PointX="0.75" PointY="29.25" />
+        <EntityTypeShape EntityType="CSMModel.sysdiagram" Width="1.5" PointX="26.75" PointY="6.75" />
+        <EntityTypeShape EntityType="CSMModel.vwRecency" Width="1.5" PointX="26.75" PointY="9.75" />
+        <EntityTypeShape EntityType="CSMModel.vwRecencySummary" Width="1.5" PointX="26.75" PointY="13.75" />
+        <EntityTypeShape EntityType="CSMModel.database_firewall_rules" Width="1.5" PointX="26.75" PointY="16.75" />
+        <AssociationConnector Association="CSMModel.FK__Layover_B__STN_I__090A5324" />
+        <AssociationConnector Association="CSMModel.FK__CrewTeamA__TeamI__33BFA6FF" />
+        <AssociationConnector Association="CSMModel.FK_AnswerID" />
+        <AssociationConnector Association="CSMModel.FK_AppraisalQuestionAnswers_AppraisalSectionQuestions" />
+        <AssociationConnector Association="CSMModel.FK_AppraisalSections_Appraisals" />
+        <AssociationConnector Association="CSMModel.FK_CrewAppraisals_Appraisals" />
+        <AssociationConnector Association="CSMModel.FK_AppraisalSectionQuestions_AppraisalSections" />
+        <AssociationConnector Association="CSMModel.FK_CrewAppraisalEval_AppraisalSections" />
+        <AssociationConnector Association="CSMModel.FK__Buses_All__Bus_I__42E1EEFE" />
+        <AssociationConnector Association="CSMModel.FK__Buses_Dri__Bus_I__44CA3770" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Tran__Bus_I__46B27FE2" />
+        <AssociationConnector Association="CSMModel.FK__PickupDet__Bus_I__59C55456" />
+        <AssociationConnector Association="CSMModel.FK__Buses_All__Group__43D61337" />
+        <AssociationConnector Association="CSMModel.FK__Buses_Dri__Drive__45BE5BA9" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Groo__Eye_C__3B95D2F1" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Groo__Hair___3AA1AEB8" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Groo__Staff__39AD8A7F" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Groo__Weigh__3C89F72A" />
+        <AssociationConnector Association="CSMModel.FK__CrewWeigh__Weigh__40257DE4" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Tran__Staff__47A6A41B" />
+        <AssociationConnector Association="CSMModel.FK__Crew_Tran__Zone___489AC854" />
+        <AssociationConnector Association="CSMModel.FK_CrewAppraisals_OCB_CrewPos" />
+        <AssociationConnector Association="CSMModel.FK__CrewTeamA__Staff__32CB82C6" />
+        <AssociationConnector Association="CSMModel.FK__PickupDet__Staff__5BAD9CC8" />
+        <AssociationConnector Association="CSMModel.FK__SharePoin__Staff__414EAC47" />
+        <AssociationConnector Association="CSMModel.FK_CrewDetail_StaffNumber" />
+        <AssociationConnector Association="CSMModel.FK_OCB_CrewPos_CrewDetail" />
+        <AssociationConnector Association="CSMModel.FK_SharePointLogs_CrewDetail" />
+        <AssociationConnector Association="CSMModel.FK__PilotCrew__Docum__00FF1D08" />
+        <AssociationConnector Association="CSMModel.FK__CrewDocum__Docum__06B7F65E" />
+        <AssociationConnector Association="CSMModel.FK__CrewEffec__CrewI__1940BAED" />
+        <AssociationConnector Association="CSMModel.FK__CrewEffec__IsDel__00750D23" />
+        <AssociationConnector Association="CSMModel.FK__CrewEffec__Perio__0169315C" />
+        <AssociationConnector Association="CSMModel.FK_CrewFlightFormAnswers_CrewFlightForms" />
+        <AssociationConnector Association="CSMModel.FK_CrewFlightFormAnswers_FlightFormSectionItems" />
+        <AssociationConnector Association="CSMModel.FK_CrewFlightForms_FlightForms" />
+        <AssociationConnector Association="CSMModel.FK_CrewFlightForms_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_CrewFlightFormSectionComments_CrewFlightForms" />
+        <AssociationConnector Association="CSMModel.FK_CrewFlightFormSectionComments_FlightFormSections" />
+        <AssociationConnector Association="CSMModel.FK__CrewLeaveRequests__PilotCrewDetail" />
+        <AssociationConnector Association="CSMModel.FK__CrewTrans__Trans__297722B6" />
+        <AssociationConnector Association="CSMModel.FK_CrewTransportRequest_PilotCrewDetail" />
+        <AssociationConnector Association="CSMModel.FK_DepInfoSheet_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_CrewDocRejectReasons_DocumentRejectReasons" />
+        <AssociationConnector Association="CSMModel.FK_FAM_Form_OCB_CrewPos" />
+        <AssociationConnector Association="CSMModel.FK_FAM_Form_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK__Layover_P__Fleet__1293BD5E" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_Categories_Fleets" />
+        <AssociationConnector Association="CSMModel.FK_FlightForm_FlightFormSections" />
+        <AssociationConnector Association="CSMModel.FK_FlightFormSectionItems_FlightFormSections" />
+        <AssociationConnector Association="CSMModel.FK_FlightMeals_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK__Layover_B__IsDel__08162EEB" />
+        <AssociationConnector Association="CSMModel.FK__Layover_P__Pairi__119F9925" />
+        <AssociationConnector Association="CSMModel.FK_MealsCount_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_OCB_Crew_Pos_History_OCB_AC_Pos" />
+        <AssociationConnector Association="CSMModel.FK_OCB_CrewPos_OCB_AC_Pos" />
+        <AssociationConnector Association="CSMModel.FK_OCB_AllocationScreen_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_OCB_CrewPos_OCB_Blocks" />
+        <AssociationConnector Association="CSMModel.FK_OCB_Flights_OCB_Blocks" />
+        <AssociationConnector Association="CSMModel.FK_OCB_Comments_OCB_CrewPos" />
+        <AssociationConnector Association="CSMModel.FK_OCB_Crew_Pos_History_OCB_CrewPos" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_CrewTest_OCB_CrewPos" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_TestExlude_OCB_CrewPos" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_TestExlude_OCB_CrewPos1" />
+        <AssociationConnector Association="CSMModel.FK_OCB_Notification_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_PotableWater_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_PreBookedMeals_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_CrewTest_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_TestExlude_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_SpecialMeals_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_SSR_Count_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK_SSR_OCB_Flights" />
+        <AssociationConnector Association="CSMModel.FK__OtpPassen__fligh__4865BE2A" />
+        <AssociationConnector Association="CSMModel.FK__PickupDet__Group__5AB9788F" />
+        <AssociationConnector Association="CSMModel.FK__PilotCrew__Staff__000AF8CF" />
+        <AssociationConnector Association="CSMModel.FK_CrewDocRejectReasons_PilotCrewDocument" />
+        <AssociationConnector Association="CSMModel.FK_PilotCrewDocRejectReasons_StatusHistory" />
+        <AssociationConnector Association="CSMModel.FK__PilotCrew__Docum__09946309" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_Answers_PreFlight_TestQuestions" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_TestLog_PreFlight_Answers" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_TestQuestions_PreFlight_Categories" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_Comments_PreFlight_CrewTest" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_FailedComments_PreFlight_CrewTest" />
+        <AssociationConnector Association="CSMModel.FK_PreFlight_TestLog_PreFlight_CrewTest" />
+        <AssociationConnector Association="CSMModel.FK_WeightMinMax_WeightVariance" />
+        <AssociationConnector Association="CSMModel.FK__ZoneAreas__Zone___6CD828CA" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

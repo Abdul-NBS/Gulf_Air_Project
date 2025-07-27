@@ -1,0 +1,50 @@
+﻿@model eBriefingWebApp.Crew_WarningLetter
+@{
+    ViewBag.Title = "Crew Warning Details";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("WarningLetterData", "CGAP", FormMethod.Get))
+{ 
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Crew Warning Details</h5>
+                </div>
+
+                @if (TempData["Status"] != null)
+                {
+                    if (TempData["Status"] == "NoCrew")
+                    {
+
+
+                        <label class="fw-bold text-danger ms-3 mt-3">The entered id does not belong to a crew. Please re-enter correct crewId </label>
+                    }
+                    else
+                    {
+                        <label class="fw-bold text-success ms-3 mt-3">Please enter crew Id to get Warning data  </label>
+                    }
+                }
+
+
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="StaffNumber">Crew Staff Number:</label>&nbsp;&nbsp;
+                        <input name="StaffNumber" id="StaffNumber" class="form-control" type="number" />
+                        <div class="input-group-append">
+                            <button class="btn btn-dark btn-outline-secondary" type="submit">Get Data</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+

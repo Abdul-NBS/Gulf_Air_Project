@@ -1,0 +1,86 @@
+﻿@model eBriefingWebApp.CrewLeaveRosterPeriod
+
+@{
+    ViewBag.Title = "Update Roster Dates for Crew Leave";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("AddRosterDate", "CrewLeave", FormMethod.Post))
+{
+    // Important for security
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            <div class="col-md-12">
+                <div class="card">
+                   
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style="width: 50%;" colspan="2">
+                                        @if (TempData["Status"] != null && (TempData["Status"].ToString() == "Updated"))
+                                        {
+                                            <p class="text-danger mt-1">
+                                                Roster Dates Updated</p>
+                                                <br />
+                                            }
+
+                                        <label style="text-align: left;">Current Roster Period data is  @Model.FROM_DATE.Value.ToString("dd-MMM-yyyy")   - @Model.TO_DATE.Value.ToString("dd-MMM-yyyy")</label>
+
+
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 class="card-title mb-0">Update Roster Data</h4>
+                                </div>
+                            </div>
+                            <table class="table my-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold" style="width: 50%;" colspan="1">
+                                            <label style="text-align: left;">From Date</label>
+                                            <div class="col-md-4 justify-content-end">
+                                                <div class="input-group mb-3">
+                                                    <input name="From_Block_Date" id="From_Block_Date"
+                                                           value="@Model.FROM_DATE.Value.ToString("yyyy-MM-dd")"
+                                                           class="form-control" type="date" style="width: 200px;" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold" style="width: 50%;" colspan="1">
+                                            <label style="text-align: left;">To Date</label>
+                                            <div class="col-md-4 justify-content-end">
+                                                <div class="input-group mb-3">
+                                                    <input name="To_Block_Date" id="To_Block_Date"
+                                                           value="@Model.TO_DATE.Value.ToString("yyyy-MM-dd")"
+                                                           class="form-control" type="date" style="width: 200px;" />
+                                                </div>
+                                                </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <button id="btnSubmit" class="btn btn-dark" type="submit">Update Roster Date</button>
+                        </div>
+                    </div>
+            </div>
+        }
+    </div>
+}

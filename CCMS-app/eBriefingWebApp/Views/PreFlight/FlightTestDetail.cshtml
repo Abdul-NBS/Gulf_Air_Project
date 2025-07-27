@@ -1,0 +1,151 @@
+﻿@model eBriefingWebApp.OCB_Flights
+@{
+    ViewBag.Title = "Flight Test Detail";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Flight Details</h5>
+            </div>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <th class="fw-bold">Block Number</th>
+                        <td class="text-start">@Model.OCB_Blocks.Block_No</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Flight Number</th>
+                        <td class="text-start">@Model.Flt_No</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Flight Date</th>
+                        <td class="text-start">@Model.Flight_Date.Value.ToString("dd MMM yyyy")</td>
+                    </tr>
+                    <tr>
+                        <th class="fw-bold">Orig/Dest</th>
+                        <td class="text-start">@Model.Orig / @Model.Dest</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card-footer">
+                <a href="@Url.Action("FlightTestHistory", "PreFlight")" class="btn btn-dark" type="submit">Back</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Crew List With No Test</h5>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center fw-bold">Staff Number</th>
+                        <th class="text-center fw-bold">Full Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var crewList = Model.OCB_Blocks.OCB_CrewPos.ToList();
+                        var testList = Model.PreFlight_CrewTest.ToList();
+                        var noTestTaken = crewList.Where(p => !testList.Any(p2 => p2.OCB_CrewPos.StaffNumber == p.StaffNumber));
+
+                        foreach (var item in noTestTaken)
+                        {
+                            <tr>
+                                <td class="text-center">@item.StaffNumber</td>
+                                <td class="text-left">@item.CrewDetail.FullName</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Crew List</h5>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center fw-bold">Staff Number</th>
+                        <th class="text-center fw-bold">Full Name</th>
+                        <th class="text-center fw-bold">Test Date/Date</th>
+                        <th class="text-center fw-bold">Correct Answers</th>
+                        <th class="text-center fw-bold">Wrong Answers</th>
+                        <th class="text-center fw-bold">Attempt Wise Correct Answer Count </th>
+                        <th class="text-center fw-bold">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PreFlight_CrewTest)
+                    {
+                        int correct = item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == true).Count();
+                        int wrong = item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == false).Count();
+                        int noOfQtns = item.PreFlight_TestLog.Count;
+
+                        int noOFattempts = noOfQtns / 3;
+                        String correctAnswerCount = "";
+                        for (int k = 0; k < noOFattempts; k++)
+                        {
+                            // Calculate the starting index for each set of 3 questions
+                            int startIndex = k * 3;
+
+                            // Extract the set of 3 questions
+                            var answersetSet = item.PreFlight_TestLog.Skip(startIndex).Take(3).ToList();
+                            int count = k + 1;
+                            var correctAnswer = answersetSet.Where(a => a.PreFlight_Answers.Answer == true).ToList().Count();
+                            String answerDetail = correctAnswer + "/";
+                            // correctAnswerCount += answerDetail;
+
+                            if (k == noOFattempts - 1) // Check if it's the last iteration
+                            {
+                                correctAnswerCount += correctAnswer.ToString(); // Append without "/"
+                            }
+                            else
+                            {
+                                correctAnswerCount += answerDetail; // Append with "/"
+                            }
+                        }
+
+
+                        if (correct >= wrong)
+                        {
+                            <tr>
+                                <td class="text-center">@item.OCB_CrewPos.StaffNumber</td>
+                                <td class="text-left">@item.OCB_Flights.OCB_Blocks.OCB_CrewPos.Where(a => a.StaffNumber == item.OCB_CrewPos.StaffNumber).FirstOrDefault().CrewDetail.FullName</td>
+                                <td class="text-center">@item.TestDateTime.Value.ToString("dd MMM yyyy hh:mm tt")</td>
+                                <td class="text-center">@item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == true).Count()</td>
+                                <td class="text-center">@item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == false).Count()</td>
+                                <td class="text-center">@correctAnswerCount</td>
+                                <td class="text-center">Passed</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="bg-danger">
+                                <td class="text-center" style="color:white;">@item.OCB_CrewPos.StaffNumber</td>
+                                <td class="text-left" style="color:white;">@item.OCB_CrewPos.CrewDetail.FullName</td>
+                                <td class="text-center" style="color:white;">@item.TestDateTime.Value.ToString("dd MMM yyyy hh:mm tt")</td>
+                                <td class="text-center" style="color:white;">@item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == true).Count()</td>
+                                <td class="text-center" style="color:white;">@item.PreFlight_TestLog.Where(a => a.PreFlight_Answers.Answer == false).Count()</td>
+                                <td class="text-center">@correctAnswerCount</td>
+                                <td class="text-center" style="color:white;">Failed</td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

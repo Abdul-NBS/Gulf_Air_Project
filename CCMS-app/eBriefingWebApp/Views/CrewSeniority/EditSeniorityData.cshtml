@@ -1,0 +1,138 @@
+﻿@model List<eBriefingWebApp.Models.CrewPeriodSeniority>
+
+@{
+    ViewBag.Title = "Crew Effective Seniority";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("EditSeniorityData", "CrewSeniority", FormMethod.Post))
+    {
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            var CSEid = Model.FirstOrDefault().CSEId;
+
+
+            eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+            var seniority_parent = db.CrewEffectiveSeniorities.Where(a => a.ID == CSEid).FirstOrDefault();
+            var staffdetail = db.CrewDetails.Where(a => a.StaffNumber == seniority_parent.CrewId).FirstOrDefault();
+           // @Html.HiddenFor(m => CSEid, new { name = "CrewSeniority.id" })
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Flight Details and Customer Load</h4>
+                            </div>
+                          <!--  <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>-->
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Number :  @seniority_parent.CrewId</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Name :   @staffdetail.FullName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Position :   @staffdetail.Category</td>
+                                </tr>
+                        </table>
+                        <div class="form-group">
+                            <label>Group</label>
+                            <div class="input-group mb-3 justify-content-end">
+                                @Html.TextBoxFor(u => @seniority_parent.GroupNo, new { @type = "numric", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Group Seniority</label>
+                            <div class="input-group mb-3 justify-content-end">
+                                @Html.TextBoxFor(u => @seniority_parent.GroupSeniority, new { @type = "numric", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Fleet</label>
+                            <div class="input-group mb-3 justify-content-end">
+                                @Html.TextBoxFor(u => @seniority_parent.Fleet, new { @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Net Seniority</label>
+                            <div class="input-group mb-3 justify-content-end">
+                                @Html.TextBoxFor(u => @seniority_parent.NetSeniority, new { @type = "numric", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+
+
+
+
+
+                        <table style="width:100%">
+                            <tr style="height:20px"><td></td></tr>
+                        </table>
+
+                        <table style="width:100%">
+                            <tr style="height:20px"><td></td></tr>
+                        </table>
+                        <table class="table my-0">
+
+                            @for (int j = 0; j < Model.Count; j++)
+                            {
+                                // @Html.HiddenFor(m => Model.periodseniority[j].Id, new { name = "OCB_CrewPos.PosId" })
+                                @Html.HiddenFor(m => Model[j].id, new { name = "CrewPeriodSeniority.id" })
+                                @Html.HiddenFor(m => Model[j].CSEId, new { name = "CrewPeriodSeniority.CSEId" })
+                                <tr style="background-color: #f2f2f2;">
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        @Model[j].Period
+                                    </td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                        @Html.TextBoxFor(u => Model[j].periodSeniority, new { @type = "numric", @class = "form-control", @required = "required" })
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
+
+
+
+
+
+                    </div>
+                    <div class="card-footer">
+                        <button id="btnSubmit" class="btn btn-dark" type="submit">update Seniority</button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+
+}
+
+
+
+
+
+
+
+
+
+

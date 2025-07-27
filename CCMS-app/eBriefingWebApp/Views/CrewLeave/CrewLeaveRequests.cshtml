@@ -1,0 +1,159 @@
+﻿@model List<eBriefingWebApp.CrewLeaveRequest>
+@{
+    ViewBag.Title = "CREW LEAVE REQUESTS";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+
+@using (Html.BeginForm("CrewLeaveRequests", "CrewLeave", FormMethod.Post))
+
+{
+    @*<input type="hidden" id="currentPage" value="" />*@
+
+    <input type="hidden" id="currentPage" name="currentPage" value="@ViewBag.currentPage" />
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title mb-0">@ViewBag.Title</h5>
+                        </div>
+                        <div class="col-md-4 justify-content-end">
+                            <div class="input-group mb-3">
+                                <span style="font-weight:bold">From &nbsp; &nbsp; </span> <input name="From_Block_Date" id="From_Block_Date" value="@Convert.ToDateTime(TempData["From_Block_Date"]).ToString("yyyy-MM-dd")" class="form-control" type="date" />
+                                &nbsp;<span style="font-weight:bold"> - &nbsp;  To &nbsp; &nbsp; </span>  <input name="To_Block_Date" id="To_Block_Date" value="@Convert.ToDateTime(TempData["To_Block_Date"]).ToString("yyyy-MM-dd")" class="form-control" type="date" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-dark btn-outline-secondary" type="submit">Get Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="TableData" class="table table-striped table-hover my-0">
+                    <thead>
+                        <tr>
+
+                            <th class="text-center fw-bold">Staff Number</th>
+                            <th class="text-center fw-bold">Staff Name</th>
+                            <th class="text-center fw-bold">From Date</th>
+                            <th class="text-center fw-bold">To Date</th>
+                            <th class="text-center fw-bold">Leave Comments</th>
+                            <th class="text-center fw-bold">Submitted Date</th>
+                            <th class="text-center fw-bold">Status</th>
+                            <th class="text-center fw-bold">Admin Comments</th>
+                            <th class="text-center fw-bold">Updated By</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int currentPage = Convert.ToInt32(Request.Form["currentPage"]);
+
+                        }
+                        
+                        @{  
+                            for (int j = 0; j < Model.Count; j++)
+                            {
+
+
+                                eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                                var staffNumber = Model[j].StaffNumber;
+                                var stffinfo = db.PilotCrewDetails.Where(a => a.StaffNumber == staffNumber).FirstOrDefault();
+                                String stfName = "";
+                                if (stffinfo != null)
+                                {
+                                    stfName = stffinfo.FullName;
+                                }
+
+
+                                                <tr>
+
+                                                    <td class="text-center">@(Model[j].StaffNumber)</td>
+                                                    <td class="text-center">@(stfName)</td>
+                                                    <td class="text-center">@(Model[j].FROM_DATE.Value.ToString("dd MMM yyyy"))</td>
+                                                    <td class="text-center">@(Model[j].TO_DATE.Value.ToString("dd MMM yyyy"))</td>
+                                                    <td class="text-left">@(Model[j].LEAVE_REASON)</td>
+                                                    <td class="text-center">@(Model[j].SUBMITTED_TIME.Value.ToString("dd MMM yyyy hh:mm tt"))</td>
+                                                    @{
+                                                        var statusStr = "";
+                                                        var status = Model[j].STATUS;
+                                                        if (status == "S")
+                                                        {
+                                                            statusStr = "Submitted";
+                                                        }
+                                                        else if (status == "A")
+                                                        {
+                                                            statusStr = "Approved";
+                                                        }
+                                                        else if (status == "R")
+                                                        {
+                                                            statusStr = "Rejected";
+                                                        }
+                                                        else if (status == "P")
+                                                        {
+                                                            statusStr = "To be Reviewed";
+                                                        }
+                                                    }
+                                                    <td class="text-center">@(statusStr)</td>
+                                                    <td class="text-left">@(Model[j].ADMIN_REASON)</td>
+                                                    <td class="text-center">@(Model[j].Updated_By)</td>
+
+
+                                                </tr>
+                                                           
+                                                        }
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/dataTables.buttons.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.html5.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/pdfmake.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/buttons.flash.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/jszip.min.js"></script>
+<script src="~/Content/plugins/datatables/extensions/TableTools/js/vfs_fonts.js"></script>
+<link href="~/Content/plugins/datatables/extensions/TableTools/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="~/Content/js/popperjs_core2.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+    $(function () {
+        var currentPageInput = $('#currentPage');
+        var table = $('#TableData').DataTable({
+            dom: 'Bfrtip',
+            order: [[5, 'desc']],
+            columnDefs: [
+                {
+                    type: 'time-date-sort',
+                    targets: [3],
+                }
+            ],
+            buttons: [
+                {
+                    extend: 'excel',
+                    title: 'Crew Leave Requests',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3,4,5,6,7,8]
+                    }
+                }
+            ],
+            initComplete: function () {
+                var api = this.api();
+                currentPageInput.val(api.page.info().page + 1);
+            }
+        });
+
+    });
+</script>

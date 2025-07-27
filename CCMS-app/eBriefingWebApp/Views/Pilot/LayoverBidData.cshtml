@@ -1,0 +1,264 @@
+﻿@model List<eBriefingWebApp.Layover_Bids>
+@{
+    ViewBag.Title = "Layover Destination Categories";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+
+@if (Model != null)
+{
+    @*<input type="hidden" id="currentPage" value="" />*@
+
+    <input type="hidden" id="currentPage" name="currentPage" value="@ViewBag.currentPage" />
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+
+
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Category A</h5>
+                </div>
+                <table id="TableData" class="table table-borderless my-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Station Code</th>
+                            <th class="text-center fw-bold">Flight Crew Boeing</th>
+                            <th class="text-center fw-bold">Flight Crew Airbus</th>
+                            <th class="text-center fw-bold">Cabin Mangers</th>
+                            <th class="text-center fw-bold">Cabin Senior</th>
+                            <th class="text-center fw-bold">FG/FA</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int currentPage = Convert.ToInt32(Request.Form["currentPage"]);
+                        }
+
+                        @for (int j = 0; j < Model.Count; j++)
+                        {
+                            if (Model[j].CAT_ID == 1)
+                            {
+                                <tr>
+                                    <td class="text-center">@(Model[j].AirportCode.Code)</td>
+
+                                    <td class="text-center">@(Model[j].FC_BOING_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FC_AIRBUS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CM_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FG_FA_BIDLIMIT)</td>
+
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>}
+@if (Model != null)
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Category B</h5>
+                </div>
+                <table id="TableData" class="table table-borderless my-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Station Code</th>
+                            <th class="text-center fw-bold">Flight Crew Boeing</th>
+                            <th class="text-center fw-bold">Flight Crew Airbus</th>
+                            <th class="text-center fw-bold">Cabin Mangers</th>
+                            <th class="text-center fw-bold">Cabin Senior</th>
+                            <th class="text-center fw-bold">FG/FA</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @for (int j = 0; j < Model.Count; j++)
+                        {
+                            if (Model[j].CAT_ID == 2)
+                            {
+                                <tr>
+                                    <td class="text-center">@(Model[j].AirportCode.Code)</td>
+
+                                    <td class="text-center">@(Model[j].FC_BOING_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FC_AIRBUS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CM_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FG_FA_BIDLIMIT)</td>
+
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@if (Model != null)
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">India (one of each per roster)</h5>
+                </div>
+
+                <table id="TableData" class="table table-borderless my-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Station Code</th>
+                            <th class="text-center fw-bold">Flight Crew Boeing</th>
+                            <th class="text-center fw-bold">Flight Crew Airbus</th>
+                            <th class="text-center fw-bold">Cabin Mangers</th>
+                            <th class="text-center fw-bold">Cabin Senior</th>
+                            <th class="text-center fw-bold">FG/FA</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @for (int j = 0; j < Model.Count; j++)
+                        {
+                            if (Model[j].CAT_ID == 3)
+                            {
+                                <tr>
+                                    <td class="text-center">@(Model[j].AirportCode.Code)</td>
+
+                                    <td class="text-center">@(Model[j].FC_BOING_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FC_AIRBUS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CM_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FG_FA_BIDLIMIT)</td>
+
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@if (Model != null)
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Separate</h5>
+                </div>
+
+                <table id="TableData" class="table table-borderless my-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Station Code</th>
+                            <th class="text-center fw-bold">Flight Crew Boeing</th>
+                            <th class="text-center fw-bold">Flight Crew Airbus</th>
+                            <th class="text-center fw-bold">Cabin Mangers</th>
+                            <th class="text-center fw-bold">Cabin Senior</th>
+                            <th class="text-center fw-bold">FG/FA</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @for (int j = 0; j < Model.Count; j++)
+                        {
+                            if (Model[j].CAT_ID == 4)
+                            {
+                                <tr>
+                                    <td class="text-center">@(Model[j].AirportCode.Code)</td>
+
+                                    <td class="text-center">@(Model[j].FC_BOING_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FC_AIRBUS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CM_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].CS_BIDLIMIT)</td>
+                                    <td class="text-center">@(Model[j].FG_FA_BIDLIMIT)</td>
+
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@{
+    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+    var maximum_bids = db.Maximum_Bids.ToList();
+}
+@if (maximum_bids.Count > 0)
+{
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Maximum Bids</h5>
+                </div>
+                <table id="TableData" class="table table-borderless my-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Type</th>
+                            <th class="text-center fw-bold">Flight Crew Boeing</th>
+                            <th class="text-center fw-bold">Flight Crew Airbus</th>
+                            <th class="text-center fw-bold">Cabin Mangers</th>
+                            <th class="text-center fw-bold">Cabin Senior</th>
+                            <th class="text-center fw-bold">FG/FA</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @foreach (var bid in maximum_bids)
+                        {
+
+                            <tr>
+                                <td class="text-center">@(bid.BID_TYPE)</td>
+
+                                <td class="text-center">@(bid.FC_BOING_MAX)</td>
+                                <td class="text-center">@(bid.FC_AIRBUS_MAX)</td>
+                                <td class="text-center">@(bid.CM_MAX)</td>
+                                <td class="text-center">@(bid.CS_MAX)</td>
+                                <td class="text-center">@(bid.FG_FA_MAX)</td>
+
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+}
+
+
+

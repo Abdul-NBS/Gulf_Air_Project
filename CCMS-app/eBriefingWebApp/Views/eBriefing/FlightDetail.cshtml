@@ -1,0 +1,292 @@
+﻿@model eBriefingWebApp.OCB_Flights
+@{
+    ViewBag.Title = "FlightDetail";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Flight Information</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="fw-bold">Flight Number</th>
+                            <td class="text-start">@Model.Flt_No</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Flight Date</th>
+                            <td class="text-start">@Model.Flight_Date.Value.ToString("dd-MMM-yyyy")</td>
+                        </tr>
+                        <tr>
+                            <th class="fw-bold">Orig/Dest</th>
+                            <td class="text-start">@Model.Orig / @Model.Dest</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-dark" onclick="history.back()">Back</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Flight Meals</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Class</th>
+                            <th class="text-center fw-bold">Count</th>
+                            <th class="text-center fw-bold">Eqp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.FlightMeals)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Class</td>
+                                <td class="text-center">@item.Meal_Count</td>
+                                <td class="text-center">@item.Equipment</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Appraisals</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Staff Number</th>
+                            <th class="text-center fw-bold">Full Name</th>
+                            <th class="text-center fw-bold">Title</th>
+                            <th class="text-center fw-bold">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Post Flight Test</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Staff Number</th>
+                            <th class="text-center fw-bold">Full Name</th>
+                            <th class="text-center fw-bold">Status</th>
+                            <th class="text-center fw-bold">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Potable Water</h5>
+            </div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Special Meals</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Class</th>
+                            <th class="text-center fw-bold">Meal Type</th>
+                            <th class="text-center fw-bold">PAX Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SpecialMeals)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Class</td>
+                                <td class="text-center">@item.Meal_Type</td>
+                                <td class="text-center">@item.Passenger_Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Pre-Order Meals</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Class</th>
+                            <th class="text-center fw-bold">Meal Type</th>
+                            <th class="text-center fw-bold">PAX Name</th>
+                            <th class="text-center fw-bold">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PreBookedMeals)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Class</td>
+                                <td class="text-center">@item.Meal_Type</td>
+                                <td class="text-center">@item.Passenger_Name</td>
+                                <td class="text-center">@item.Remarks</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Special Requests</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">Class</th>
+                            <th class="text-center fw-bold">Count</th>
+                            <th class="text-center fw-bold">Eqp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SSRs)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Booking_Class</td>
+                                <td class="text-center">@item.Pax_Name</td>
+                                <td class="text-center">@item.Req_Type</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Special Meals Count (Actual)</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">J</th>
+                            <th class="text-center fw-bold">Y</th>
+                            <th class="text-center fw-bold">S</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.MealsCounts)
+                        {
+                            <tr>
+                                <td class="text-center">@item.J</td>
+                                <td class="text-center">@item.Y</td>
+                                <td class="text-center">@item.S</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Special Requests Count (Actual)</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold">J</th>
+                            <th class="text-center fw-bold">Y</th>
+                            <th class="text-center fw-bold">S</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SSR_Count)
+                        {
+                            <tr>
+                                <td class="text-center">@item.ReqType</td>
+                                <td class="text-center">@item.TotalCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h3>Flight Notifications</h3>
+<br />
+<div class="row">
+    @foreach (var item in Model.OCB_Notification)
+    {
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    @item.Comments
+                </div>
+            </div>
+        </div>
+    }
+</div>

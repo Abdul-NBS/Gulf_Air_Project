@@ -1,0 +1,106 @@
+﻿@model List<eBriefingWebApp.PilotCrewDocument>
+
+<table id="TableData" class="table table-striped table-hover my-0">
+    <thead>
+        <tr style="height: 10px;">
+            <th class="text-center fw-bold">#</th>
+            <th class="text-center fw-bold">Staff Number</th>
+            <th class="text-center fw-bold">Staff Name</th>
+            <th class="text-center fw-bold">Document Type</th>
+            <th class="text-center fw-bold">Submitted Time</th>
+            <th class="text-center fw-bold">Crew Comments</th>
+            <th class="text-center fw-bold">Status</th>
+            <th class="text-center fw-bold">Admin Comments</th>
+            <th class="text-center fw-bold">Attachment Path</th>
+            <th class="text-center fw-bold">Approve</th>
+            <th class="text-center fw-bold">Reject</th>
+            <th class="text-center fw-bold">History</th>
+            <th class="text-center fw-bold">Select <input type="checkbox" id="selectAll"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            int i = 1;
+            foreach (var document in Model)
+            {
+                eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                var staffInfo = db.PilotCrewDetails.FirstOrDefault(a => a.StaffNumber == document.StaffNumber);
+                string staffName = staffInfo.FullName ?? "";
+
+                <tr>
+                    <td class="text-center">@i</td>
+                    <td class="text-center">@document.StaffNumber</td>
+                    <td class="text-center">@staffName</td>
+                    <td class="text-center">@document.CrewDocumentCategory.CategoryName</td>
+                    <td class="text-center">@(document.Submited_DT.Value.ToString("dd MMM hh:mm tt"))</td>
+                    <td class="text-center">@document.Comments</td>
+                    @{
+                        var statusStr = "";
+                        var statusBadge = "secondary";
+                        switch (document.Status)
+                        {
+                            case "S":
+                                statusStr = "Submitted";
+                                statusBadge = "primary";
+                                break;
+                            case "A":
+                                statusStr = "Approved";
+                                statusBadge = "success";
+                                break;
+                            case "R":
+                                statusStr = "Awaiting Resubmission";
+                                statusBadge = "danger";
+                                break;
+                            case "C":
+                                statusStr = "Resubmitted";
+                                statusBadge = "warning";
+                                break;
+                        }
+                    }
+                    <td class="text-center"><span class="badge bg-@statusBadge">@statusStr</span></td>
+                    <td class="text-center">@document.Admin_Reason</td>
+                    <td class="text-center">
+                        @if (!string.IsNullOrEmpty(document.Attachment_Path))
+                        {
+                            <a href="@Url.Content(document.Attachment_Path)" target="_blank" title="View Document">
+                                <i class="fas fa-file-alt"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span>No Document</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (document.Status != "A" && document.Status != "R")
+                        {
+                            <a href="#" class="approveLink" data-id="@document.Id" title="Approve Document">
+                                <i class="fas fa-check-circle text-success"></i>
+                            </a>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (document.Status != "A" && document.Status != "R")
+                        {
+                            <a href="#" class="rejectLink" data-id="@document.Id" title="Reject Document">
+                                <i class="fas fa-times-circle text-danger"></i>
+                            </a>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <a href="#" class="showHistory" data-documentid="@document.Id" title="View History">
+                            <i class="fas fa-history"></i>
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" class="document-checkbox"
+                               data-attachment-path="@document.Attachment_Path"
+                               data-document-name="@document.CrewDocumentCategory.CategoryName">
+                    </td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>

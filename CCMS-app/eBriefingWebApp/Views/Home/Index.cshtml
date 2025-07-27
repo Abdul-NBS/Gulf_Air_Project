@@ -1,0 +1,173 @@
+﻿@model eBriefingWebApp.ViewModels.DashboardVM
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xl-12 d-flex">
+        <div class="w-100">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">BLOCKS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.BlocksCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">FLIGHTS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.FlightsCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">Crew POSISTIONS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.CrewPosCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">NOTIFICATIONS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.NotificationsCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">APPRAISALS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.ApprisalsCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">FLIGHT MEALS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.FlightMealsCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">SPECIAL MEALS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.ApprisalsCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">SPECIAL REQUESTS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.SSRSCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">PRE-FLIGHT</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.PreFlightCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">PRE-FLIGHT TOTAL PASS</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.PreFlightPassCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mt-0">
+                                    <h5 class="card-title">PRE-FLIGHT TOTAL FAIL</h5>
+                                </div>
+                            </div>
+                            <h1 class="mt-1 mb-3">@Model.PreFlightFailCount</h1>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</div>

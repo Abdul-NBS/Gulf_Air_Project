@@ -1,0 +1,120 @@
+﻿@model List<eBriefingWebApp.Models.CrewSeniority>
+
+@{
+    ViewBag.Title = "Crew Effective Seniorit";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm())
+{
+  
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+            var firstItem = Model[0];
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Flight Details and Customer Load</h4>
+                            </div>
+                            <div class="col-md-4 justify-content-end" style="text-align:end;">
+                                <img src="~/Content/img/GulfAirLogoNew_500.png" style="width:150px;height:80px;" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Number :  @(firstItem.CrewId)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Staff Name :   @(firstItem.crewName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Position :   @(firstItem.crewPosition)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Net Group :   @(firstItem.NetSeniority)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Fleet :   @(firstItem.fleet)</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <table style="width:100%">
+                            <tr style="height:20px"><td></td></tr>
+                        </table>
+
+                        <table style="width:100%">
+                            <tr style="height:20px"><td></td></tr>
+                        </table>
+
+
+                        @foreach (var item in Model)
+                        {
+                            <table class="table my-0">
+                                <tr>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Group :  @(item.group)</td>
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Group Seniority :  @(item.groupSeniority)</td>
+                                </tr>
+                            </table>
+                            var crewObj = item.periodseniority;
+                    <table class="table my-0">
+                        <tr style="background-color: #f2f2f2;">
+                            @foreach (var per in crewObj)
+                            {
+                                <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                    @per.Period
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            @foreach (var per2 in crewObj)
+                            {
+                                <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">
+                                    @per2.periodSeniority
+                                </td>
+                            }
+                        </tr>
+                    </table>
+                    <br/>
+                                }
+
+                           
+
+                        </div>
+                    <div class="card-footer">
+
+                        <a class="btn btn-dark" href="@Url.Action("Index", "CrewSeniority")" target="_blank">Back</a>
+                        
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+       
+}
+
+
+
+
+
+
+
+
+
+

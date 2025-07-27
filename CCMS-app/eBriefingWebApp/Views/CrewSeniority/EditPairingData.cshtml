@@ -1,0 +1,196 @@
+﻿@model eBriefingWebApp.Layover_Pairing
+
+@{
+    ViewBag.Title = "Edit Layover Pairing Categories";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+@using (Html.BeginForm("EditPairingData", "CrewSeniority", FormMethod.Post))
+{
+
+    <div class="row" id="DSForm">
+        @if (Model != null)
+        {
+
+
+
+            // @Html.HiddenFor(m => CSEid, new { name = "CrewSeniority.id" })
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Edit Layover Pairing Categories</h4>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+                    @{
+                        eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                        int? selectedCategoryId = db.Layover_Bids.Where(a => a.ID == Model.ID).Select(bid => bid.CAT_ID).FirstOrDefault();
+                    }
+                    <div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style="width: 50%;" colspan="1">
+                                        <div class="form-group">
+                                            <label style="text-align: left;"> Layover Pairing Name</label>
+                                            <div class="input-group mb-3">
+                                               @Model.Pairing
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="width: 50%;" colspan="1">
+                                        <div>
+                                            <label style="text-align: left;">Pairing Category</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.DropDownListFor(model => model.Pair_Cat_ID, new SelectList(ViewBag.Category, "ID", "CAT"), "Select", new
+                                                {
+                                                                             @class = "form-control",
+                                                                             @required = "required",
+                                                                             @style = "width:120px"
+                                                                         })
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+                                        <div class="form-group">
+                                            <label style="text-align: left;">Fleet Category</label>
+                                            <div class="input-group mb-3 justify-content-end">
+                                                @Html.DropDownListFor(model => model.Fleet_Id, new SelectList(ViewBag.Fleet, "ID", "FltCd"), "Select", new
+                                                {
+                                                                             @class = "form-control",
+                                                                             @required = "required",
+                                                                             @style = "width:50px"
+                                                                         })
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+
+
+
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+                                        <label style="text-align: left;">Tentative Date of Operation</label>
+                                        <div class="col-md-4 justify-content-end">
+                                            <div class="input-group mb-3">
+                                                <input name="Operation_Date" id="Operation_Date" class="form-control" type="date" />
+                                                <!-- <div class="input-group-append">
+                                                    <button class="btn btn-dark btn-outline-secondary" type="submit">Get Data</button>
+                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style=" width: 50%;" colspan="1">
+                                        <label style="text-align: left;">
+                                            Next Possible Date of Operation
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-group mb-3">
+                                                <input type="text" id="EndDateTextbox" name="EndDateTextbox" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                        </table>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-dark" href="@Url.Action("LayoverPairingIndex", "CrewSeniority")" target="_blank">Back</a>
+                        <button id="btnSubmit" class="btn btn-dark" type="submit">Save Layover Pairing</button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+        $('#Pair_Cat_ID').on('change', function () {
+            var selectedCategory = $(this).val();
+            var daysToAdd = 0;
+
+            if (selectedCategory === "1") {
+                daysToAdd = 90;
+            } else if (selectedCategory === "2") {
+                daysToAdd = 90
+            } else if (selectedCategory === "3") {
+                daysToAdd = 60;
+            } else if (selectedCategory === "4") {
+                daysToAdd = 60;
+            }
+
+            // Check if Operation_Date has a value
+            if ($('#Operation_Date').val() !== '') {
+                var selectedDate = $('#Operation_Date').val();
+                var endDate = new Date(selectedDate);
+                endDate.setDate(endDate.getDate() + daysToAdd);
+                var formattedEndDate = endDate.toISOString().slice(0, 10);
+                $('#EndDateTextbox').val(formattedEndDate);
+            }
+        });
+
+        $('#Operation_Date').on('change', function () {
+            var selectedDate = $(this).val();
+            var selectedCategory = $('#Pair_Cat_ID').val();
+            var daysToAdd = 0;
+
+            if (selectedCategory === "1") {
+                daysToAdd = 90;
+            } else if (selectedCategory === "2") {
+                daysToAdd = 90;
+            } else if (selectedCategory === "3") {
+                daysToAdd = 60;
+            } else if (selectedCategory === "4") {
+                daysToAdd = 60;
+            }
+
+
+            if (selectedDate !== '') {
+                var endDate = new Date(selectedDate);
+                endDate.setDate(endDate.getDate() + daysToAdd);
+                var options = { month: '2-digit', day: '2-digit', year: 'numeric' };
+                //var formattedEndDate = endDate.toISOString().slice(0, 10);
+                var formattedEndDate = new Intl.DateTimeFormat('en-US', options).format(endDate);
+
+                $('#EndDateTextbox').val(formattedEndDate);
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+

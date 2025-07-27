@@ -1,0 +1,88 @@
+﻿@model eBriefingWebApp.CrewDetail
+@{
+    ViewBag.Title = "Crew Detail";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Leave Detail</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Staff Number</label>
+                        @Html.TextBoxFor(u => Model.StaffNumber, new { @id = "StaffNumber", @type = "numric", @class = "form-control", @required = "required", @readonly = "@readonly" })
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        @Html.TextBoxFor(u => Model.FullName, new { @id = "StaffNumber", @type = "numric", @class = "form-control", @readonly = "@readonly" })
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        @Html.TextBoxFor(u => Model.Category, new { @id = "StaffNumber", @type = "numric", @class = "form-control", @readonly = "@readonly" })
+                    </div>
+                    <div class="form-group">
+                        <label>Natinality</label>
+                        @Html.TextBoxFor(u => Model.Nation, new { @id = "StaffNumber", @type = "numric", @class = "form-control", @readonly = "@readonly" })
+                    </div>
+                    <div class="form-group">
+                        <label>PA</label>
+                        <select class="form-control" name="PA" required>
+                            <option value="">Select PA</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="btnSubmit" class="btn btn-dark" type="submit">Save</button>
+                    <a href="@Url.Action("CrewDetails", "OCB")" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+
+}
+
+

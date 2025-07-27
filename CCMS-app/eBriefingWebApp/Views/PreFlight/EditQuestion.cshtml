@@ -1,0 +1,84 @@
+﻿@model eBriefingWebApp.PreFlight_TestQuestions
+@{
+    ViewBag.Title = "Edit Question";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
+<script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+@using (Html.BeginForm("EditQuestion", "PreFlight", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Question Detail</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Fleet</label>
+                        @Html.TextBoxFor(m => @Model.PreFlight_Categories.Fleet.Fleet1, new { @class = "form-control", @readonly = true })
+                        @Html.HiddenFor(m => Model.Id)
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        @Html.TextBoxFor(m => @Model.PreFlight_Categories.Category, new { @class = "form-control", @readonly = true })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Question</label>
+                        @Html.TextAreaFor(m => @Model.Question, new { @class = "form-control" })
+                    </div>
+
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark" type="submit">Save Changes</button>
+                    <!-- <button class="btn btn-danger" type="submit">De-Activate</button> -->
+                    @{ 
+                      var qtnStat = (bool)Model.Active;
+                      if (qtnStat)
+                       {
+                        <a href="@Url.Action("DeactivateQtn", "PreFlight", new { QtnId = Model.Id })" class="btn btn-danger">De-Activate</a>
+                        }
+                        else
+                        {
+                        <a href="@Url.Action("ActivateQtn", "PreFlight", new { QtnId = Model.Id })" class="btn btn-success">Activate</a>
+                    }
+                        }
+                    <a href="@Url.Action("Questions", "PreFlight")" class="btn btn-dark" type="submit">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    if (TempData["Status"] != null)
+    {
+
+        if (TempData["Status"].ToString() == "Added")
+        {
+            <script>
+                toastr.success('Record Added.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Saved")
+        {
+            <script>
+                toastr.success('Record Saved.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Exist")
+        {
+            <script>
+                toastr.warning('Record Exist.');
+            </script>
+        }
+        else if (TempData["Status"].ToString() == "Error")
+        {
+            <script>
+                toastr.error('Error Saving Record.');
+            </script>
+        }
+    }
+}

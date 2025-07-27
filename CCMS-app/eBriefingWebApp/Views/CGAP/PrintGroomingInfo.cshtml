@@ -1,0 +1,156 @@
+﻿@model eBriefingWebApp.Models.CrewGroomingPojo
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+
+            page[size="A4"] {
+                width: 21cm;
+                height: 29.7cm;
+            }
+
+        @@media print {
+            body, page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <page size="A3">
+        <div id="pdfForm">
+            <div style="width:100%; text-align:center; padding-top:10PX;">
+
+                <h4>Crew Grooming Data</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h4 class="card-title mb-0">Crew Grooming data</h4>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table my-0">
+                            <tbody>
+
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Name :  @(Model.StaffNo)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Crew Staff number :     @(Model.staffName)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Category:    @(Model.category)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Nationality :   @(Model.nation)</td>
+
+
+
+                                </tr>
+
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Weight :  @(Model.weight)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Weight Status :     @(Model.weightStat)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Min - Max Weight:    @(Model.minweight) - @(Model.maxweight) </td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Gender :   @(Model.gender)</td>
+
+
+
+                                </tr>
+
+                                <tr>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Height :  @(Model.height)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Eye Color :     @(Model.eyecolorStr)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Hair Color :    @(Model.haircolorStr)</td>
+
+                                    <td class="text-center fw-bold" style="border: 1px solid #c6c1c0;">Rank :   @(Model.remarks)</td>
+
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br />
+                        <table style="width:100%">
+                        <tbody>
+           
+                            </tbody></table>
+                        <br />
+        <table style="width:100%">
+            <tbody>
+                <tr style="height: 30px;">
+
+                    <td td colspan="7" style="border: 1px solid #c6c1c0; color: black; font-weight: bold; text-align: left;">Weight History</td>
+
+                </tr>
+                <tr style="height: 10px; background-color: #f0f0f0; color: #000000; text-align: center;">
+                    <td style="border: 1px solid #c6c1c0;  font-weight: bold;">#</td>
+                    <td style="; border: 1px solid #c6c1c0; font-weight: bold;">Weight</td>
+                    <td style="border: 1px solid #c6c1c0;  font-weight: bold;">Loss or Gain</td>
+                    <td style="border: 1px solid #c6c1c0;  font-weight: bold;">Weight Status</td>
+                    <td style="border: 1px solid #c6c1c0; font-weight: bold;">Weight Entry Date</td>
+                    <td style="border: 1px solid #c6c1c0;  font-weight: bold;">Updated By</td>
+                  <!--  <td style="border: 1px solid #c6c1c0;  font-weight: bold;">Updated User</td>-->
+                    <!-- <td style="border: 1px solid #c6c1c0; width: 30%; font-weight: bold;">Comment</td> -->
+
+                </tr>
+                @{
+                    int i = 1;
+                    //var secCount = 0;
+                    foreach (var history in Model.historylist)
+                    {
+                        <tr style="height:10px">
+                            <td style="border: 1px solid #c6c1c0; text-align: center;">@i</td>
+                            <td style=" border: 1px solid #c6c1c0">@(history.Weight)</td>
+                            <td style="border: 1px solid #c6c1c0;">@(history.lossorgain) </td>
+                            <td style="border: 1px solid #c6c1c0; ">@(history.weightstat)</td>
+                            <td style="border: 1px solid #c6c1c0; text-align: center;">@history.Weight_Entry_Date.Value.ToString("dd MMM yyyy")</td>
+                            <td style="border: 1px solid #c6c1c0; ">@(history.Updated_By) </td>
+                           <!-- <td style="border: 1px solid #c6c1c0; ">@(history.updatedByName) </td>-->
+
+                        </tr>
+                        i++;
+
+                    }
+                }
+
+
+
+
+
+
+            </tbody>
+        </table>
+
+        </div>
+        </div>
+        </div>
+        </div>
+</body>
+</html>

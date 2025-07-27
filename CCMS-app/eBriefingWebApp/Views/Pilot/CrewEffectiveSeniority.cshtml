@@ -1,0 +1,171 @@
+﻿@model eBriefingWebApp.Models.CrewSeniority
+@{
+    ViewBag.Title = "Crew Seniority";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Bidding Effective Senioriry</h5>
+                </div>
+                <table class="table table-borderless my-0">
+                    <tbody>
+
+                        <tr>
+                            <th class="text-center">
+                                Name
+                            </th>
+                            <th class="text-center">
+                                POS
+                            </th>
+                            <th class="text-center">
+                                Group
+                            </th>
+                            <th class="text-center">
+                                Seniority in Group
+                            </th>
+                            <th class="text-center">
+                                Net Seniority
+                            </th>
+                            <th class="text-center">
+                                Fleet
+                            </th>
+
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                @Model.crewName
+                            </td>
+                            <td class="text-center">
+                                @Model.crewPosition
+                            </td>
+                            <td class="text-center">
+                                @Model.group
+                            </td>
+                            <td class="text-center">
+                                @Model.groupSeniority
+                            </td>
+                            <td class="text-center">
+                                @Model.NetSeniority
+                            </td>
+                            <td class="text-center">
+                                @Model.fleet
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Effective Seniority</h2>
+                </div>
+                <table class="table table-borderless my-0">
+                    <tbody>
+
+                        <tr>
+                            @foreach (var item in Model.periodseniority)
+                            {
+
+                                <th class="text-center">
+                                    @item.Period
+                                </th>
+
+
+
+                            }
+                        </tr>
+                        <tr>
+                            @foreach (var item in Model.periodseniority)
+                            {
+                                <td class="text-center">
+                                    @item.periodSeniority
+                                </td>
+                            }
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Roster Period data</h5>
+                </div>
+                @{
+                    eBriefingWebApp.CSMEntities db = new eBriefingWebApp.CSMEntities();
+                    var RosterList = db.Roster_Data.Where(a => a.IsActive == true && a.IsDeleted == false).ToList();
+                }
+                <table class="table table-borderless my-0">
+                    <thead>
+
+                        <tr>
+                            <th class="text-center">
+                                Month
+                            </th>
+                            <th class="text-center">
+                                Group
+                            </th>
+                            <th class="text-center">
+                                Roster Publication Date
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var RosterData in RosterList)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    @(RosterData.ROSTERMONTH) - @RosterData.ROSTERYEAR
+                                </td>
+                                <td class="text-center">
+                                    Group @(RosterData.HIGH_SENIORITY_GROUP)
+                                </td>
+                                <td class="text-center">
+                                    @(RosterData.ROSTER_PUB_DATE.Value.ToString("dd MMM yyyy"))
+                                </td>
+
+
+                            </tr>
+                        }
+
+
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header bg-primary">
+                    <h5 class="card-title mb-0 text-white">Bidding Effective Senioriry</h5>
+                </div>
+                <table class="table table-borderless my-0">
+                    <tbody>
+
+                        <tr>
+                            <th class="text-center">
+                                No Seniority Data Available
+                            </th></tr></tbody></table>
+            </div>
+            </div>
+        </div>
+}
+
