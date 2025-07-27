@@ -3,22 +3,39 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Checking Docker service status...
-      - Get-Service docker -ErrorAction SilentlyContinue
-      - echo Starting Docker service...
+      - echo "=== Environment Variables ==="
+      - echo "AWS_REGION = $env:AWS_REGION"
+      - echo "AWS_DEFAULT_REGION = $env:AWS_DEFAULT_REGION"
+      - echo "AWS_ACCOUNT_ID = $env:AWS_ACCOUNT_ID"
+      - echo "IMAGE_REPO_NAME = $env:IMAGE_REPO_NAME"
+      - echo "================================"
+      
+      - echo "Checking Docker service status..."
+      - Get-Service docker
+      
+      - echo "Starting Docker service..."
       - Start-Service docker
-      - echo Waiting for Docker to be ready...
+      
+      - echo "Waiting for Docker to be ready..."
       - Start-Sleep -Seconds 10
-      - echo Docker service started successfully
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $env:AWS_DEFAULT_REGION | docker login --username AWS --password-stdin "$env:AWS_ACCOUNT_ID.dkr.ecr.$env:AWS_DEFAULT_REGION.amazonaws.com"
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
-      - IMAGE_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      
+      - echo "Checking Docker status after start..."
+      - Get-Service docker
+      
+      - echo "Testing Docker command..."
+      - docker version
+      
+      - echo "Logging in to Amazon ECR in me-south-1..."
+      - aws ecr get-login-password --region me-south-1 | docker login --username AWS --password-stdin "529966364587.dkr.ecr.me-south-1.amazonaws.com"
+      
+      - $IMAGE_TAG = $env:CODEBUILD_RESOLVED_SOURCE_VERSION.Substring(0,8)
+      - $IMAGE_URI = "529966364587.dkr.ecr.me-south-1.amazonaws.com/$env:IMAGE_REPO_NAME:$IMAGE_TAG"
+      - echo "Image URI will be: $IMAGE_URI"
       
   build:
     commands:
-      - echo Build started on $(Get-Date)
-      - echo Building the .NET Framework application...
+      - echo "Build started on $(Get-Date)"
+      - echo "Building the .NET Framework application..."
       
       # Create publish directory
       - mkdir publish
@@ -33,48 +50,17 @@ phases:
       - copy "CCMS-app\eBriefingWebApp\Dockerfile" "publish\Dockerfile"
       
       # Build Docker image
-      - echo Building Docker image...
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG publish/
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_URI
+      - echo "Building Docker image..."
+      - docker build -t "$env:IMAGE_REPO_NAME:$IMAGE_TAG" publish/
+      - docker tag "$env:IMAGE_REPO_NAME:$IMAGE_TAG" $IMAGE_URI
       
   post_build:
     commands:
-      - echo Build completed on $(Get-Date)
-      - echo Pushing the Docker image...
+      - echo "Build completed on $(Get-Date)"
+      - echo "Pushing the Docker image..."
       - docker push $IMAGE_URI
       
-      - echo Updating ECS service...
-      # Get current task definition
-      - aws ecs describe-task-definition --task-definition $ECS_SERVICE_NAME --query taskDefinition > task-def.json
-      
-      # Update image in task definition using PowerShell
-      - |
-        $taskDef = Get-Content task-def.json | ConvertFrom-Json
-        $taskDef.containerDefinitions[0].image = "$env:IMAGE_URI"
-        
-        # Remove unnecessary fields
-        $taskDef.PSObject.Properties.Remove('taskDefinitionArn')
-        $taskDef.PSObject.Properties.Remove('revision')
-        $taskDef.PSObject.Properties.Remove('status')
-        $taskDef.PSObject.Properties.Remove('requiresAttributes')
-        $taskDef.PSObject.Properties.Remove('compatibilities')
-        $taskDef.PSObject.Properties.Remove('registeredAt')
-        $taskDef.PSObject.Properties.Remove('registeredBy')
-        
-        $taskDef | ConvertTo-Json -Depth 10 | Out-File -FilePath updated-task-def.json -Encoding UTF8
-      
-      # Register new task definition
-      - $NEW_TASK_DEF = aws ecs register-task-definition --cli-input-json file://updated-task-def.json
-      - $NEW_TASK_ARN = ($NEW_TASK_DEF | ConvertFrom-Json).taskDefinition.taskDefinitionArn
-      
-      # Update ECS service
-      - aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --task-definition $NEW_TASK_ARN
-      
-      # Wait for deployment to complete
-      - echo Waiting for service to stabilize...
-      - aws ecs wait services-stable --cluster $ECS_CLUSTER_NAME --services $ECS_SERVICE_NAME
-      
-      - echo Deployment completed successfully!
+      - echo "Deployment completed successfully!"
 
 artifacts:
   files:
